@@ -1,0 +1,30 @@
+# Ignore build files
+target/
+build/
+
+# Ignore IntelliJ and VS Code settings
+.idea/
+.vscode/
+*.iml
+
+# Ignore dependencies and environment files
+node_modules/
+dist/
+bin/
+*.log
+.env
+application.properties
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore Angular and Spring Boot generated files
+.angular/
+*.class
+*.jar
+*.war
+*.ear
+
+
+/.metadata/
