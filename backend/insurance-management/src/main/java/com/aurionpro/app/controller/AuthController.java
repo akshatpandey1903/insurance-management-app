@@ -2,6 +2,7 @@ package com.aurionpro.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +22,12 @@ public class AuthController {
 	private AuthService authService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDTO loginDto){
+	public ResponseEntity<JwtAuthResponse> login(@RequestBody @Validated LoginDTO loginDto){
 		return ResponseEntity.ok(authService.login(loginDto));
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<UserResponseDTO> register(@RequestBody UserRequestDTO requestDto){
+	public ResponseEntity<UserResponseDTO> register(@RequestBody @Validated UserRequestDTO requestDto){
 		return ResponseEntity.ok(authService.register(requestDto));
 	}
 }
