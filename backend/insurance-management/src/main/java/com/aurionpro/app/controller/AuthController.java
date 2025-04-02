@@ -13,6 +13,8 @@ import com.aurionpro.app.dto.UserRequestDTO;
 import com.aurionpro.app.dto.UserResponseDTO;
 import com.aurionpro.app.service.AuthService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/app")
 public class AuthController {
@@ -26,7 +28,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<UserResponseDTO> register(@RequestBody UserRequestDTO requestDto){
+	public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid UserRequestDTO requestDto){
 		return ResponseEntity.ok(authService.register(requestDto));
 	}
 }
