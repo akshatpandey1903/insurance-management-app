@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.aurionpro.app.dto.JwtAuthResponse;
 import com.aurionpro.app.dto.LoginDTO;
@@ -20,6 +21,7 @@ import com.aurionpro.app.repository.RoleRepository;
 import com.aurionpro.app.repository.UserRepository;
 import com.aurionpro.app.security.JwtTokenProvider;
 
+@Service
 public class AuthServiceImpl implements AuthService{
 	
 	@Autowired
@@ -54,7 +56,7 @@ public class AuthServiceImpl implements AuthService{
 
 	@Override
 	public UserResponseDTO register(UserRequestDTO requestDto) {
-		if(userRepo.existsByUserName(requestDto.getUsername())) {
+		if(userRepo.existsByUsername(requestDto.getUsername())) {
 			throw new UserApiException(HttpStatus.BAD_REQUEST, "Username already exists");
 		}
 		
