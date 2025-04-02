@@ -29,11 +29,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/register")
-<<<<<<< HEAD
 	public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid UserRequestDTO requestDto){
-=======
-	public ResponseEntity<UserResponseDTO> register(@RequestBody @Validated UserRequestDTO requestDto){
->>>>>>> 768ccaa9484f81013ea3c3596894d8e9df83e6e0
 		return ResponseEntity.ok(authService.register(requestDto));
 	}
 }
