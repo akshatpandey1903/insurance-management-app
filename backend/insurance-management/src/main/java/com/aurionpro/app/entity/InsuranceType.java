@@ -29,6 +29,6 @@ public class InsuranceType {
 	@Column(nullable = false, unique = true)
 	private String typeName;
 	
-	@OneToMany(mappedBy = "insurance_type", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "insuranceType", cascade = CascadeType.ALL)
 	private List<InsurancePlan> insurancePlans;
 }

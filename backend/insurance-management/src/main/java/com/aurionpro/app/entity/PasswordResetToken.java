@@ -30,7 +30,7 @@ public class PasswordResetToken
 	private String token;
 	
 	@OneToOne
-	@JoinColumn(name="id",nullable=false)
+	@JoinColumn(name="user_id",nullable=false)
 	private User user;
 	
 	@Column

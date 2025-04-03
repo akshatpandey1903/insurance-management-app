@@ -41,7 +41,7 @@ public class CustomerPolicy {
 	@Column(nullable = false)
 	private PaymentFrequency paymentFrequency;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal calculatedPremium;
 	
 	@Column(nullable = false)
@@ -54,6 +54,6 @@ public class CustomerPolicy {
 	private boolean isActive;
 	
 	@ManyToOne
-	@JoinColumn(name = "agent_id", nullable = true)
-	private User agent;
+	@JoinColumn(name = "agent_id", referencedColumnName = "user_id", nullable = true)
+	private Agent agent;
 }

@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.aurionpro.app.entity.PasswordResetToken;
@@ -26,6 +27,9 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService
 	 
 	 @Autowired
 	 private EmailService emailService;
+	 
+	 @Autowired
+	 private PasswordEncoder passwordEncoder;
 	
 	@Override
 	public void createPasswordResetToken(String email) 
@@ -59,7 +63,7 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService
 		}
 		
 		User user = resetToken.getUser();
-		user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+		user.setPassword(passwordEncoder.encode(newPassword));
 		userRepository.save(user);
 		
 		tokenRepository.delete(resetToken);
