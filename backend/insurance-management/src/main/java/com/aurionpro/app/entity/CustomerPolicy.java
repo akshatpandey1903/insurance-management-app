@@ -52,4 +52,8 @@ public class CustomerPolicy {
 	
 	@Column(nullable = false)
 	private boolean isActive;
+	
+	@ManyToOne
+	@JoinColumn(name = "agent_id", nullable = true)
+	private User agent;
 }

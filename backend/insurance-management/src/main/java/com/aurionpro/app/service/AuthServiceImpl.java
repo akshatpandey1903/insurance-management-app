@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService{
 		
 		User savedUser = userRepo.save(user);
 		
-		return new UserResponseDTO(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail(),
+		return new UserResponseDTO(savedUser.getUserId(), savedUser.getUsername(), savedUser.getEmail(),
                 savedUser.getFirstName(), savedUser.getLastName(), savedUser.getRole().getRoleName());
 	}
 	

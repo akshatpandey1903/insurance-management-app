@@ -2,14 +2,9 @@ package com.aurionpro.app.entity;
 
 import java.math.BigDecimal;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 public class InsurancePlan {
 	
 	@Id
-	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int insurancePlanId;
 	
@@ -30,18 +24,31 @@ public class InsurancePlan {
 	private String planName;
 	
 	@ManyToOne
-	@JoinColumn(name = "insurance_type", nullable = false)
+	@JoinColumn(name = "insurance_type_id", nullable = false)
 	private InsuranceType insuranceType;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, precision = 10, scale = 2)
+	@NotNull(message = "Premium amount is required")
+	@Min(value = 100, message = "Premium must be at least 100")
 	private BigDecimal yearlyPremiumAmount;
 	
 	@Column(nullable = false)
+	@NotNull(message = "Coverage amount is required")
+    @Min(value = 1000, message = "Coverage amount must be at least 1000")
 	private int coverageAmount;
 	
 	@Column(nullable = false)
+	@Min(value = 1, message = "Duration must be at least 1 year")
 	private int durationYears;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 255)
 	private String description;
+	
+	@Column(nullable = false, precision = 5, scale = 2)
+	@NotNull(message = "Commission rate is required")
+    @Min(value = 0, message = "Commission rate must be at least 0%")
+	private double commissionRate;
+	
+	@Column(nullable = false)
+	private boolean isActive = true; // Helps in enabling/disabling plans
 }
