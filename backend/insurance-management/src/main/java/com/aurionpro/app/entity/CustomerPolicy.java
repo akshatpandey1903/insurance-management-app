@@ -30,8 +30,8 @@ public class CustomerPolicy {
 	private int id;
 	
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
+	private Customer customer;
 	
 	@ManyToOne()
 	@JoinColumn(name = "insurance_plan_id")
@@ -52,6 +52,10 @@ public class CustomerPolicy {
 	
 	@Column(nullable = false)
 	private boolean isActive;
+	
+	@ManyToOne
+	@JoinColumn(name = "approved_by", referencedColumnName = "user_id", nullable = true)
+	private Employee approvedBy;
 	
 	@ManyToOne
 	@JoinColumn(name = "agent_id", referencedColumnName = "user_id", nullable = true)
