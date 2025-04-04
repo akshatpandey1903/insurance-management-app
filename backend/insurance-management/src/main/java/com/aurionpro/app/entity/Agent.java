@@ -26,7 +26,7 @@ public class Agent extends User{
 	@Column(nullable = false)
 	private boolean isApproved = false;
 	
-	@Column(nullable = false, precision = 12, scale = 2)
+	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal totalEarnings = BigDecimal.ZERO;
 	
 	@OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

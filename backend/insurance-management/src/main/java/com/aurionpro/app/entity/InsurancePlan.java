@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 public class InsurancePlan {
 	
+	@Column
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int insurancePlanId;
@@ -44,7 +45,7 @@ public class InsurancePlan {
 	@Column(nullable = false, length = 255)
 	private String description;
 	
-	@Column(nullable = false, precision = 5, scale = 2)
+	@Column(nullable = false)
 	@NotNull(message = "Commission rate is required")
     @Min(value = 0, message = "Commission rate must be at least 0%")
 	private double commissionRate;
