@@ -1,5 +1,6 @@
 package com.aurionpro.app.dto;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -7,9 +8,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class UserRequestDTO {
-    
-    @NotBlank(message = "Username is required")
+public class AdminRegistrationDTO {
+	
+	@NotBlank(message = "Username is required")
     @Size(min = 5, message = "Username must have at least 5 characters")
     private String username;
 
@@ -28,9 +29,6 @@ public class UserRequestDTO {
     @NotBlank(message = "Last Name is required")
     private String lastName;
     
-    @NotBlank(message = "Specify the type of Role you want to register as")
-    private String roleName;
+    @Column
+	private boolean isActive = true;
 }
-
-
-

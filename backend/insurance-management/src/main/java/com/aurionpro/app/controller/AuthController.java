@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aurionpro.app.dto.AdminRegistrationDTO;
+import com.aurionpro.app.dto.AgentRegistrationDTO;
+import com.aurionpro.app.dto.CustomerRegistrationDTO;
+import com.aurionpro.app.dto.EmployeeRegistrationDTO;
 import com.aurionpro.app.dto.JwtAuthResponse;
 import com.aurionpro.app.dto.LoginDTO;
-import com.aurionpro.app.dto.UserRequestDTO;
 import com.aurionpro.app.dto.UserResponseDTO;
 import com.aurionpro.app.service.AuthService;
 
@@ -27,8 +30,23 @@ public class AuthController {
 		return ResponseEntity.ok(authService.login(loginDto));
 	}
 	
-	@PostMapping("/register")
-	public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid UserRequestDTO requestDto){
-		return ResponseEntity.ok(authService.register(requestDto));
+	@PostMapping("/register/admin")
+	public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid AdminRegistrationDTO requestDto){
+		return ResponseEntity.ok(authService.registerAdmin(requestDto));
+	}
+	
+	@PostMapping("/register/customer")
+	public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid CustomerRegistrationDTO requestDto){
+		return ResponseEntity.ok(authService.registerCustomer(requestDto));
+	}
+	
+	@PostMapping("/register/agent")
+	public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid AgentRegistrationDTO requestDto){
+		return ResponseEntity.ok(authService.registerAgent(requestDto));
+	}
+	
+	@PostMapping("/register/employee")
+	public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid EmployeeRegistrationDTO requestDto){
+		return ResponseEntity.ok(authService.registerEmployee(requestDto));
 	}
 }

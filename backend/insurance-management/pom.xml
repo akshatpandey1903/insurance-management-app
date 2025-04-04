@@ -92,7 +92,16 @@
 <artifactId>jjwt-jackson</artifactId>
 <version>0.12.5</version>
 </dependency>
-	</dependencies>
+
+<dependency>
+    <groupId>com.cloudinary</groupId>
+    <artifactId>cloudinary-http44</artifactId>
+    <version>1.31.0</version>
+</dependency>
+
+</dependencies>
+	
+	
 
 	<build>
 		<plugins>

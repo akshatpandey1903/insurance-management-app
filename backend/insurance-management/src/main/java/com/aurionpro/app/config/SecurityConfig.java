@@ -44,7 +44,7 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable()).cors(withDefaults());
 	    http.sessionManagement(session -> session.sessionCreationPolicy(STATELESS));
 	    
-	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/register").permitAll());
+	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/register/**").permitAll());
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/login").permitAll());
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/password/forgot-password").permitAll());
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/password/reset-password").permitAll());
