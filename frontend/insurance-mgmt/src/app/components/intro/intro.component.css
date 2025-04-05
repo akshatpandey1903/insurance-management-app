@@ -1,68 +1,203 @@
-.intro-container {
-    height: 100vh;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://www.transparenttextures.com/patterns/stardust.png');
-      opacity: 0.1;
-      animation: moveBackground 20s linear infinite;
-    }
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(30, 60, 114, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand h1 {
+  color: white;
+  font-size: 1.8rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.navbar-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.btn {
+  padding: 10px 25px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-login {
+  background: #00c4cc;
+  color: white;
+  &:hover { background: #00a3aa; transform: translateY(-2px); }
+}
+
+.btn-signup {
+  background: #ff6f61;
+  color: white;
+  &:hover { background: #e65b50; transform: translateY(-2px); }
+}
+
+/* Slideshow */
+.slideshow-container {
+  position: relative;
+  height: 70vh;
+  overflow: hidden;
+  margin-top: 70px; /* Space for fixed navbar */
+}
+
+.slideshow {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+
+  &.active { opacity: 1; }
+}
+
+.dots {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.dots span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  background: #bbb;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &.active { background: #ff6f61; }
+}
+
+/* Title Section */
+.title-section {
+  text-align: center;
+  padding: 50px 20px;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+}
+
+.main-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  opacity: 0.9;
+}
+
+/* Features Section */
+.features-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 60px 20px;
+  background: #f9f9f9;
+}
+
+.feature-card {
+  text-align: center;
+  padding: 30px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
   }
-  
-  .overlay {
-    text-align: center;
-    color: white;
-    z-index: 1;
+
+  i {
+    font-size: 2.5rem;
+    color: #ff6f61;
+    margin-bottom: 15px;
   }
-  
-  .title {
-    font-size: 4rem;
-    font-weight: bold;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-  }
-  
-  .subtitle {
+
+  h3 {
     font-size: 1.5rem;
-    margin: 20px 0;
+    color: #1e3c72;
+    margin-bottom: 10px;
   }
-  
-  .button-group {
-    margin-top: 30px;
+
+  p {
+    font-size: 1rem;
+    color: #666;
   }
-  
-  .btn {
-    padding: 12px 30px;
-    margin: 0 15px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-  }
-  
-  .btn-login {
-    background: #00c4cc;
-    color: white;
-    &:hover { background: #00a3aa; }
-  }
-  
-  .btn-register {
-    background: #ff6f61;
-    color: white;
-    &:hover { background: #e65b50; }
-  }
-  
-  @keyframes moveBackground {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(-100px, -100px); }
-  }
+}
+
+/* Footer */
+.footer {
+  background: #1e3c72;
+  color: white;
+  padding: 40px 20px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto 20px;
+}
+
+.footer-section {
+  margin: 20px;
+}
+
+.footer-section h4 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.footer-section p, .footer-section ul {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section a {
+  color: #ff6f61;
+  text-decoration: none;
+  &:hover { color: #e65b50; }
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.85rem;
+}

@@ -1,4 +1,4 @@
-<div class="intro-container">
+<!-- <div class="intro-container">
     <div class="overlay">
       <h1 class="title animate__animated animate__fadeInDown">Welcome to Insurance Hub</h1>
       <p class="subtitle animate__animated animate__fadeInUp">Your one-stop solution for insurance needs</p>
@@ -7,4 +7,66 @@
         <a routerLink="/register" class="btn btn-register">Register</a>
       </div>
     </div>
+  </div> -->
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-brand">
+    <h1>Insurance Hub</h1>
   </div>
+  <div class="navbar-actions">
+    <a routerLink="/login" class="btn btn-login">Login</a>
+    <a routerLink="/register" class="btn btn-signup">Sign Up</a>
+  </div>
+</nav>
+
+<!-- Slideshow Image Grid -->
+<div class="slideshow-container">
+  <div class="slideshow" [ngClass]="{'fade': true}">
+    <img *ngFor="let slide of slides; let i = index" [src]="slide.image" [ngClass]="{'active': currentSlide === i}" alt="Slide {{i + 1}}" class="slide-image">
+  </div>
+  <div class="dots">
+    <span *ngFor="let slide of slides; let i = index" [ngClass]="{'active': currentSlide === i}" (click)="setSlide(i)"></span>
+  </div>
+</div>
+
+<!-- Title Section -->
+<section class="title-section">
+  <h1 class="main-title animate__animated animate__fadeInDown">Welcome to Insurance Hub</h1>
+  <p class="subtitle animate__animated animate__fadeInUp">Your one-stop solution for all insurance needs</p>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+  <div class="feature-card animate__animated animate__fadeInUp" *ngFor="let feature of features">
+    <i [class]="feature.icon"></i>
+    <h3>{{ feature.title }}</h3>
+    <p>{{ feature.description }}</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h4>Insurance Hub</h4>
+      <p>Providing top-notch insurance solutions since 2025.</p>
+    </div>
+    <div class="footer-section">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a routerLink="/login">Login</a></li>
+        <li><a routerLink="/register">Register</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Contact</h4>
+      <p>Email: support&#64;insurancehub.com</p>
+      <p>Phone: +1 234 567 890</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Insurance Hub. All rights reserved.</p>
+  </div>
+</footer>
