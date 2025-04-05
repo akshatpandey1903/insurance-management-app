@@ -48,6 +48,7 @@ public class SecurityConfig {
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/login").permitAll());
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/password/forgot-password").permitAll());
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/password/reset-password").permitAll());
+	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/documents/**").permitAll());
 	   
 
 	    http.authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.GET, "/app/"));
