@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.aurionpro.app.error.UserErrorResponse;
 
 @ControllerAdvice
-public class GlobalException 
+public class GlobalExceptionHandler 
 {
 	@ExceptionHandler(UserApiException.class)
 	public ResponseEntity<UserErrorResponse> handleAccountApiException(UserApiException e)
@@ -40,6 +40,19 @@ public class GlobalException
 	
 		
 		return new ResponseEntity<>(errors,HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<UserErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e)
+	{
+		
+		UserErrorResponse response = new UserErrorResponse();
+		
+		response.setMessage(e.getMessage());
+		response.setStatus(HttpStatus.NOT_FOUND.value());
+		response.setTime(System.currentTimeMillis());
+		
+		return new ResponseEntity<UserErrorResponse>(response,HttpStatus.NOT_FOUND);
 	}
 	
 }
