@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component , Inject, PLATFORM_ID , Renderer2} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-intro',
@@ -6,32 +7,62 @@ import { Component } from '@angular/core';
   templateUrl: './intro.component.html',
   styleUrl: './intro.component.css'
 })
-export class IntroComponent {
-  slides = [
-    { image: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80' },
-    { image: 'https://images.unsplash.com/photo-1521747116042-5a810fda9664?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80' },
-    { image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80' }
-  ];
+export class IntroComponent implements AfterViewInit {
+  private isBrowser: boolean = false;
+  private intervalId: any;
+  private currentIndex = 0;
+  private slides: HTMLElement[] = [];
+  private dots: HTMLElement[] = [];
 
-  features = [
-    { title: 'Fast Claims', description: 'Process claims quickly and efficiently.', icon: 'fas fa-clock' },
-    { title: 'Wide Coverage', description: 'Comprehensive plans for all your needs.', icon: 'fas fa-shield-alt' },
-    { title: '24/7 Support', description: 'Get help anytime, anywhere.', icon: 'fas fa-headset' }
-  ];
-
-  currentSlide = 0;
-
-  ngOnInit() {
-    this.startSlideshow();
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private renderer: Renderer2
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  startSlideshow() {
-    setInterval(() => {
-      this.currentSlide = (this.currentSlide + 1) % this.slides.length;
-    }, 5000); // Change slide every 5 seconds
+  ngAfterViewInit(): void {
+    if (this.isBrowser) {
+      this.slides = Array.from(document.querySelectorAll('.slide-img'));
+      this.dots = Array.from(document.querySelectorAll('.dot'));
+
+      this.showSlide(this.currentIndex);
+      this.setupDotClicks();
+      this.startAutoSlide();
+    }
   }
 
-  setSlide(index: number) {
-    this.currentSlide = index;
+  showSlide(index: number): void {
+    this.slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+    });
+    this.dots.forEach((dot, i) => {
+      dot.classList.remove('active-dot');
+    });
+
+    this.slides[index].classList.add('active');
+    this.dots[index].classList.add('active-dot');
+    this.currentIndex = index;
+  }
+
+  setupDotClicks(): void {
+    this.dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        this.showSlide(i);
+        this.restartAutoSlide();
+      });
+    });
+  }
+
+  startAutoSlide(): void {
+    this.intervalId = setInterval(() => {
+      const nextIndex = (this.currentIndex + 1) % this.slides.length;
+      this.showSlide(nextIndex);
+    }, 5000);
+  }
+
+  restartAutoSlide(): void {
+    clearInterval(this.intervalId);
+    this.startAutoSlide();
   }
 }

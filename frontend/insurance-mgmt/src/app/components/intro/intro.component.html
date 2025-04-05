@@ -1,47 +1,63 @@
-<!-- <div class="intro-container">
-    <div class="overlay">
-      <h1 class="title animate__animated animate__fadeInDown">Welcome to Insurance Hub</h1>
-      <p class="subtitle animate__animated animate__fadeInUp">Your one-stop solution for insurance needs</p>
-      <div class="button-group animate__animated animate__zoomIn">
-        <a routerLink="/login" class="btn btn-login">Login</a>
-        <a routerLink="/register" class="btn btn-register">Register</a>
-      </div>
-    </div>
-  </div> -->
+
 
 <!-- Navbar -->
 <nav class="navbar">
-  <div class="navbar-brand">
-    <h1>Insurance Hub</h1>
-  </div>
-  <div class="navbar-actions">
-    <a routerLink="/login" class="btn btn-login">Login</a>
-    <a routerLink="/register" class="btn btn-signup">Sign Up</a>
+  <div class="logo">ClaimSure LIC</div>
+  <div class="nav-buttons">
+    <a routerLink="/login" class="nav-btn">Login</a>
+    <a routerLink="/register" class="nav-btn outline">Register</a>
   </div>
 </nav>
 
-<!-- Slideshow Image Grid -->
-<div class="slideshow-container">
-  <div class="slideshow" [ngClass]="{'fade': true}">
-    <img *ngFor="let slide of slides; let i = index" [src]="slide.image" [ngClass]="{'active': currentSlide === i}" alt="Slide {{i + 1}}" class="slide-image">
+<section class="hero">
+  <div class="slideshow">
+    <img
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdi5Z_We2URERSXSClTN3ANlaa1F1nb-jiEg&s"
+      alt="Image"
+      class="slide-img"
+    />
+    <img
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSW5QTZHMGpYvdjp2wygg34ympp5di-1wcxXQ&s"
+      alt="Insurance"
+      class="slide-img"
+    />
+    <img
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdi5Z_We2URERSXSClTN3ANlaa1F1nb-jiEg&s"
+      alt="Insurance"
+      class="slide-img"
+    />
   </div>
-  <div class="dots">
-    <span *ngFor="let slide of slides; let i = index" [ngClass]="{'active': currentSlide === i}" (click)="setSlide(i)"></span>
-  </div>
-</div>
 
-<!-- Title Section -->
-<section class="title-section">
-  <h1 class="main-title animate__animated animate__fadeInDown">Welcome to Insurance Hub</h1>
-  <p class="subtitle animate__animated animate__fadeInUp">Your one-stop solution for all insurance needs</p>
+  <div class="dots-container">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
 </section>
 
-<!-- Features Section -->
-<section class="features-section">
-  <div class="feature-card animate__animated animate__fadeInUp" *ngFor="let feature of features">
-    <i [class]="feature.icon"></i>
-    <h3>{{ feature.title }}</h3>
-    <p>{{ feature.description }}</p>
+
+<!-- Title -->
+<section class="intro-text">
+  <h1>Welcome to ClaimSure LIC</h1>
+  <p style="color: white;">Your one-stop solution for all insurance needs</p>
+</section>
+
+<!-- Features -->
+<section class="features">
+  <h2>Key Features</h2>
+  <div class="feature-list">
+    <div class="feature-card">
+      <h3>Secure Policies</h3>
+      <p>Verified plans with full transparency and security.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Easy Claims</h3>
+      <p>Quick and user-friendly claim processing system.</p>
+    </div>
+    <div class="feature-card">
+      <h3>24/7 Support</h3>
+      <p>Always available to assist you with your queries.</p>
+    </div>
   </div>
 </section>
 
@@ -49,7 +65,7 @@
 <footer class="footer">
   <div class="footer-content">
     <div class="footer-section">
-      <h4>Insurance Hub</h4>
+      <h4>ClaimSure LIC</h4>
       <p>Providing top-notch insurance solutions since 2025.</p>
     </div>
     <div class="footer-section">
@@ -62,11 +78,11 @@
     </div>
     <div class="footer-section">
       <h4>Contact</h4>
-      <p>Email: support&#64;insurancehub.com</p>
-      <p>Phone: +1 234 567 890</p>
+      <p>Email: claimsurelic&#64;gmail.com</p>
+      <p>Phone: 7654123490</p>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>&copy; 2025 Insurance Hub. All rights reserved.</p>
+    <p>&copy; 2025 ClaimSure LIC. All rights reserved.</p>
   </div>
 </footer>
