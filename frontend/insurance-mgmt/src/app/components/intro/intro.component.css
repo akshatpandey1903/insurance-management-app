@@ -1,0 +1,68 @@
+.intro-container {
+    height: 100vh;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/stardust.png');
+      opacity: 0.1;
+      animation: moveBackground 20s linear infinite;
+    }
+  }
+  
+  .overlay {
+    text-align: center;
+    color: white;
+    z-index: 1;
+  }
+  
+  .title {
+    font-size: 4rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .subtitle {
+    font-size: 1.5rem;
+    margin: 20px 0;
+  }
+  
+  .button-group {
+    margin-top: 30px;
+  }
+  
+  .btn {
+    padding: 12px 30px;
+    margin: 0 15px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-login {
+    background: #00c4cc;
+    color: white;
+    &:hover { background: #00a3aa; }
+  }
+  
+  .btn-register {
+    background: #ff6f61;
+    color: white;
+    &:hover { background: #e65b50; }
+  }
+  
+  @keyframes moveBackground {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-100px, -100px); }
+  }

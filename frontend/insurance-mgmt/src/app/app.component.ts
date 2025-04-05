@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'insurance-mgmt';
+
+  constructor(private router: Router) {}
+
+  // Getter for checking authentication status
+ isAuthenticated() {
+    // return !!localStorage.getItem('authToken'); // Check if authToken exists
+  }
 }
