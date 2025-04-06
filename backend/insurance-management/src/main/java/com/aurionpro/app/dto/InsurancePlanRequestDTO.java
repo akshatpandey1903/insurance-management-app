@@ -36,7 +36,7 @@ public class InsurancePlanRequestDTO {
     private String description;
 	
 	@NotNull(message = "Commission rate is required")
-    @DecimalMin(value = "0.0", inclusive = true, message = "Commission rate must be at least 0%")
+	@Min(value = 0, message = "Commission rate must be at least 0")
     private Double commissionRate;
 	
 	private boolean isActive = true;
