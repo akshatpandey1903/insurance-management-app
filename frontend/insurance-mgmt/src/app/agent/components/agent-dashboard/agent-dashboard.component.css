@@ -1,0 +1,30 @@
+.agent-dashboard {
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.card {
+    border: none;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    color: #dc3545;
+    /* Red for agent vibe */
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #c82333;
+}

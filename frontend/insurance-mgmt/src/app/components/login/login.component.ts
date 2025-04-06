@@ -14,16 +14,44 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onLogin() {
+  onLogin() 
+  {
     this.authService.login(this.loginData).subscribe(
       {
         next:response => {
-          localStorage.setItem('accessToken', response.accessToken); // Store the access token in local storage
+          console.log('Login successful', response);
+          localStorage.setItem('user', JSON.stringify(response.user));
+          localStorage.setItem('accessToken', response.accessToken); 
           console.log('Login successful', response.accessToken);
-          this.router.navigate(['/dashboard']); // Redirect to dashboard after login
+          const role = response.role || this.authService.getRoleName();
+          this.redirectBasedOnRole(role);
         },
         error:error => console.error('Login failed', error)
       }
     );
+  }
+
+  getLoggedInUser() {
+    return JSON.parse(localStorage.getItem('user')!);
+  }
+
+  private redirectBasedOnRole(roleName: string){
+    switch (roleName.toUpperCase()) {
+      case 'ADMIN':
+        this.router.navigate(['/admin/dashboard']);
+        break;
+      case 'CUSTOMER':
+        this.router.navigate(['/customer/dashboard']);
+        break;
+      case 'AGENT':
+        this.router.navigate(['/agent/dashboard']);
+        break;
+      case 'EMPLOYEE':
+        this.router.navigate(['/employee/dashboard']);
+        break;
+      default:
+        console.error('Unknown role:', roleName);
+        this.router.navigate(['/login']);
+    }
   }
 }

@@ -11,7 +11,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, data);
+    return this.http.post(`${this.apiUrl}/login`, data)
   }
 
   register(data: any): Observable<any> {
@@ -52,4 +52,24 @@ export class AuthService {
 
     return this.http.post(endpoint, payload);
   }
+
+  getRoleName(): string | null {
+    const token = localStorage.getItem('accessToken');
+    if (token) 
+    {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role || null;
+    }
+    return null;
+  }
+
+  // getAdminName(): string | null {
+  //   const token = localStorage.getItem('accessToken');
+  //   if (token) {
+  //     const payload = JSON.parse(atob(token.split('.')[1]));
+  //     return payload.name || null;
+  //   }
+  //   return null;
+  // }
+
 }
