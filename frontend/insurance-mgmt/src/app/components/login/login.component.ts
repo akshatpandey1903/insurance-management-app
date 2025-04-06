@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 
 export class LoginComponent {
   loginData = { username: '', password: '' };
+  email: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -53,5 +54,9 @@ export class LoginComponent {
         console.error('Unknown role:', roleName);
         this.router.navigate(['/login']);
     }
+  }
+
+  openForgotPassword() {
+    this.router.navigate(['/forgot-password']); // Navigate to forgot password page
   }
 }

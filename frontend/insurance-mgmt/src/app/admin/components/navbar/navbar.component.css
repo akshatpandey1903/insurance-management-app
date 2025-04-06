@@ -1,0 +1,12 @@
+.navbar {
+    padding: 1rem;
+}
+
+.nav-link {
+    color: #fff !important;
+    margin-left: 1rem;
+}
+
+.nav-link:hover {
+    color: #ddd !important;
+}

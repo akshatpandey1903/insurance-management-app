@@ -8,6 +8,7 @@ import { PoliciesComponent } from './components/policies/policies.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { WithdrawlsComponent } from './components/withdrawls/withdrawls.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ContactComponent } from './components/contact/contact.component';
     PoliciesComponent,
     PaymentsComponent,
     WithdrawlsComponent,
-    ContactComponent
+    ContactComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,

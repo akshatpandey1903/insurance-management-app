@@ -8,6 +8,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { WithdrawlApprovalComponent } from './components/withdrawl-approval/withdrawl-approval.component';
 import { InsurancePlansComponent } from './components/insurance-plans/insurance-plans.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { InsurancePlansComponent } from './components/insurance-plans/insurance-
     SettingsComponent,
     ReportsComponent,
     WithdrawlApprovalComponent,
-    InsurancePlansComponent
+    InsurancePlansComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,
