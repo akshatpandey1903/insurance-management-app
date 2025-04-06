@@ -24,6 +24,7 @@ import com.aurionpro.app.entity.User;
 import com.aurionpro.app.exceptions.UserApiException;
 import com.aurionpro.app.repository.RoleRepository;
 import com.aurionpro.app.repository.UserRepository;
+import com.aurionpro.app.security.CustomUserDetailsService;
 import com.aurionpro.app.security.JwtTokenProvider;
 
 @Service
@@ -51,8 +52,15 @@ public class AuthServiceImpl implements AuthService{
 					new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			String token = tokenProvider.generateToken(authentication);
+			String role = authentication.getAuthorities().stream()
+	                .findFirst()
+	                .map(authority -> authority.getAuthority()) 
+	                .map(auth -> auth.replace("ROLE_", "")) 
+	                .orElse("DEFAULT");		
 			JwtAuthResponse authResponse = new JwtAuthResponse();
+			
 			authResponse.setAccessToken(token);
+			authResponse.setRole(role);
 			return authResponse;
 		}catch(BadCredentialsException e) {
 			throw new UserApiException(HttpStatus.NOT_FOUND, "Username or Password is incorrect");

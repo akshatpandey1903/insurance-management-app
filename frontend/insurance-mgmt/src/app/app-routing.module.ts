@@ -8,6 +8,22 @@ const routes: Routes = [
   { path: '', component: IntroComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { 
+    path: 'admin', 
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) 
+  },
+  { 
+    path: 'customer', 
+    loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule) 
+  },
+  { 
+    path: 'employee', 
+    loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule) 
+  },
+  { 
+    path: 'agent', 
+    loadChildren: () => import('./agent/agent.module').then(m => m.AgentModule) 
+  },
   { path: '**', redirectTo: '' }
 ];
 
