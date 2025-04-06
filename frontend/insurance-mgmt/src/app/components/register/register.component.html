@@ -1,105 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
   <title>Document</title>
 </head>
+
 <body>
-  
 
-<nav class="navbar">
-  <div class="logo">ClaimSure LIC</div>
-  <div class="nav-buttons">
-    <a routerLink="/login" class="nav-btn">Login</a>
-    <a routerLink="/register" class="nav-btn outline">Register</a>
+  <nav class="navbar">
+    <div class="logo">ClaimSure LIC</div>
+    <div class="nav-buttons">
+      <a routerLink="/login" class="nav-btn">Login</a>
+      <a routerLink="/register" class="nav-btn outline">Register</a>
+    </div>
+  </nav>
+
+  <div class="register-container">
+    <div class="card animate__animated animate__fadeIn">
+      <h2 class="card-title">Create Account</h2>
+
+      <div class="error-general" *ngIf="generalError">{{ generalError }}</div>
+
+      <form (ngSubmit)="onRegister()" class="register-form">
+        <div class="form-group">
+          <input type="text" [(ngModel)]="registerData.username" name="username" placeholder="Username" required
+            class="form-control" [class.error]="hasError('username')">
+          <div class="error" *ngIf="hasError('username')">{{ errors['username'] }}</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <input type="text" [(ngModel)]="registerData.firstName" name="firstName" placeholder="First Name" required
+              class="form-control" [class.error]="hasError('firstName')">
+            <div class="error" *ngIf="hasError('firstName')">{{ errors['firstName'] }}</div>
+          </div>
+          <div class="form-group half">
+            <input type="text" [(ngModel)]="registerData.lastName" name="lastName" placeholder="Last Name" required
+              class="form-control" [class.error]="hasError('lastName')">
+            <div class="error" *ngIf="hasError('lastName')">{{ errors['lastName'] }}</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="email" [(ngModel)]="registerData.email" name="email" placeholder="Email" required
+            class="form-control" [class.error]="hasError('email')">
+          <div class="error" *ngIf="hasError('email')">{{ errors['email'] }}</div>
+        </div>
+
+        <div class="form-group">
+          <input type="password" [(ngModel)]="registerData.password" name="password" placeholder="Password" required
+            class="form-control" [class.error]="hasError('password')">
+          <div class="error" *ngIf="hasError('password')">{{ errors['password'] }}</div>
+        </div>
+
+        <div class="form-group">
+          <select [(ngModel)]="registerData.role" name="role" required class="form-control"
+            [class.error]="hasError('role')">
+            <option value="" disabled>Select Role</option>
+            <option value="CUSTOMER">Customer</option>
+            <option value="EMPLOYEE">Employee</option>
+            <option value="AGENT">Agent</option>
+          </select>
+          <div class="error" *ngIf="hasError('role')">{{ errors['role'] }}</div>
+        </div>
+
+        <!-- Customer Fields -->
+        <div *ngIf="registerData.role === 'CUSTOMER'" class="role-section">
+          <h4>Customer Details</h4>
+          <div class="form-group">
+            <input type="text" [(ngModel)]="registerData.address" name="address" placeholder="Address"
+              class="form-control" [class.error]="hasError('address')">
+            <div class="error" *ngIf="hasError('address')">{{ errors['address'] }}</div>
+          </div>
+          <div class="form-group">
+            <input type="text" [(ngModel)]="registerData.phoneNumber" name="phoneNumber" placeholder="Phone Number"
+              class="form-control" [class.error]="hasError('phoneNumber')">
+            <div class="error" *ngIf="hasError('phoneNumber')">{{ errors['phoneNumber'] }}</div>
+          </div>
+        </div>
+
+        <!-- Employee Fields -->
+        <div *ngIf="registerData.role === 'EMPLOYEE'" class="role-section">
+          <h4>Employee Details</h4>
+          <div class="form-group">
+            <input type="text" [(ngModel)]="registerData.department" name="department" placeholder="Department"
+              class="form-control" [class.error]="hasError('department')">
+            <div class="error" *ngIf="hasError('department')">{{ errors['department'] }}</div>
+          </div>
+          <div class="form-group">
+            <input type="text" [(ngModel)]="registerData.designation" name="designation" placeholder="Designation"
+              class="form-control" [class.error]="hasError('designation')">
+            <div class="error" *ngIf="hasError('designation')">{{ errors['designation'] }}</div>
+          </div>
+        </div>
+
+        <!-- Agent Fields -->
+        <div *ngIf="registerData.role === 'AGENT'" class="role-section">
+          <h4>Agent Info</h4>
+          <div class="form-group">
+            <input type="text" [(ngModel)]="registerData.licenseNumber" name="licenseNumber"
+              placeholder="License Number" class="form-control" [class.error]="hasError('licenseNumber')">
+            <div class="error" *ngIf="hasError('licenseNumber')">{{ errors['licenseNumber'] }}</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-register">Register</button>
+      </form>
+      <p>Already have an account? <a routerLink="/login">Login here</a></p>
+    </div>
   </div>
-</nav>
-
-<div class="register-container">
-  <div class="card animate__animated animate__fadeIn">
-    <h2 class="card-title">Create Account</h2>
-
-    <div class="error-general" *ngIf="generalError">{{ generalError }}</div>
-
-    <form (ngSubmit)="onRegister()" class="register-form">
-      <div class="form-group">
-        <input type="text" [(ngModel)]="registerData.username" name="username" placeholder="Username" required class="form-control" [class.error]="hasError('username')">
-        <div class="error" *ngIf="hasError('username')">{{ errors['username'] }}</div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group half">
-          <input type="text" [(ngModel)]="registerData.firstName" name="firstName" placeholder="First Name" required class="form-control" [class.error]="hasError('firstName')">
-          <div class="error" *ngIf="hasError('firstName')">{{ errors['firstName'] }}</div>
-        </div>
-        <div class="form-group half">
-          <input type="text" [(ngModel)]="registerData.lastName" name="lastName" placeholder="Last Name" required class="form-control" [class.error]="hasError('lastName')">
-          <div class="error" *ngIf="hasError('lastName')">{{ errors['lastName'] }}</div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <input type="email" [(ngModel)]="registerData.email" name="email" placeholder="Email" required class="form-control" [class.error]="hasError('email')">
-        <div class="error" *ngIf="hasError('email')">{{ errors['email'] }}</div>
-      </div>
-
-      <div class="form-group">
-        <input type="password" [(ngModel)]="registerData.password" name="password" placeholder="Password" required class="form-control" [class.error]="hasError('password')">
-        <div class="error" *ngIf="hasError('password')">{{ errors['password'] }}</div>
-      </div>
-
-      <div class="form-group">
-        <select [(ngModel)]="registerData.role" name="role" required class="form-control" [class.error]="hasError('role')">
-          <option value="" disabled>Select Role</option>
-          <option value="CUSTOMER">Customer</option>
-          <option value="EMPLOYEE">Employee</option>
-          <option value="AGENT">Agent</option>
-        </select>
-        <div class="error" *ngIf="hasError('role')">{{ errors['role'] }}</div>
-      </div>
-
-      <!-- Customer Fields -->
-      <div *ngIf="registerData.role === 'CUSTOMER'" class="role-section">
-        <h4>Customer Details</h4>
-        <div class="form-group">
-          <input type="text" [(ngModel)]="registerData.address" name="address" placeholder="Address" class="form-control" [class.error]="hasError('address')">
-          <div class="error" *ngIf="hasError('address')">{{ errors['address'] }}</div>
-        </div>
-        <div class="form-group">
-          <input type="text" [(ngModel)]="registerData.phoneNumber" name="phoneNumber" placeholder="Phone Number" class="form-control" [class.error]="hasError('phoneNumber')">
-          <div class="error" *ngIf="hasError('phoneNumber')">{{ errors['phoneNumber'] }}</div>
-        </div>
-      </div>
-
-      <!-- Employee Fields -->
-      <div *ngIf="registerData.role === 'EMPLOYEE'" class="role-section">
-        <h4>Employee Details</h4>
-        <div class="form-group">
-          <input type="text" [(ngModel)]="registerData.department" name="department" placeholder="Department" class="form-control" [class.error]="hasError('department')">
-          <div class="error" *ngIf="hasError('department')">{{ errors['department'] }}</div>
-        </div>
-        <div class="form-group">
-          <input type="text" [(ngModel)]="registerData.designation" name="designation" placeholder="Designation" class="form-control" [class.error]="hasError('designation')">
-          <div class="error" *ngIf="hasError('designation')">{{ errors['designation'] }}</div>
-        </div>
-      </div>
-
-      <!-- Agent Fields -->
-      <div *ngIf="registerData.role === 'AGENT'" class="role-section">
-        <h4>Agent Info</h4>
-        <div class="form-group">
-          <input type="text" [(ngModel)]="registerData.licenseNumber" name="licenseNumber" placeholder="License Number" class="form-control" [class.error]="hasError('licenseNumber')">
-          <div class="error" *ngIf="hasError('licenseNumber')">{{ errors['licenseNumber'] }}</div>
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-register">Register</button>
-    </form>
-    <p>Already have an account? <a routerLink="/login">Login here</a></p>
-  </div>
-</div>
 
 </body>
+
 </html>
