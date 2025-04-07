@@ -9,6 +9,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { CustomerManagementComponent } from './components/customer-management/customer-management.component';
 import { AgentManagementComponent } from './components/agent-management/agent-management.component';
 import { CommisionReportsComponent } from './components/commision-reports/commision-reports.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { CommisionReportsComponent } from './components/commision-reports/commis
     ProfileComponent,
     CustomerManagementComponent,
     AgentManagementComponent,
-    CommisionReportsComponent
+    CommisionReportsComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,

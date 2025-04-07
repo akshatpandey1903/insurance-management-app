@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/app")
-@CrossOrigin(origins = "http://localhost:4200") // line chng
+@CrossOrigin(origins = "http://localhost:4200",allowedHeaders = "*") // line chng
 public class AuthController {
 	
 	@Autowired

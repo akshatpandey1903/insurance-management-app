@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/employee/dashboard">Employee Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/employee/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/employee/document-verification">Document Verification</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/employee/agent-registration">Agent Registration</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/employee/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/employee/customer-management">Customer Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/employee/agent-management">Agent Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/employee/commission-reports">Commission Reports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logout()">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>

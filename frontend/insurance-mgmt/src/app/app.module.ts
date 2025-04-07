@@ -8,13 +8,15 @@ import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
 import { IntroComponent } from './components/intro/intro.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ForgotPasswordComponent } from './components/login/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    IntroComponent
+    IntroComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

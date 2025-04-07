@@ -8,6 +8,7 @@ import { PolicyRegistrationComponent } from './components/policy-registration/po
 import { CommissionComponent } from './components/commission/commission.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { WithdrawlsComponent } from './components/withdrawls/withdrawls.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { WithdrawlsComponent } from './components/withdrawls/withdrawls.componen
     PolicyRegistrationComponent,
     CommissionComponent,
     ReportsComponent,
-    WithdrawlsComponent
+    WithdrawlsComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,
