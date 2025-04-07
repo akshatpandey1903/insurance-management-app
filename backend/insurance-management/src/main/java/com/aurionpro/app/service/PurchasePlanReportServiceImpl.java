@@ -22,7 +22,7 @@ public class PurchasePlanReportServiceImpl implements PurchasePlanReportService{
 	@Override
     public PageResponse<PlanPurchaseReportDto> getPlanPurchaseReport(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<PlanPurchaseReportDto> reportPage = customerPolicyRepository.fetchPlanPurchaseReport(pageable);
+        Page<PlanPurchaseReportDto> reportPage = customerPolicyRepository.fetchPolicyPaymentReport(pageable);
 
         return new PageResponse<>(
         		reportPage.getContent(),

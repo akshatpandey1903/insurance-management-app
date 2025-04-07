@@ -8,4 +8,6 @@ public interface WithdrawalRequestService {
     PageResponse<WithdrawalResponseDTO> getAllWithdrawalRequests(int pageNumber, int pageSize);
 
     void approveOrRejectRequest(WithdrawalApprovalDTO approvalDTO);
+    
+    PageResponse<WithdrawalReportDto> getWithdrawalReport(int page, int size);
 }

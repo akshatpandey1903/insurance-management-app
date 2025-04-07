@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.dto.WithdrawalApprovalDTO;
+import com.aurionpro.app.dto.WithdrawalReportDto;
 import com.aurionpro.app.dto.WithdrawalRequestDTO;
 import com.aurionpro.app.dto.WithdrawalResponseDTO;
 import com.aurionpro.app.service.WithdrawalRequestService;
@@ -45,4 +46,13 @@ public class WithdrawalRequestController {
         withdrawalRequestService.approveOrRejectRequest(approvalDTO);
         return ResponseEntity.ok("Withdrawal request status updated successfully.");
     }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/report")
+    public ResponseEntity<PageResponse<WithdrawalReportDto>> getWithdrawalReport(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(withdrawalRequestService.getWithdrawalReport(page, size));
+    }
+
 }

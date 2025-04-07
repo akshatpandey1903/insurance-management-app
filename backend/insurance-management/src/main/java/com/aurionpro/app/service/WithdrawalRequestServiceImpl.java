@@ -6,6 +6,8 @@ import com.aurionpro.app.exceptions.ResourceNotFoundException;
 import com.aurionpro.app.repository.*;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class WithdrawalRequestServiceImpl implements WithdrawalRequestService {
-
+	
+	@Autowired
     private final WithdrawalRequestRepository withdrawalRepo;
+	
+	@Autowired
     private final UserRepository userRepo;
+    
+	@Autowired
     private final EmployeeRepository employeeRepo;
 
     @Override
@@ -84,4 +91,17 @@ public class WithdrawalRequestServiceImpl implements WithdrawalRequestService {
             request.getRemarks()
         );
     }
+    
+    public PageResponse<WithdrawalReportDto> getWithdrawalReport(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<WithdrawalReportDto> reportPage = withdrawalRepo.fetchWithdrawalReport(pageable);
+        return new PageResponse<>(
+        		reportPage.getContent(),
+        		reportPage.getTotalPages(),
+        		reportPage.getTotalElements(),
+        		reportPage.getSize(),
+        		reportPage.isLast()
+        );
+    }
+
 }

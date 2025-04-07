@@ -20,6 +20,6 @@ public class WithdrawalApprovalDTO {
 	@NotNull(message = "Required field")
     private WithdrawalStatus status;
 	
-	@NotBlank(message = "required field")
+	@NotBlank(message = "Required field")
     private String remarks;
 }

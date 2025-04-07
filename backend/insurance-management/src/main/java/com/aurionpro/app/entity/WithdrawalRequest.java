@@ -14,7 +14,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WithdrawalRequest {
-
+	
+	@Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int withdrawalId;
@@ -40,8 +41,10 @@ public class WithdrawalRequest {
     @ManyToOne
     @JoinColumn(name = "approved_by")
     private Employee approvedBy;
-
+    
+    @Column
     private LocalDateTime approvedAt;
-
+    
+    @Column
     private String remarks;
 }
