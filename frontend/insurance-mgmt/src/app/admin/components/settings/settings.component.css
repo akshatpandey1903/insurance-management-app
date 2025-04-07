@@ -1,0 +1,21 @@
+.settings-container {
+    padding: 20px;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.btn {
+    margin-right: 10px;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
