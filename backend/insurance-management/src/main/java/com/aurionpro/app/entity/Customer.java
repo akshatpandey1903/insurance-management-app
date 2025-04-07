@@ -1,7 +1,10 @@
 package com.aurionpro.app.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,4 +22,8 @@ public class Customer extends User{
 	
 	@Column(nullable = false)
     private String phoneNumber;
+	
+	@OneToMany(mappedBy = "customer")
+	private List<CustomerPolicy> customerPolicies;
+
 }
