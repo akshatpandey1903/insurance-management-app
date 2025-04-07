@@ -9,7 +9,7 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { WithdrawlApprovalComponent } from './components/withdrawl-approval/withdrawl-approval.component';
 import { InsurancePlansComponent } from './components/insurance-plans/insurance-plans.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    FormsModule
   ]
 })
 export class AdminModule { }

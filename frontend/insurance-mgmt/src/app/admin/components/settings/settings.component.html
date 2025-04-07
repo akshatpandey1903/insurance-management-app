@@ -1,2 +1,55 @@
 <app-navbar></app-navbar>
-<p>settings works!</p>
+<div class="settings-container container mt-5">
+    <h2 class="mb-4">Manage Settings</h2>
+
+    <!-- State Management -->
+    <div class="card mb-4">
+        <div class="card-header">Manage States</div>
+        <div class="card-body">
+            <form #stateForm="ngForm" (ngSubmit)="addState()" class="mb-3">
+                <div class="form-group">
+                    <input type="text" name="stateName" [(ngModel)]="newState.stateName" placeholder="State Name"
+                        class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add State</button>
+            </form>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let state of states">
+                    {{ state.stateName }}
+                    <button class="btn btn-danger btn-sm float-end" (click)="deleteState(state.stateId)">Delete</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- City Management -->
+    <div class="card">
+        <div class="card-header">Manage Cities</div>
+        <div class="card-body">
+            <form #cityForm="ngForm" (ngSubmit)="addCity()" class="mb-3">
+                <div class="form-group">
+                    <select name="stateId" [(ngModel)]="newCity.stateId" class="form-control" required>
+                        <option value="" disabled>Select State</option>
+                        <option *ngFor="let state of states" [value]="state.stateId">{{ state.stateName }}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="cityName" [(ngModel)]="newCity.cityName" placeholder="City Name"
+                        class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add City</button>
+            </form>
+            <div *ngFor="let state of states">
+                <h5>{{ state.stateName }} Cities</h5>
+                <ul class="list-group">
+                    <li class="list-group-item" *ngFor="let city of getCitiesByState(state.stateId)">
+                        {{ city.cityName }}
+                        <button class="btn btn-danger btn-sm float-end"
+                            (click)="deleteCity(city.cityId)">Delete</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="message" class="alert alert-info mt-3">{{ message }}</div>
+</div>

@@ -77,6 +77,7 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 <dependency>
 <groupId>io.jsonwebtoken</groupId>
 <artifactId>jjwt-api</artifactId>
@@ -106,6 +107,13 @@
     <version>3.1.1</version>
 </dependency>
 
+<dependency>
+    <groupId>com.razorpay</groupId>
+    <artifactId>razorpay-java</artifactId>
+    <version>1.4.4</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.razorpay/razorpay-java -->
 <dependency>
     <groupId>com.razorpay</groupId>
     <artifactId>razorpay-java</artifactId>

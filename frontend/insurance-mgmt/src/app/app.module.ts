@@ -7,8 +7,9 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
 import { IntroComponent } from './components/intro/intro.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule , HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ForgotPasswordComponent } from './components/login/forgot-password/forgot-password.component';
+import { AuthInterceptor } from './auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,11 @@ import { ForgotPasswordComponent } from './components/login/forgot-password/forg
     HttpClientModule
   ],
   providers: [
+    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+    },
     provideClientHydration(withEventReplay())
   ],
   bootstrap: [AppComponent]
