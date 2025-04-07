@@ -1,5 +1,9 @@
 package com.aurionpro.app.service;
 
-public interface CustomerPolicyService {
+import com.aurionpro.app.dto.CustomerPolicyRequestDTO;
+import com.aurionpro.app.dto.CustomerPolicyResponseDTO;
 
+public interface CustomerPolicyService {
+	//void verifyAndActivatePolicy(RazorpayPaymentResponseDTO dto);
+	CustomerPolicyResponseDTO registerPolicy(CustomerPolicyRequestDTO dto, int id);
 }

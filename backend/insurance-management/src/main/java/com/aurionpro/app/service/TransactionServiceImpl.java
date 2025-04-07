@@ -65,7 +65,7 @@ public class TransactionServiceImpl implements TransactionService{
 
     public PageResponse<TransactionResponseDTO> getTransactionsByType(TransactionType type, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("transactionTime").descending());
-        Page<Transaction> transactions = transactionRepository.findByTransactionType(type, pageable);
+        Page<Transaction> transactions = transactionRepository.findByTransactionTypeAndIsDeletedFalse(type, pageable);
 
         List<TransactionResponseDTO> content = transactions.getContent().stream().map(this::mapToDTO).collect(Collectors.toList());
 

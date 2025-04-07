@@ -30,4 +30,8 @@ public class City {
 	@ManyToOne
 	@JoinColumn(name = "state_id", nullable = false)
 	private State state;
+	
+	@Column(nullable = false)
+	private boolean isDeleted = false;
+
 }

@@ -49,4 +49,7 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "withdrawal_id")
     private WithdrawalRequest withdrawalRequest;
+    
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 }

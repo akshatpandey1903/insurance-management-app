@@ -51,4 +51,8 @@ public class CustomerDocument {
 
     @Column
     private LocalDateTime verifiedAt;
+    
+    @Column(nullable = false)
+    private boolean isDeleted = false;
+
 }

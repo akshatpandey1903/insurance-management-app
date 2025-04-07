@@ -46,7 +46,7 @@ public class CityServiceImpl implements CityService{
 
 	@Override
 	public List<CityResponseDTO> getCitiesByStateId(int stateId) {
-		List<City> cities = cityRepository.findByStateStateId(stateId);
+		List<City> cities = cityRepository.findByStateStateIdAndIsDeletedFalse(stateId);
         return cities.stream()
                 .map(city -> modelMapper.map(city, CityResponseDTO.class))
                 .collect(Collectors.toList());
@@ -57,7 +57,8 @@ public class CityServiceImpl implements CityService{
 		// TODO Auto-generated method stub
 		City city = cityRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND ,"City with id:" + id + " not found"));
-		cityRepository.delete(city);
+		city.setDeleted(true);
+		cityRepository.save(city);
 	}
 
 }

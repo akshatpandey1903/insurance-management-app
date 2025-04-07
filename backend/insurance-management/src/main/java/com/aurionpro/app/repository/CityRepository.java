@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.aurionpro.app.entity.City;
 
 public interface CityRepository extends JpaRepository<City, Integer>{
-	List<City> findByStateStateId(int id);
+	List<City> findByStateStateIdAndIsDeletedFalse(int id);
 }

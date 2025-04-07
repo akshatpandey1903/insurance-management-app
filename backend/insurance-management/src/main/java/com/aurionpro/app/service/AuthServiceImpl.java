@@ -111,6 +111,7 @@ public class AuthServiceImpl implements AuthService{
 	    agent.setLastName(request.getLastName());
 	    agent.setRole(roleRepo.findByRoleName("ROLE_AGENT"));
 	    agent.setLicenseNumber(request.getLicenseNumber());
+	    agent.setActive(true);
 
 	    userRepo.save(agent);
 	    return new UserResponseDTO(agent.getUserId(), agent.getUsername(), agent.getEmail(), agent.getFirstName(), agent.getLastName(),agent.getRole().getRoleName());

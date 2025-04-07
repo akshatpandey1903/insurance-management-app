@@ -31,4 +31,7 @@ public class InsuranceType {
 	
 	@OneToMany(mappedBy = "insuranceType", cascade = CascadeType.ALL)
 	private List<InsurancePlan> insurancePlans;
+	
+	@Column(nullable = false)
+	private boolean isDeleted = false;
 }

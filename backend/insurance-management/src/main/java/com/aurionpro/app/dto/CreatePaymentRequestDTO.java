@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class CreatePaymentRequestDTO {
     private BigDecimal amount;
-    private String currency = "INR";  // default to INR
+    private String currency = "INR";
     private String receipt;
 }

@@ -34,4 +34,7 @@ public class State {
 	
 	@OneToMany(mappedBy = "state", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<City> cities;
+	
+	@Column(nullable = false)
+	private boolean isDeleted = false;
 }

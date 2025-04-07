@@ -8,5 +8,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
-	Page<Transaction> findByTransactionType(TransactionType type, Pageable pageable);
+	Page<Transaction> findByTransactionTypeAndIsDeletedFalse(TransactionType type, Pageable pageable);
 }

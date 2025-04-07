@@ -99,7 +99,8 @@ public class InsurancePlanServiceImpl implements InsurancePlanService{
 	public void deletePlan(int id) {
 		InsurancePlan plan = insurancePlanRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND ,"Insurance Type not found"));
-		insurancePlanRepository.delete(plan);
+		plan.setActive(false);
+		insurancePlanRepository.save(plan);
 	}
 
 }

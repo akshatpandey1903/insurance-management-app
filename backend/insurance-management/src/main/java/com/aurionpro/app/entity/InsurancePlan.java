@@ -51,5 +51,5 @@ public class InsurancePlan {
 	private double commissionRate;
 	
 	@Column(nullable = false)
-	private boolean isActive = true; // Helps in enabling/disabling plans
+	private boolean isActive = true;
 }

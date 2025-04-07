@@ -36,7 +36,7 @@ public class AgentServiceImpl implements AgentService{
 	@Override
 	public PageResponse<AgentResponseDTO> getPendingAgents(int pageNumber, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
-	    Page<Agent> page = agentRepository.findByIsApprovedFalse(pageable);
+	    Page<Agent> page = agentRepository.findByIsApprovedFalseAndIsActiveTrue(pageable);
 
 	    List<AgentResponseDTO> content = page.getContent()
 	        .stream()
@@ -82,6 +82,14 @@ public class AgentServiceImpl implements AgentService{
         		updated.isApproved()
         		);
         return response;
+	}
+
+	@Override
+	public void softDeleteAgent(int id) {
+		Agent agent = agentRepository.findById(id)
+		        .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND ,"Agent not found"));
+		    agent.setActive(false);;
+		    agentRepository.save(agent);
 	}
 
 }

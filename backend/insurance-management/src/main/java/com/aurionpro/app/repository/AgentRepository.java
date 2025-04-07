@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.aurionpro.app.entity.Agent;
 
 public interface AgentRepository extends JpaRepository<Agent, Integer>{
-	Page<Agent> findByIsApprovedFalse(Pageable pageable);
+	Page<Agent> findByIsApprovedFalseAndIsActiveTrue(Pageable pageable);
 }
