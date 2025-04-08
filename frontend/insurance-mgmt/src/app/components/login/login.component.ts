@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component , ViewChild} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -10,24 +11,44 @@ import { Router } from '@angular/router';
 })
 
 export class LoginComponent {
+  loginForm: FormGroup;
   loginData = { username: '', password: '' };
   email: string = '';
+  captchaResolved: boolean = false;
+  siteKey: string = "6Lc07w0rAAAAADkK9dwLh0JoZoUI7u5aJzz3ou6A";
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+      // recaptcha: ['', [Validators.required]]
+    });
+  }
 
-  onLogin() 
-  {
-    this.authService.login(this.loginData).subscribe(
+  
+
+  onLogin() {
+    if (!this.loginForm.valid || !this.captchaResolved) {
+      console.log('Please complete the form and CAPTCHA');
+      return;
+    }
+
+    const loginData = this.loginForm.value;
+    this.authService.login(loginData).subscribe(
       {
-        next:response => {
+        next: response => {
           console.log('Login successful', response);
           localStorage.setItem('user', JSON.stringify(response.user));
-          localStorage.setItem('accessToken', response.accessToken); 
+          localStorage.setItem('accessToken', response.accessToken);
           console.log('Login successful', response.accessToken);
           const role = response.role || this.authService.getRoleName();
           this.redirectBasedOnRole(role);
         },
-        error:error => console.error('Login failed', error)
+        error: error => console.error('Login failed', error)
       }
     );
   }
@@ -58,5 +79,12 @@ export class LoginComponent {
 
   openForgotPassword() {
     this.router.navigate(['/forgot-password']); // Navigate to forgot password page
+  }
+
+  onCaptchaResolved(event: any) {
+    console.log('CAPTCHA event:', event); // Debug the event structure
+    const captchaResponse = event.response || event || '';
+    this.captchaResolved = !!captchaResponse;
+    console.log('CAPTCHA resolved with response:', captchaResponse);
   }
 }

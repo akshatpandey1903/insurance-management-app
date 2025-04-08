@@ -8,7 +8,7 @@ import { AdminService } from '../../services/admin.service';
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit {
   states: StateResponseDto[] = [];
   cities: CityResponseDto[] = [];
   newState = { stateName: '' };
@@ -16,12 +16,11 @@ export class SettingsComponent {
   message: string = '';
 
   constructor(private adminService:AdminService){
-    this.loadStates();
+   // this.loadStates();
   }
-
-  // ngOnInit() {
-  //   // this.loadStates(); 
-  // }
+ngOnInit() {
+    this.loadStates();}
+ 
 
   loadStates(){
     this.adminService.getAllStates().subscribe(
@@ -47,7 +46,7 @@ export class SettingsComponent {
   // }
 
   loadCitiesForStates() {
-    this.cities = []; // Reset cities array first
+    this.cities = [];
     
     this.states.forEach(state => {
       this.adminService.getCitiesByStateId(state.stateId).subscribe({
@@ -60,7 +59,7 @@ export class SettingsComponent {
   }
 
   getCitiesByState(stateId: number): CityResponseDto[] {
-    return this.cities.filter(city => this.newCity.stateId === stateId);
+    return this.cities.filter(city => city.stateId === stateId);
   }
 
   addState() {
@@ -91,6 +90,7 @@ export class SettingsComponent {
       next: (response) => {
         this.message = 'City added successfully';
         this.newCity = { stateId: 0, cityName: '' };
+        alert('City added successfully');
         this.loadCitiesForStates();
       },
       error: (err) => this.message = 'Error adding city: ' + err.message

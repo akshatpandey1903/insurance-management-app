@@ -11,4 +11,5 @@ public class CityResponseDTO {
 	private int cityId;
     private String cityName;
     private String stateName;
+    private String stateId;
 }
