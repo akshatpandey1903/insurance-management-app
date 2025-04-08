@@ -44,5 +44,15 @@ public class CustomerPolicyController {
 	    CustomerPolicyResponseDTO responseDTO = customerPolicyService.approveCustomerPolicy(policyId, employeeId);
 	    return ResponseEntity.ok(responseDTO);
 	}
+	
+	@PreAuthorize("hasRole('CUSTOMER')")
+	@PutMapping("/cancel/{customerId}/{policyId}")
+	public ResponseEntity<CustomerPolicyResponseDTO> cancelPolicy(
+	        @PathVariable int policyId,
+	        @PathVariable int customerId
+	) {
+	    CustomerPolicyResponseDTO responseDTO = customerPolicyService.cancelPolicy(customerId, policyId);
+	    return ResponseEntity.ok(responseDTO);
+	}
 
 }

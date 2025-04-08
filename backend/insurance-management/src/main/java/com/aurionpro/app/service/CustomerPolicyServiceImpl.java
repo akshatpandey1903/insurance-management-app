@@ -122,4 +122,29 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
 
         return toDTO(customerPolicyRepository.save(policy));
     }
+    
+    @Override
+    @Transactional
+    public CustomerPolicyResponseDTO cancelPolicy(int customerId, int policyId) {
+        CustomerPolicy policy = customerPolicyRepository.findById(policyId)
+                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Policy not found with ID: " + policyId));
+
+        if (policy.getCustomer().getUserId() != customerId) {
+            throw new ResourceNotFoundException(HttpStatus.FORBIDDEN, "You are not authorized to cancel this policy.");
+        }
+
+        if (!policy.isActive()) {
+            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Policy is not active or already cancelled.");
+        }
+
+        // Cancel the policy
+        policy.setActive(false);
+        policy.setCancelled(true);
+        policy.setCancellationDate(LocalDate.now());
+
+        customerPolicyRepository.save(policy);
+
+        return toDTO(policy);
+    }
+
 }

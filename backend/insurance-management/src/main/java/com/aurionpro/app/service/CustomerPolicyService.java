@@ -7,4 +7,5 @@ public interface CustomerPolicyService {
 	//void verifyAndActivatePolicy(RazorpayPaymentResponseDTO dto);
 	CustomerPolicyResponseDTO registerPolicy(CustomerPolicyRequestDTO dto, int id);
 	CustomerPolicyResponseDTO approveCustomerPolicy(int policyId, int employeeId);
+	CustomerPolicyResponseDTO cancelPolicy(int customerId, int policyId);
 }

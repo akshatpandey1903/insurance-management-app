@@ -64,4 +64,9 @@ public class CustomerPolicy {
 	@ManyToOne
 	@JoinColumn(name = "agent_id", referencedColumnName = "user_id", nullable = true)
 	private Agent agent;
+	
+	@Column(nullable = false)
+	private boolean isCancelled = false;
+
+	private LocalDate cancellationDate;
 }

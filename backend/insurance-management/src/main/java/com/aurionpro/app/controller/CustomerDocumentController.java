@@ -2,6 +2,7 @@ package com.aurionpro.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ public class CustomerDocumentController {
 	private final CustomerDocumentService documentService;
 	
 	@PostMapping("/upload")
+	@PreAuthorize("hasRole('CUSTOMER')")
 	public ResponseEntity<String> uploadDocument(
 			@RequestParam("customerId") int customerId,
             @RequestParam("documentType") DocumentType documentType,
