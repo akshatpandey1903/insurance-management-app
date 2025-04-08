@@ -27,7 +27,7 @@ public class Transaction {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private TransactionType transactionType;
 
     @CreationTimestamp

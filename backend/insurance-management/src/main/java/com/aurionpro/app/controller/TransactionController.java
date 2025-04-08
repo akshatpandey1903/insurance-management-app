@@ -1,16 +1,19 @@
 package com.aurionpro.app.controller;
 
 import com.aurionpro.app.dto.PageResponse;
+import com.aurionpro.app.dto.TransactionRequestDTO;
 import com.aurionpro.app.dto.TransactionResponseDTO;
 import com.aurionpro.app.entity.TransactionType;
 import com.aurionpro.app.service.TransactionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/transactions")
+@RequestMapping("/app/transactions")
 public class TransactionController {
 
     @Autowired
@@ -32,4 +35,16 @@ public class TransactionController {
             @RequestParam(defaultValue = "10") int size) {
         return transactionService.getTransactionsByType(type, page, size);
     }
+    
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @PostMapping("/make-transaction")
+    public ResponseEntity<TransactionResponseDTO> makePremiumPayment(
+            @RequestBody TransactionRequestDTO requestDto,
+            @RequestParam int customerId) {
+        
+        TransactionResponseDTO response = transactionService.createCustomerPremiumTransaction(requestDto, customerId);
+        
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
 }

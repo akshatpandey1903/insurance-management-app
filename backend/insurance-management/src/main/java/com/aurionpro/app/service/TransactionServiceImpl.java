@@ -1,5 +1,7 @@
 package com.aurionpro.app.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,21 +10,30 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.aurionpro.app.dto.PageResponse;
+import com.aurionpro.app.dto.TransactionRequestDTO;
 import com.aurionpro.app.dto.TransactionResponseDTO;
 import com.aurionpro.app.entity.CustomerPolicy;
 import com.aurionpro.app.entity.Transaction;
 import com.aurionpro.app.entity.TransactionType;
 import com.aurionpro.app.entity.WithdrawalRequest;
+import com.aurionpro.app.exceptions.ResourceNotFoundException;
+import com.aurionpro.app.repository.CustomerPolicyRepository;
 import com.aurionpro.app.repository.TransactionRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TransactionServiceImpl implements TransactionService{
 	
 	@Autowired
     private TransactionRepository transactionRepository;
+	
+	@Autowired
+	private CustomerPolicyRepository customerPolicyRepository;
 
     public void recordPolicyPurchaseTransaction(CustomerPolicy policy) {
         Transaction transaction = new Transaction();
@@ -76,6 +87,61 @@ public class TransactionServiceImpl implements TransactionService{
         		transactions.getSize(),
         		transactions.isLast()
             );
+    }
+    
+    @Override
+    @Transactional
+    public TransactionResponseDTO createCustomerPremiumTransaction(TransactionRequestDTO requestDTO, int customerId) {
+        CustomerPolicy policy = customerPolicyRepository.findById(requestDTO.getCustomerPolicyId())
+                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Customer policy not found"));
+
+        if (!policy.isActive()) {
+            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Policy is not active");
+        }
+
+        if (policy.getCustomer().getUserId() != customerId) {
+            throw new ResourceNotFoundException(HttpStatus.FORBIDDEN, "This policy does not belong to the customer");
+        }
+        
+        boolean isFirstTransaction = !transactionRepository
+                .existsByCustomerPolicyId(policy.getId());
+        
+        LocalDate today = LocalDate.now();
+        LocalDate nextDue = policy.getNextDueDate();
+        
+        // Only check 5-day window for non-first transactions
+        if (!isFirstTransaction && today.isBefore(nextDue.minusDays(5))) {
+            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "You can only pay within 5 days of due date");
+        }
+        
+        BigDecimal amount = policy.getCalculatedPremium();
+        requestDTO.setAmount(amount);;
+        
+        // Create transaction
+        Transaction txn = new Transaction();
+        txn.setAmount(amount);
+        txn.setDescription("Premium payment");
+        txn.setTransactionType(TransactionType.PREMIUM_PAYMENT);
+        txn.setUser(policy.getCustomer());
+        txn.setUserRole("CUSTOMER");
+        txn.setCustomerPolicy(policy);
+
+        Transaction savedTxn = transactionRepository.save(txn);
+       
+
+        if (!isFirstTransaction) {
+            // Not the first transaction — update nextDueDate
+            LocalDate newDueDate = switch (policy.getPaymentFrequency()) {
+                case MONTHLY -> nextDue.plusMonths(1);
+                case QUARTERLY -> nextDue.plusMonths(3);
+                case HALF_YEARLY -> nextDue.plusMonths(6);
+                case YEARLY -> nextDue.plusYears(1);
+            };
+            policy.setNextDueDate(newDueDate);
+            customerPolicyRepository.save(policy);
+        }
+        
+        return mapToDTO(savedTxn);
     }
 
     private TransactionResponseDTO mapToDTO(Transaction t) {

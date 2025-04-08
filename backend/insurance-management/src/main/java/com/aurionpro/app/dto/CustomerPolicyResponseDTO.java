@@ -23,7 +23,9 @@ public class CustomerPolicyResponseDTO {
     private LocalDate startDate;
 
     private LocalDate endDate;
-
+    
+    private LocalDate nextDueDate;
+    
     private boolean isActive;
 
     private String approvedBy;

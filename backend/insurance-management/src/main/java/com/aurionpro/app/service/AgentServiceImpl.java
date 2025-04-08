@@ -62,7 +62,11 @@ public class AgentServiceImpl implements AgentService{
 	public AgentResponseDTO approveAgent(int agentId, int approverId) {
 		Agent agent = agentRepository.findById(agentId)
                 .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND ,"Agent not found"));
-
+		
+		if(!agent.isActive()) {
+			throw new IllegalStateException("Agent is inactive");
+		}
+		
         if (agent.isApproved()) {
             throw new IllegalStateException("Agent is already approved");
         }

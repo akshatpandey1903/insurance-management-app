@@ -30,7 +30,7 @@ public class AgentController {
 	    return ResponseEntity.ok(agentService.getPendingAgents(page, size));
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@PutMapping("/approve/{agentId}")
 	public ResponseEntity<AgentResponseDTO> approveAgent(@PathVariable int agentId, @RequestParam int approverId){
 		return ResponseEntity.ok(agentService.approveAgent(agentId, approverId));

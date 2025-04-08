@@ -44,11 +44,15 @@ public class CustomerPolicy {
 	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal calculatedPremium;
 	
-	@Column(nullable = false)
+	// dates null before activation
+	@Column(nullable = true)
 	private LocalDate startDate;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private LocalDate endDate;
+	
+	@Column(nullable = true)
+	private LocalDate nextDueDate;
 	
 	@Column(nullable = false)
 	private boolean isActive;

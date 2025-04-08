@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +30,9 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
 
     @Autowired
     private AgentRepository agentRepository;
-
+    
     @Autowired
-    private TransactionRepository transactionRepository;
+    private EmployeeRepository employeeRepository;
     
     public static CustomerPolicyResponseDTO toDTO(CustomerPolicy policy) {
         CustomerPolicyResponseDTO dto = new CustomerPolicyResponseDTO();
@@ -43,10 +44,11 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
         dto.setStartDate(policy.getStartDate());
         dto.setEndDate(policy.getEndDate());
         dto.setActive(policy.isActive());
-
+        dto.setNextDueDate(policy.getNextDueDate());
+        
         dto.setAgentName(policy.getAgent() != null ? policy.getAgent().getFirstName() + " " + policy.getAgent().getLastName() : null);
         dto.setApprovedBy(policy.getApprovedBy() != null ? policy.getApprovedBy().getFirstName() + " " + policy.getApprovedBy().getLastName() : null);
-
+        
         return dto;
     }
     
@@ -75,47 +77,49 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
             case YEARLY -> BigDecimal.ONE;
         };
 
-        BigDecimal calculatedPremium = yearlyPremium.multiply(frequencyMultiplier).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal calculatedPremium = yearlyPremium.multiply(frequencyMultiplier)
+                .divide(BigDecimal.valueOf(plan.getDurationYears()), 2, RoundingMode.HALF_UP);
 
-        // Build CustomerPolicy
         CustomerPolicy policy = new CustomerPolicy();
         policy.setCustomer(customer);
         policy.setInsurancePlan(plan);
         policy.setPaymentFrequency(frequency);
         policy.setCalculatedPremium(calculatedPremium);
-        policy.setStartDate(requestDTO.getStartDate());
-        policy.setEndDate(requestDTO.getStartDate().plusYears(plan.getDurationYears()));
-        policy.setActive(true);
+        policy.setActive(false);
         policy.setAgent(agent);
 
-        CustomerPolicy savedPolicy = customerPolicyRepository.save(policy);
+        return toDTO(customerPolicyRepository.save(policy));
+    }
+    
+    private LocalDate getNextDueDate(LocalDate current, PaymentFrequency frequency) {
+        return switch (frequency) {
+            case MONTHLY -> current.plusMonths(1);
+            case QUARTERLY -> current.plusMonths(3);
+            case HALF_YEARLY -> current.plusMonths(6);
+            case YEARLY -> current.plusYears(1);
+        };
+    }
 
-        // Update agent's commission
-        if (agent != null) {
-            BigDecimal commissionRate = BigDecimal.valueOf(plan.getCommissionRate()); // e.g., 0.1 for 10%
-            BigDecimal commissionAmount = calculatedPremium.multiply(commissionRate).setScale(2, RoundingMode.HALF_UP);
-            agent.setTotalEarnings(agent.getTotalEarnings().add(commissionAmount));
-            agentRepository.save(agent);
+    @Override
+    @Transactional
+    public CustomerPolicyResponseDTO approveCustomerPolicy(int policyId, int employeeId) {
+        CustomerPolicy policy = customerPolicyRepository.findById(policyId)
+                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Policy not found with id: " + policyId));
 
-            Transaction agentCommissionTxn = new Transaction();
-            agentCommissionTxn.setAmount(commissionAmount);
-            agentCommissionTxn.setDescription("Commission earned for policy sale");
-            agentCommissionTxn.setTransactionType(TransactionType.COMMISSION);
-            agentCommissionTxn.setUser(agent);
-            agentCommissionTxn.setUserRole("AGENT");
-            agentCommissionTxn.setCustomerPolicy(savedPolicy);
-            transactionRepository.save(agentCommissionTxn);
+        if (policy.isActive()) {
+            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Policy is already active");
         }
 
-        Transaction customerTxn = new Transaction();
-        customerTxn.setAmount(calculatedPremium);
-        customerTxn.setDescription("Premium payment for policy");
-        customerTxn.setTransactionType(TransactionType.POLICY_PURCHASE);
-        customerTxn.setUser(customer);
-        customerTxn.setUserRole("CUSTOMER");
-        customerTxn.setCustomerPolicy(savedPolicy);
-        transactionRepository.save(customerTxn);
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Employee not found with id: " + employeeId));
 
-        return toDTO(savedPolicy);
+        LocalDate startDate = LocalDate.now().plusDays(5);
+        policy.setStartDate(startDate);
+        policy.setEndDate(startDate.plusYears(policy.getInsurancePlan().getDurationYears()));
+        policy.setNextDueDate(getNextDueDate(startDate, policy.getPaymentFrequency()));
+        policy.setActive(true);
+        policy.setApprovedBy(employee);
+
+        return toDTO(customerPolicyRepository.save(policy));
     }
 }

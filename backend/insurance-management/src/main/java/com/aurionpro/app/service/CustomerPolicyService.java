@@ -6,4 +6,5 @@ import com.aurionpro.app.dto.CustomerPolicyResponseDTO;
 public interface CustomerPolicyService {
 	//void verifyAndActivatePolicy(RazorpayPaymentResponseDTO dto);
 	CustomerPolicyResponseDTO registerPolicy(CustomerPolicyRequestDTO dto, int id);
+	CustomerPolicyResponseDTO approveCustomerPolicy(int policyId, int employeeId);
 }
