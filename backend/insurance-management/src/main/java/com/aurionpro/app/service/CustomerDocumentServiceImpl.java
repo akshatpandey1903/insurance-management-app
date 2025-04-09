@@ -118,5 +118,25 @@ public class CustomerDocumentServiceImpl implements CustomerDocumentService{
 	        document.getUploadedAt()
 	    );
 	}
+	
+	@Override
+    public List<CustomerDocumentResponseDTO> getDocumentsByCustomerId(int customerId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Customer not found with ID: " + customerId));
+
+        List<CustomerDocument> documents = documentRepository.findByCustomerUserId(customer.getUserId());
+
+        return documents.stream().map(doc -> {
+            CustomerDocumentResponseDTO dto = new CustomerDocumentResponseDTO();
+            dto.setDocumentId(doc.getDocumentId());
+            dto.setCustomerId(customer.getUserId());
+            dto.setCustomerName(customer.getFirstName() + " " + customer.getLastName());
+            dto.setDocumentType(doc.getDocumentType());
+            dto.setDocumentUrl(doc.getDocumentUrl());
+            dto.setDocumentStatus(doc.getStatus());
+            dto.setUploadedAt(doc.getUploadedAt());
+            return dto;
+        }).toList();
+    }
 
 }

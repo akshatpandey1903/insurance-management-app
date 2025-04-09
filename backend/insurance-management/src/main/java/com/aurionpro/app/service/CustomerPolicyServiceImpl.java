@@ -128,7 +128,28 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
         policy.setActive(true);
         policy.setApprovedBy(employee);
 
-        return toDTO(customerPolicyRepository.save(policy));
+        CustomerPolicy savedPolicy = customerPolicyRepository.save(policy);
+
+        Agent agent = policy.getAgent();
+        if (agent != null) {
+        	
+            BigDecimal commission = policy.getInsurancePlan()
+                    .getYearlyPremiumAmount()
+                    .multiply(BigDecimal.valueOf(policy.getInsurancePlan().getCommissionRate()))
+                    .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+
+            BigDecimal currentEarnings = agent.getTotalEarnings() != null ? agent.getTotalEarnings() : BigDecimal.ZERO;
+            agent.setTotalEarnings(currentEarnings.add(commission));
+
+            if (agent.getSoldPolicies() == null) {
+                agent.setSoldPolicies(new java.util.ArrayList<>());
+            }
+            agent.getSoldPolicies().add(savedPolicy);
+
+            agentRepository.save(agent);
+        }
+
+        return toDTO(savedPolicy);
     }
     
     @Override
@@ -162,7 +183,7 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
 
         if (requiredDocs == null || requiredDocs.isEmpty()) {
             System.out.println("No required documents specified for this plan.");
-            return; // No documents needed, skip validation
+            return;
         }
 
         List<DocumentType> requiredTypes = requiredDocs.stream()
@@ -190,5 +211,5 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
             throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Missing approved documents: " + missingDocs);
         }
     }
-
+    
 }

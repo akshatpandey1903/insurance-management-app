@@ -9,10 +9,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aurionpro.app.dto.ClaimApprovalRequestDTO;
+import com.aurionpro.app.dto.ClaimFilterRequestDTO;
+import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.dto.PolicyClaimRequestDTO;
 import com.aurionpro.app.dto.PolicyClaimResponseDTO;
 import com.aurionpro.app.service.PolicyClaimService;
@@ -41,5 +46,22 @@ public class PolicyClaimController {
     public ResponseEntity<List<PolicyClaimResponseDTO>> getCustomerClaims(@PathVariable int customerId) {
         return ResponseEntity.ok(policyClaimService.getClaimsForCustomer(customerId));
     }
+    
+    @PutMapping("/approve")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public ResponseEntity<PolicyClaimResponseDTO> approveClaim(@RequestBody ClaimApprovalRequestDTO requestDTO) {
+        return ResponseEntity.ok(policyClaimService.approveClaim(requestDTO));
+    }
+    
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    @PostMapping("/all")
+    public ResponseEntity<PageResponse<PolicyClaimResponseDTO>> getAllClaims(
+            @RequestBody ClaimFilterRequestDTO filterDTO,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+
+        return ResponseEntity.ok(policyClaimService.getAllClaims(filterDTO, pageNumber, pageSize));
+    }
+
 }
 

@@ -1,5 +1,7 @@
 package com.aurionpro.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aurionpro.app.dto.AgentAssignedPolicyDTO;
 import com.aurionpro.app.dto.AgentResponseDTO;
 import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.service.AgentService;
@@ -40,5 +43,11 @@ public class AgentController {
 	@DeleteMapping("/delete/{id}")
 	public void softDeleteAgent(@PathVariable int id){
 		agentService.softDeleteAgent(id);
+	}
+	
+	@PreAuthorize("hasRole('AGENT') or hasRole('ADMIN')")
+	@GetMapping("/{agentId}/assigned-policies")
+	public ResponseEntity<List<AgentAssignedPolicyDTO>> getAssignedPolicies(@PathVariable int agentId) {
+	    return ResponseEntity.ok(agentService.getAssignedPolicies(agentId));
 	}
 }

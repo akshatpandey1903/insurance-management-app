@@ -15,4 +15,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer>{
 		       "FROM Customer c LEFT JOIN c.customerPolicies cp " +
 		       "GROUP BY c.userId, c.firstName, c.lastName, c.email, c.phoneNumber")
 		Page<CustomerReportDto> getCustomerReport(Pageable pageable);
+	
+	boolean existsByEmail(String email);
+	Page<Customer> findByRegisteredBy_UserId(int agentId, Pageable pageable);
 }

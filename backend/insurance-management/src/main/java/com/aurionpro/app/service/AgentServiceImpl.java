@@ -1,5 +1,6 @@
 package com.aurionpro.app.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -10,12 +11,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.aurionpro.app.dto.AgentAssignedPolicyDTO;
 import com.aurionpro.app.dto.AgentResponseDTO;
 import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.entity.Agent;
+import com.aurionpro.app.entity.CustomerPolicy;
 import com.aurionpro.app.entity.Employee;
 import com.aurionpro.app.exceptions.ResourceNotFoundException;
 import com.aurionpro.app.repository.AgentRepository;
+import com.aurionpro.app.repository.CustomerPolicyRepository;
 import com.aurionpro.app.repository.EmployeeRepository;
 
 @Service
@@ -28,6 +32,9 @@ public class AgentServiceImpl implements AgentService{
     private EmployeeRepository employeeRepository;
 	
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private CustomerPolicyRepository customerPolicyRepository;
 	
 	public AgentServiceImpl() {
 		this.modelMapper = new ModelMapper();
@@ -95,5 +102,30 @@ public class AgentServiceImpl implements AgentService{
 		    agent.setActive(false);;
 		    agentRepository.save(agent);
 	}
+	
 
+
+	@Override
+	public List<AgentAssignedPolicyDTO> getAssignedPolicies(int agentId) {
+	    Agent agent = agentRepository.findById(agentId)
+	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Agent not found with ID: " + agentId));
+
+	    List<CustomerPolicy> policies = customerPolicyRepository.findByAgentAndIsActiveTrue(agent);
+
+	    return policies.stream().map(policy -> {
+	        AgentAssignedPolicyDTO dto = new AgentAssignedPolicyDTO();
+	        dto.setCustomerName(policy.getCustomer().getFirstName() + " " + policy.getCustomer().getLastName());
+	        dto.setInsurancePlanName(policy.getInsurancePlan().getPlanName());
+	        dto.setStartDate(policy.getStartDate());
+	        dto.setEndDate(policy.getEndDate());
+	        dto.setPremiumAmount(policy.getCalculatedPremium());
+
+	        BigDecimal commissionRate = BigDecimal.valueOf(policy.getInsurancePlan().getCommissionRate());
+	        BigDecimal commission = policy.getCalculatedPremium().multiply(commissionRate).divide(BigDecimal.valueOf(100));
+
+	        dto.setCommissionAmount(commission);
+
+	        return dto;
+	    }).toList();
+	}
 }

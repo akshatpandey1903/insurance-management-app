@@ -1,5 +1,7 @@
 package com.aurionpro.app.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,9 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.aurionpro.app.dto.AgentCommissionReportDto;
 import com.aurionpro.app.dto.PlanPurchaseReportDto;
+import com.aurionpro.app.entity.Agent;
 import com.aurionpro.app.entity.CustomerPolicy;
 
 public interface CustomerPolicyRepository extends JpaRepository<CustomerPolicy, Integer>{
+	
+	List<CustomerPolicy> findByAgentAndIsActiveTrue(Agent agent);
 	
 		@Query("SELECT new com.aurionpro.app.dto.PlanPurchaseReportDto(" +
 		       "cp.id, " +

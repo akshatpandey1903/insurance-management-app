@@ -8,4 +8,5 @@ import com.aurionpro.app.entity.Agent;
 
 public interface AgentRepository extends JpaRepository<Agent, Integer>{
 	Page<Agent> findByIsApprovedFalseAndIsActiveTrue(Pageable pageable);
+	Page<Agent> findByIsActiveTrue(Pageable pageable);
 }

@@ -1,5 +1,7 @@
 package com.aurionpro.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,5 +54,11 @@ public class CustomerDocumentController {
 		documentService.updateDocumentStatus(request, employeeId);
 	    return ResponseEntity.ok("Document status updated successfully.");
 	}
+	
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<CustomerDocumentResponseDTO>> getAllDocumentsForCustomer(@PathVariable int customerId) {
+        return ResponseEntity.ok(documentService.getDocumentsByCustomerId(customerId));
+    }
 
 }
