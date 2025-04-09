@@ -9,14 +9,20 @@ import org.springframework.stereotype.Service;
 
 import com.aurionpro.app.dto.InsurancePlanRequestDTO;
 import com.aurionpro.app.dto.InsurancePlanResponseDTO;
+import com.aurionpro.app.entity.DocumentType;
 import com.aurionpro.app.entity.InsurancePlan;
+import com.aurionpro.app.entity.InsurancePlanDocument;
 import com.aurionpro.app.entity.InsuranceType;
 import com.aurionpro.app.exceptions.ResourceNotFoundException;
+import com.aurionpro.app.repository.InsurancePlanDocumentRepository;
 import com.aurionpro.app.repository.InsurancePlanRepository;
 import com.aurionpro.app.repository.InsuranceTypeRepository;
 
 @Service
 public class InsurancePlanServiceImpl implements InsurancePlanService{
+	
+	@Autowired
+	private InsurancePlanDocumentRepository insurancePlanDocumentRepository;
 	
 	@Autowired
 	private InsurancePlanRepository insurancePlanRepository;
@@ -25,37 +31,49 @@ public class InsurancePlanServiceImpl implements InsurancePlanService{
     private InsuranceTypeRepository typeRepository;
 	
 	private InsurancePlanResponseDTO mapToResponse(InsurancePlan plan) {
-        return new InsurancePlanResponseDTO(
-                plan.getInsurancePlanId(),
-                plan.getPlanName(),
-                plan.getInsuranceType().getTypeName(),
-                plan.getYearlyPremiumAmount(),
-                plan.getCoverageAmount(),
-                plan.getDurationYears(),
-                plan.getDescription(),
-                plan.getCommissionRate(),
-                plan.isActive()
-        );
-    }
+	    List<DocumentType> requiredDocs = insurancePlanDocumentRepository.findByInsurancePlan(plan)
+	            .stream()
+	            .map(InsurancePlanDocument::getDocumentType)
+	            .collect(Collectors.toList());
+
+	    return new InsurancePlanResponseDTO(
+	            plan.getInsurancePlanId(),
+	            plan.getPlanName(),
+	            plan.getInsuranceType().getTypeName(),
+	            plan.getYearlyPremiumAmount(),
+	            plan.getCoverageAmount(),
+	            plan.getDurationYears(),
+	            plan.getDescription(),
+	            plan.getCommissionRate(),
+	            plan.isActive(),
+	            requiredDocs
+	    );
+	}
 
 	@Override
 	public InsurancePlanResponseDTO createPlan(InsurancePlanRequestDTO requestDto) {
-		InsuranceType insuranceType = typeRepository.findById(requestDto.getInsuranceTypeId())
-				.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND ,"Insurance Type not found"));
-		
-		InsurancePlan plan = new InsurancePlan();
-		plan.setPlanName(requestDto.getPlanName());
-		plan.setInsuranceType(insuranceType);
-		plan.setYearlyPremiumAmount(requestDto.getYearlyPremiumAmount());
-		plan.setCoverageAmount(requestDto.getCoverageAmount());
-		plan.setDescription(requestDto.getDescription());
-		plan.setDurationYears(requestDto.getDurationYears());
-		plan.setCommissionRate(requestDto.getCommissionRate());
-		plan.setActive(requestDto.isActive());
-		
-		InsurancePlan saved = insurancePlanRepository.save(plan);
+	    InsuranceType insuranceType = typeRepository.findById(requestDto.getInsuranceTypeId())
+	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Insurance Type not found"));
 
-        return mapToResponse(saved);
+	    InsurancePlan plan = new InsurancePlan();
+	    plan.setPlanName(requestDto.getPlanName());
+	    plan.setInsuranceType(insuranceType);
+	    plan.setYearlyPremiumAmount(requestDto.getYearlyPremiumAmount());
+	    plan.setCoverageAmount(requestDto.getCoverageAmount());
+	    plan.setDescription(requestDto.getDescription());
+	    plan.setDurationYears(requestDto.getDurationYears());
+	    plan.setCommissionRate(requestDto.getCommissionRate());
+	    plan.setActive(requestDto.isActive());
+
+	    InsurancePlan savedPlan = insurancePlanRepository.save(plan);
+	    
+	    List<DocumentType> documentTypes = requestDto.getRequiredDocuments().stream()
+	            .map(DocumentType::valueOf)
+	            .collect(Collectors.toList());
+
+	    saveRequiredDocuments(savedPlan, documentTypes);
+
+	    return mapToResponse(savedPlan);
 	}
 
 	@Override
@@ -76,24 +94,32 @@ public class InsurancePlanServiceImpl implements InsurancePlanService{
 
 	@Override
 	public InsurancePlanResponseDTO updatePlan(int id, InsurancePlanRequestDTO dto) {
-		InsurancePlan plan = insurancePlanRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND ,"Insurance Type not found"));
-		
-		InsuranceType insuranceType = typeRepository.findById(dto.getInsuranceTypeId())
-				.orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND ,"Insurance Type not found"));
-		
-		plan.setPlanName(dto.getPlanName());
-        plan.setInsuranceType(insuranceType);
-        plan.setYearlyPremiumAmount(dto.getYearlyPremiumAmount());
-        plan.setCoverageAmount(dto.getCoverageAmount());
-        plan.setDurationYears(dto.getDurationYears());
-        plan.setDescription(dto.getDescription());
-        plan.setCommissionRate(dto.getCommissionRate());
-        plan.setActive(dto.isActive());
+	    InsurancePlan plan = insurancePlanRepository.findById(id)
+	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Insurance Type not found"));
 
-        InsurancePlan updated = insurancePlanRepository.save(plan);
-        return mapToResponse(updated);
+	    InsuranceType insuranceType = typeRepository.findById(dto.getInsuranceTypeId())
+	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Insurance Type not found"));
+
+	    plan.setPlanName(dto.getPlanName());
+	    plan.setInsuranceType(insuranceType);
+	    plan.setYearlyPremiumAmount(dto.getYearlyPremiumAmount());
+	    plan.setCoverageAmount(dto.getCoverageAmount());
+	    plan.setDurationYears(dto.getDurationYears());
+	    plan.setDescription(dto.getDescription());
+	    plan.setCommissionRate(dto.getCommissionRate());
+	    plan.setActive(dto.isActive());
+
+	    InsurancePlan updated = insurancePlanRepository.save(plan);
+	    
+	    List<DocumentType> documentTypes = dto.getRequiredDocuments().stream()
+	            .map(DocumentType::valueOf)
+	            .collect(Collectors.toList());
+
+	    saveRequiredDocuments(updated, documentTypes);
+
+	    return mapToResponse(updated);
 	}
+
 
 	@Override
 	public void deletePlan(int id) {
@@ -102,5 +128,18 @@ public class InsurancePlanServiceImpl implements InsurancePlanService{
 		plan.setActive(false);
 		insurancePlanRepository.save(plan);
 	}
+	
+	private void saveRequiredDocuments(InsurancePlan plan, List<DocumentType> documentTypes) {
+	    // First delete existing mappings (useful during update)
+	    insurancePlanDocumentRepository.deleteByInsurancePlan(plan);
+
+	    // Then create new entries
+	    List<InsurancePlanDocument> documents = documentTypes.stream()
+	            .map(type -> new InsurancePlanDocument(plan, type))
+	            .collect(Collectors.toList());
+
+	    insurancePlanDocumentRepository.saveAll(documents);
+	}
+
 
 }

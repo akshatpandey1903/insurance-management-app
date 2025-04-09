@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,9 +40,6 @@ public class CustomerDocument {
 	@Column(nullable = false)
 	private String documentUrl;
 	
-	@Column(nullable = false)
-	private boolean isVerified = false;
-	
 	@CreationTimestamp
 	@Column
 	private LocalDateTime uploadedAt;
@@ -54,5 +53,12 @@ public class CustomerDocument {
     
     @Column(nullable = false)
     private boolean isDeleted = false;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DocumentStatus status = DocumentStatus.PENDING;
+
+    @Column
+    private String rejectionReason;
 
 }
