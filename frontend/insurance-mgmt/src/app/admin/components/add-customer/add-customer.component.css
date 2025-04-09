@@ -1,0 +1,13 @@
+.add-user-container {
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.btn {
+    margin-right: 10px;
+}
