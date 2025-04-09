@@ -2,6 +2,7 @@ package com.aurionpro.app.dto;
 
 import java.time.LocalDateTime;
 
+import com.aurionpro.app.entity.DocumentStatus;
 import com.aurionpro.app.entity.DocumentType;
 
 import lombok.*;
@@ -15,7 +16,7 @@ public class CustomerDocumentResponseDTO {
     private String customerName;
     private DocumentType documentType;
     private String documentUrl;
-    private boolean isVerified;
+    private DocumentStatus documentStatus;
     private LocalDateTime uploadedAt;
 }
 

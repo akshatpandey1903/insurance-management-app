@@ -11,6 +11,9 @@ import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerPolicyServiceImpl implements CustomerPolicyService {
+	
+	@Autowired
+	private CustomerDocumentRepository customerDocumentRepository;
 
     @Autowired
     private CustomerPolicyRepository customerPolicyRepository;
@@ -60,7 +66,9 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
 
         InsurancePlan plan = insurancePlanRepository.findById(requestDTO.getInsurancePlanId())
                 .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Insurance Plan id:" + requestDTO.getInsurancePlanId()));
-
+        
+        validateRequiredDocuments(customer, plan);
+        
         Agent agent = null;
         if (requestDTO.getAgentId() != null) {
             agent = agentRepository.findById(requestDTO.getAgentId())
@@ -145,6 +153,42 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
         customerPolicyRepository.save(policy);
 
         return toDTO(policy);
+    }
+    
+    private void validateRequiredDocuments(Customer customer, InsurancePlan plan) {
+        System.out.println("Called validateRequiredDocuments for customer: " + customer.getUserId());
+
+        List<InsurancePlanDocument> requiredDocs = plan.getRequiredDocuments();
+
+        if (requiredDocs == null || requiredDocs.isEmpty()) {
+            System.out.println("No required documents specified for this plan.");
+            return; // No documents needed, skip validation
+        }
+
+        List<DocumentType> requiredTypes = requiredDocs.stream()
+                .map(InsurancePlanDocument::getDocumentType)
+                .toList();
+
+        List<CustomerDocument> approvedDocs = customerDocumentRepository
+                .findByCustomerAndStatus(customer, DocumentStatus.APPROVED);
+
+        System.out.println("Approved docs found: " + approvedDocs.size());
+        approvedDocs.forEach(doc -> System.out.println("Approved: " + doc.getDocumentType()));
+
+        Set<DocumentType> approvedTypes = approvedDocs.stream()
+                .map(CustomerDocument::getDocumentType)
+                .collect(Collectors.toSet());
+
+        List<DocumentType> missing = requiredTypes.stream()
+                .filter(type -> !approvedTypes.contains(type))
+                .toList();
+
+        if (!missing.isEmpty()) {
+            String missingDocs = missing.stream()
+                    .map(Enum::name)
+                    .collect(Collectors.joining(", "));
+            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Missing approved documents: " + missingDocs);
+        }
     }
 
 }

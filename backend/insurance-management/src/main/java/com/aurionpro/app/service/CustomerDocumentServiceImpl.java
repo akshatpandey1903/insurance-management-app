@@ -14,10 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.aurionpro.app.dto.CustomerDocumentResponseDTO;
-import com.aurionpro.app.dto.DocumentApprovalRequestDTO;
+import com.aurionpro.app.dto.DocumentStatusUpdateRequestDTO;
 import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.entity.Customer;
 import com.aurionpro.app.entity.CustomerDocument;
+import com.aurionpro.app.entity.DocumentStatus;
 import com.aurionpro.app.entity.DocumentType;
 import com.aurionpro.app.entity.Employee;
 import com.aurionpro.app.exceptions.ResourceNotFoundException;
@@ -63,50 +64,59 @@ public class CustomerDocumentServiceImpl implements CustomerDocumentService{
 		documentRepository.save(document);
 		return documentUrl;
 	}
-		
-	@Override
-	public PageResponse<CustomerDocumentResponseDTO> getPendingDocuments(int pageNumber, int pageSize) {
-	    Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("uploadedAt").descending());
-	    Page<CustomerDocument> page = documentRepository.findByIsVerifiedFalseAndIsDeletedFalse(pageable);
-
-	    List<CustomerDocumentResponseDTO> content = page.getContent().stream().map(doc -> {
-	        CustomerDocumentResponseDTO dto = new CustomerDocumentResponseDTO();
-	        dto.setDocumentId(doc.getDocumentId());
-	        dto.setCustomerId(doc.getCustomer().getUserId());
-	        dto.setCustomerName(doc.getCustomer().getFirstName() + doc.getCustomer().getLastName());
-	        dto.setDocumentType(doc.getDocumentType());
-	        dto.setDocumentUrl(doc.getDocumentUrl());
-	        dto.setVerified(doc.isVerified());
-	        dto.setUploadedAt(doc.getUploadedAt());
-	        return dto;
-	    }).toList();
-
-	    return new PageResponse<>(
-                content,
-                page.getTotalPages(),
-                page.getTotalElements(),
-                page.getSize(),
-                page.isLast()
-        );
-	}
 	
 	@Override
-	public void approveDocument(DocumentApprovalRequestDTO request, int employeeId) {
+	public PageResponse<CustomerDocumentResponseDTO> getPendingDocuments(int page, int size) {
+	    Pageable pageable = PageRequest.of(page, size, Sort.by("uploadedAt").descending());
+	    Page<CustomerDocument> pageResult = documentRepository.findByStatusAndIsDeletedFalse(DocumentStatus.PENDING, pageable);
+
+	    List<CustomerDocumentResponseDTO> content = pageResult.getContent().stream()
+	            .map(this::mapToResponseDTO)
+	            .toList();
+
+	    return new PageResponse<>(
+	            content,
+	            pageResult.getTotalPages(),
+	            pageResult.getTotalElements(),
+	            pageResult.getSize(),
+	            pageResult.isLast()
+	    );
+	}
+
+	
+	@Override
+	public void updateDocumentStatus(DocumentStatusUpdateRequestDTO request, int employeeId) {
 	    CustomerDocument document = documentRepository.findById(request.getDocumentId())
 	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Document not found"));
 
-	    if (document.isVerified()) {
-	        throw new RuntimeException("Document already verified.");
+	    if (document.getStatus() != DocumentStatus.PENDING) {
+	        throw new RuntimeException("Document already reviewed.");
 	    }
 
 	    Employee employee = employeeRepository.findById(employeeId)
 	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Employee not found"));
 
+	    document.setStatus(request.getStatus());
 	    document.setVerifiedBy(employee);
 	    document.setVerifiedAt(LocalDateTime.now());
-	    document.setVerified(true);
+
+	    if (request.getStatus() == DocumentStatus.REJECTED) {
+	        document.setRejectionReason(request.getRejectionReason());
+	    }
 
 	    documentRepository.save(document);
+	}
+	
+	private CustomerDocumentResponseDTO mapToResponseDTO(CustomerDocument document) {
+	    return new CustomerDocumentResponseDTO(
+	        document.getDocumentId(),
+	        document.getCustomer().getUserId(),
+	        document.getCustomer().getFirstName() + " " + document.getCustomer().getLastName(),
+	        document.getDocumentType(),
+	        document.getDocumentUrl(),
+	        document.getStatus(),
+	        document.getUploadedAt()
+	    );
 	}
 
 }

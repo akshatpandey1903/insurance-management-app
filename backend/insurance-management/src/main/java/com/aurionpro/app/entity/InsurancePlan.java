@@ -1,6 +1,10 @@
 package com.aurionpro.app.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -52,4 +56,8 @@ public class InsurancePlan {
 	
 	@Column(nullable = false)
 	private boolean isActive = true;
+	
+	@OneToMany(mappedBy = "insurancePlan", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<InsurancePlanDocument> requiredDocuments = new ArrayList<>();
+
 }

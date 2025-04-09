@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.aurionpro.app.dto.CustomerDocumentResponseDTO;
-import com.aurionpro.app.dto.DocumentApprovalRequestDTO;
+import com.aurionpro.app.dto.DocumentStatusUpdateRequestDTO;
 import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.entity.DocumentType;
 import com.aurionpro.app.service.CustomerDocumentService;
@@ -48,9 +48,9 @@ public class CustomerDocumentController {
 	
 	@PostMapping("/approve/{employeeId}")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
-	public ResponseEntity<String> approveDocument(@RequestBody DocumentApprovalRequestDTO request, @PathVariable int employeeId) {
-		documentService.approveDocument(request, employeeId);
-	    return ResponseEntity.ok("Document approved successfully.");
+	public ResponseEntity<String> approveDocument(@RequestBody DocumentStatusUpdateRequestDTO request, @PathVariable int employeeId) {
+		documentService.updateDocumentStatus(request, employeeId);
+	    return ResponseEntity.ok("Document status updated successfully.");
 	}
 
 }

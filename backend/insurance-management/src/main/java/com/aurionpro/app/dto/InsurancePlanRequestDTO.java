@@ -1,6 +1,7 @@
 package com.aurionpro.app.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -40,4 +41,6 @@ public class InsurancePlanRequestDTO {
     private Double commissionRate;
 	
 	private boolean isActive = true;
+	
+	private List<String> requiredDocuments;
 }
