@@ -27,7 +27,6 @@ import { NgxCaptchaModule } from 'ngx-captcha';
     HttpClientModule,
     NgxCaptchaModule,
     ReactiveFormsModule
-
   ],
   providers: [
     {

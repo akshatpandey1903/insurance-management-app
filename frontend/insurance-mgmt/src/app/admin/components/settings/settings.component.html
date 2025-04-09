@@ -1,55 +1,127 @@
 <app-navbar></app-navbar>
 <div class="settings-container container mt-5">
-    <h2 class="mb-4">Manage Settings</h2>
+  <h2 class="mb-4">Manage Settings</h2>
 
-    <!-- State Management -->
-    <div class="card mb-4">
-        <div class="card-header">Manage States</div>
-        <div class="card-body">
-            <form #stateForm="ngForm" (ngSubmit)="addState()" class="mb-3">
-                <div class="form-group">
-                    <input type="text" name="stateName" [(ngModel)]="newState.stateName" placeholder="State Name"
-                        class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Add State</button>
-            </form>
-            <ul class="list-group">
-                <li class="list-group-item" *ngFor="let state of states">
-                    {{ state.stateName }}
-                    <button class="btn btn-danger btn-sm float-end" (click)="deleteState(state.stateId)">Delete</button>
-                </li>
-            </ul>
+  <!-- State Management -->
+  <div class="card mb-4">
+    <div class="card-header">Manage States</div>
+    <div class="card-body">
+      <form [formGroup]="stateForm" (ngSubmit)="onAddState()" class="mb-3">
+        <div class="form-group">
+          <input type="text" formControlName="stateName" placeholder="State Name" class="form-control" required>
         </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!stateForm.valid">Add State</button>
+      </form>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let state of states">
+          {{ state.stateName }}
+          <button class="btn btn-danger btn-sm float-end" (click)="onDeleteState(state.stateId)">Delete</button>
+        </li>
+      </ul>
     </div>
+  </div>
 
-    <!-- City Management -->
-    <div class="card">
-        <div class="card-header">Manage Cities</div>
-        <div class="card-body">
-            <form #cityForm="ngForm" (ngSubmit)="addCity()" class="mb-3">
-                <div class="form-group">
-                    <select name="stateId" [(ngModel)]="newCity.stateId" class="form-control" required>
-                        <option value="" disabled>Select State</option>
-                        <option *ngFor="let state of states" [value]="state.stateId">{{ state.stateName }}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="text" name="cityName" [(ngModel)]="newCity.cityName" placeholder="City Name"
-                        class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Add City</button>
-            </form>
-            <div *ngFor="let state of states">
-                <h5>{{ state.stateName }} Cities</h5>
-                <ul class="list-group">
-                    <li class="list-group-item" *ngFor="let city of getCitiesByState(state.stateId)">
-                        {{ city.cityName }}
-                        <button class="btn btn-danger btn-sm float-end"
-                            (click)="deleteCity(city.cityId)">Delete</button>
-                    </li>
-                </ul>
-            </div>
+  <!-- City Management -->
+  <div class="card mb-4">
+    <div class="card-header">Manage Cities</div>
+    <div class="card-body">
+      <form [formGroup]="cityForm" (ngSubmit)="onAddCity()" class="mb-3">
+        <div class="form-group">
+          <select formControlName="stateId" class="form-control" required>
+            <option value="">Select State</option>
+            <option *ngFor="let state of states" [value]="state.stateId">{{ state.stateName }}</option>
+          </select>
         </div>
+        <div class="form-group">
+          <input type="text" formControlName="cityName" placeholder="City Name" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!cityForm.valid">Add City</button>
+      </form>
+      <div *ngFor="let state of states">
+        <h5>{{ state.stateName }} Cities</h5>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let city of getCitiesByState(state.stateId)">
+            {{ city.cityName }}
+            <button class="btn btn-danger btn-sm float-end" (click)="onDeleteCity(city.cityId)">Delete</button>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div *ngIf="message" class="alert alert-info mt-3">{{ message }}</div>
+  </div>
+
+  <!-- Insurance Type Management -->
+  <div class="card mb-4">
+    <div class="card-header">Insurance Type Master</div>
+    <div class="card-body">
+      <form [formGroup]="insuranceTypeForm" (ngSubmit)="onAddInsuranceType()" class="mb-3">
+        <div class="form-group">
+          <input type="text" formControlName="typeName" placeholder="Insurance Type Name" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!insuranceTypeForm.valid">Add Insurance Type</button>
+      </form>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let type of insuranceTypes">
+          {{ type.name }}
+          <button class="btn btn-danger btn-sm float-end" (click)="onDeleteInsuranceType(type.insuranceTypeId)">Delete</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Insurance Plan Management -->
+  <div class="card">
+    <div class="card-header">Insurance Plan Master</div>
+    <div class="card-body">
+      <form [formGroup]="insurancePlanForm" (ngSubmit)="onAddInsurancePlan()" class="mb-3">
+        <div class="form-group">
+          <select formControlName="insuranceTypeId" class="form-control" required>
+            <option value="">Select Insurance Type</option>
+            <option *ngFor="let type of insuranceTypes" [value]="type.insuranceTypeId">{{ type.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input type="text" formControlName="planName" placeholder="Plan Name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="number" formControlName="insuranceTypeId" placeholder="Insurance Type Id" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="number" formControlName="yearlyPremiumAmount" placeholder="Yearly Premium Amount" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="number" formControlName="coverageAmount" placeholder="Coverage Amount" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="number" formControlName="durationYears" placeholder="Duration Years" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="text" formControlName="description" placeholder="Description" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="number" formControlName="commissionRate" placeholder="Commision Rate" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!insurancePlanForm.valid">Add Insurance Plan</button>
+      </form>
+      <!-- <div *ngFor="let type of insuranceTypes">
+        <h5>{{ type.name }} Plans</h5>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let plan of getPlansById(type.insuranceTypeId)">
+            {{ plan.planName }}
+            <button class="btn btn-danger btn-sm float-end" (click)="onDeleteInsurancePlan(plan.insurancePlanId)">Delete</button>
+          </li>
+        </ul>
+      </div> -->
+      <div *ngFor="let type of insuranceTypes">
+        <h5>{{ type.name }} Plans</h5>
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let plan of getPlansById(type.name)">
+            {{ plan.planName }}
+            <button class="btn btn-danger btn-sm float-end" (click)="onDeleteInsurancePlan(plan.insurancePlanId)">Delete</button>
+          </li>
+        </ul>
+      </div>      
+    </div>
+  </div>
+
+  <div *ngIf="message" class="alert alert-info mt-3">{{ message }}</div>
 </div>

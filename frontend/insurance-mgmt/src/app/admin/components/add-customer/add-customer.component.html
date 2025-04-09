@@ -1,0 +1,31 @@
+<app-navbar></app-navbar>
+<div class="add-user-container container mt-5">
+    <h2>Add Customer</h2>
+    <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <input type="text" formControlName="username" placeholder="Username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="password" formControlName="password" placeholder="Password" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="email" formControlName="email" placeholder="Email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="text" formControlName="firstName" placeholder="First Name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="text" formControlName="lastName" placeholder="Last Name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="text" formControlName="phoneNumber" placeholder="Phone" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="text" formControlName="address" placeholder="Address" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!customerForm.valid">Add Customer</button>
+        <button type="button" class="btn btn-secondary ml-2"
+            (click)="router.navigate(['/admin/manage-users'])">Back</button>
+    </form>
+    <div *ngIf="message" class="alert alert-info mt-3">{{ message }}</div>
+</div>

@@ -1,0 +1,29 @@
+<app-navbar></app-navbar>
+<div class="add-user-container container mt-5">
+    <h2>Add Agent</h2>
+    <form [formGroup]="agentForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <input type="text" formControlName="username" placeholder="Username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="password" formControlName="password" placeholder="Password" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="email" formControlName="email" placeholder="Email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="text" formControlName="firstName" placeholder="First Name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="text" formControlName="lastName" placeholder="Last Name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <input type="text" formControlName="licenseNumber" placeholder="License Number" class="form-control"
+                required>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!agentForm.valid">Add Agent</button>
+        <button type="button" class="btn btn-secondary ml-2"
+            (click)="router.navigate(['/admin/manage-users'])">Back</button>
+    </form>
+    <div *ngIf="message" class="alert alert-info mt-3">{{ message }}</div>
+</div>

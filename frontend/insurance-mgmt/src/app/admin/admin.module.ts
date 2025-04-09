@@ -10,6 +10,10 @@ import { WithdrawlApprovalComponent } from './components/withdrawl-approval/with
 import { InsurancePlansComponent } from './components/insurance-plans/insurance-plans.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AddCustomerComponent } from './components/add-customer/add-customer.component';
+import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
+import { AddAgentComponent } from './components/add-agent/add-agent.component';
 
 @NgModule({
   declarations: [
@@ -19,12 +23,16 @@ import { FormsModule } from '@angular/forms';
     ReportsComponent,
     WithdrawlApprovalComponent,
     InsurancePlansComponent,
-    NavbarComponent
+    NavbarComponent,
+    AddCustomerComponent,
+    AddEmployeeComponent,
+    AddAgentComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class AdminModule { }

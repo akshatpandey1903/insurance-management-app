@@ -31,7 +31,7 @@ export class AuthService {
       licenseNumber: data.licenseNumber
     };
 
-    switch (data.role.toUpperCase()) {
+    switch (data.role) {
       case 'CUSTOMER':
         endpoint = `${this.apiUrl}/register/customer`;
         payload.address = data.address;

@@ -6,6 +6,9 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { WithdrawlApprovalComponent } from './components/withdrawl-approval/withdrawl-approval.component';
 import { InsurancePlansComponent } from './components/insurance-plans/insurance-plans.component';
+import { AddCustomerComponent } from './components/add-customer/add-customer.component';
+import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
+import { AddAgentComponent } from './components/add-agent/add-agent.component';
 
 const routes: Routes = [
   {path: 'dashboard',component: AdmindashboardComponent},
@@ -13,7 +16,10 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent },     
   { path: 'reports', component: ReportsComponent },      
   { path: 'withdrawal-approval', component: WithdrawlApprovalComponent },
-  { path: 'insurance-plans', component: InsurancePlansComponent }
+  { path: 'insurance-plans', component: InsurancePlansComponent },
+  {path: 'manage-users/add-customer', component: AddCustomerComponent},
+  {path: 'manage-users/add-employee', component: AddEmployeeComponent},
+  {path: 'manage-users/add-agent', component: AddAgentComponent}
 ];
 
 @NgModule({
