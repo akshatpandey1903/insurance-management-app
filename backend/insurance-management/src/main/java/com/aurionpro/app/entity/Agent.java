@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Agent extends User{
 	
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String licenseNumber;
 	
 	@Column(nullable = false)

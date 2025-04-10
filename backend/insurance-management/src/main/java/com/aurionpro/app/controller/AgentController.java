@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.app.dto.AgentAssignedPolicyDTO;
+import com.aurionpro.app.dto.AgentProfileDTO;
 import com.aurionpro.app.dto.AgentResponseDTO;
 import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.service.AgentService;
@@ -49,5 +50,11 @@ public class AgentController {
 	@GetMapping("/{agentId}/assigned-policies")
 	public ResponseEntity<List<AgentAssignedPolicyDTO>> getAssignedPolicies(@PathVariable int agentId) {
 	    return ResponseEntity.ok(agentService.getAssignedPolicies(agentId));
+	}
+	
+	@GetMapping("/profile")
+	@PreAuthorize("hasRole('AGENT')")
+	public AgentProfileDTO viewProfile(@RequestParam int agentId) {
+	    return agentService.getProfile(agentId);
 	}
 }

@@ -18,4 +18,5 @@ public class TransactionResponseDTO {
     private LocalDateTime transactionTime;
     private String userFullName;
     private String userRole;
+    private String paymentReference;
 }
