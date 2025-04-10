@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.aurionpro.app.dto.AgentAssignedPolicyDTO;
+import com.aurionpro.app.dto.AgentProfileDTO;
 import com.aurionpro.app.dto.AgentResponseDTO;
 import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.entity.Agent;
@@ -127,5 +128,29 @@ public class AgentServiceImpl implements AgentService{
 
 	        return dto;
 	    }).toList();
+	}
+	
+	@Override
+	public AgentProfileDTO getProfile(int agentId) {
+	    Agent agent = agentRepository.findById(agentId)
+	        .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Agent not found with ID: " + agentId));
+
+	    String approvedBy = agent.getApprovedBy() != null
+	        ? agent.getApprovedBy().getFirstName() + " " + agent.getApprovedBy().getLastName()
+	        : null;
+
+	    return new AgentProfileDTO(
+	        agent.getUserId(),
+	        agent.getUsername(),
+	        agent.getEmail(),
+	        agent.getFirstName(),
+	        agent.getLastName(),
+	        agent.isActive(),
+	        agent.getLicenseNumber(),
+	        agent.isApproved(),
+	        approvedBy,
+	        agent.getTotalEarnings(),
+	        agent.getCreatedAt()
+	    );
 	}
 }

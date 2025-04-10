@@ -70,9 +70,9 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
         validateRequiredDocuments(customer, plan);
         
         Agent agent = null;
-        if (requestDTO.getAgentId() != null) {
-            agent = agentRepository.findById(requestDTO.getAgentId())
-                    .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Agent id:" + requestDTO.getAgentId()));
+        if (requestDTO.getLicenseNumber() != null) {
+            agent = agentRepository.findByLicenseNumberAndIsActiveTrue(requestDTO.getLicenseNumber())
+                    .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Agent licnense No:" + requestDTO.getLicenseNumber()));
         }
 
         PaymentFrequency frequency = requestDTO.getPaymentFrequency();

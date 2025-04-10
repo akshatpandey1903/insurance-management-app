@@ -52,4 +52,7 @@ public class Transaction {
     
     @Column(nullable = false)
     private boolean isDeleted = false;
+    
+    @Column
+    private String paymentReference;
 }

@@ -15,5 +15,5 @@ public class CustomerPolicyRequestDTO {
     private PaymentFrequency paymentFrequency;
 
     // Optional 
-    private Integer agentId;
+    private String licenseNumber;
 }
