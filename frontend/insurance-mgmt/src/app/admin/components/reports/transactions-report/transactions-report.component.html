@@ -1,0 +1,53 @@
+<app-navbar></app-navbar>
+<div class="container mt-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Transaction Report</h2>
+        <button class="btn btn-success" (click)="downloadPDF()">
+            📄 Download PDF
+        </button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered text-center align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Type</th>
+                    <th>Amount (₹)</th>
+                    <th>Description</th>
+                    <th>Date & Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let txn of transactions; let i = index">
+                    <td>{{ currentPage * pageSize + i + 1 }}</td>
+                    <td>{{ txn.userFullName }}</td>
+                    <td>{{ txn.userRole }}</td>
+                    <td>{{ txn.transactionType }}</td>
+                    <td>{{ txn.amount }}</td>
+                    <td>{{ txn.description }}</td>
+                    <td>{{ txn.transactionTime | date:'dd/MM/yyyy, h:mm a' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <button class="btn btn-outline-primary" (click)="prevPage()" [disabled]="currentPage === 0">
+            ‹ Previous
+        </button>
+
+        <span class="fw-semibold">
+            Page {{ currentPage + 1 }} of {{ totalPages }}
+        </span>
+
+        <button class="btn btn-outline-primary" (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">
+            Next ›
+        </button>
+    </div>
+</div>

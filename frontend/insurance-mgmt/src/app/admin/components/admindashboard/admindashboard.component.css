@@ -1,28 +1,41 @@
 .admin-dashboard {
-    background-color: #f8f9fa;
-    min-height: 100vh;
-  }
-  
-  .card {
-    border: none;
-    transition: transform 0.2s;
-  }
-  
-  .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-title {
-    color: #007bff;
-    font-weight: bold;
-  }
-  
-  .btn-primary {
-    background-color: #007bff;
-    border: none;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.card {
+  border: none;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 1.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.glass-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,52 @@
+<app-navbar></app-navbar>
+<div class="container mt-3">
+    <h3>Policy Payment Report</h3>
+  
+    <button class="btn btn-sm btn-primary mb-2" (click)="downloadPDF()">Download PDF</button>
+  
+    <table class="table table-bordered table-striped table-sm">
+      <thead class="table-success text-center">
+        <tr>
+          <th>#</th>
+          <th>Policy ID</th>
+          <th>Customer</th>
+          <th>Phone</th>
+          <th>Type</th>
+          <th>Plan</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Premium</th>
+          <th>Freq.</th>
+          <th>Agent</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        <tr *ngFor="let p of policies; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ p.policyId }}</td>
+          <td>{{ p.customerName }}</td>
+          <td>{{ p.phoneNumber }}</td>
+          <td>{{ p.insuranceType }}</td>
+          <td>{{ p.planName }}</td>
+          <td>{{ p.startDate }}</td>
+          <td>{{ p.endDate }}</td>
+          <td>{{ p.calculatedPremium }}</td>
+          <td>{{ p.paymentFrequency }}</td>
+          <td>{{ p.agentName }}</td>
+          <td>{{ p.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div class="d-flex justify-content-between mt-2">
+      <button class="btn btn-outline-secondary btn-sm" (click)="prevPage()" [disabled]="currentPage === 0">
+        ⬅️ Previous
+      </button>
+      <span>Page {{ currentPage + 1 }} / {{ totalPages }}</span>
+      <button class="btn btn-outline-secondary btn-sm" (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages">
+        Next ➡️
+      </button>
+    </div>
+  </div>
+  

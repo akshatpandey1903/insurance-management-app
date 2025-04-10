@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<!-- <app-navbar></app-navbar>
 <div class="manage-users-container container mt-5">
     <h2>Manage Users</h2>
     <div class="btn-group-vertical" role="group">
@@ -6,4 +6,29 @@
       <button class="btn btn-primary mb-3" (click)="navigateToAddEmployee()">Add Employee</button>
       <button class="btn btn-primary mb-3" (click)="navigateToAddAgent()">Add Agent</button>
     </div>
+  </div> -->
+
+  <app-navbar></app-navbar>
+
+<div class="container py-5 d-flex justify-content-center align-items-center min-vh-100">
+  <div class="glass-card p-5 rounded-4 shadow-lg text-center w-100" style="max-width: 500px;">
+    <h2 class="mb-4 fw-bold text-primary">Manage Users</h2>
+
+    <div class="d-grid gap-3">
+      <button class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center gap-2"
+              (click)="navigateToAddCustomer()">
+        <i class="bi bi-person-plus-fill"></i> Add Customer
+      </button>
+
+      <button class="btn btn-outline-success btn-lg d-flex align-items-center justify-content-center gap-2"
+              (click)="navigateToAddEmployee()">
+        <i class="bi bi-briefcase-fill"></i> Add Employee
+      </button>
+
+      <button class="btn btn-outline-info btn-lg d-flex align-items-center justify-content-center gap-2"
+              (click)="navigateToAddAgent()">
+        <i class="bi bi-people-fill"></i> Add Agent
+      </button>
+    </div>
   </div>
+</div>

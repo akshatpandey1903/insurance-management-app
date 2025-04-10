@@ -1,9 +1,21 @@
 .manage-users-container {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .btn {
-    width: 200px;
-    margin: 10px auto;
-  }
+  padding: 20px;
+  text-align: center;
+}
+
+.btn {
+  width: 200px;
+  margin: 10px auto;
+}
+
+.glass-card {
+  background: rgba(73, 69, 69, 0.25);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+}
+
+button:hover {
+  transform: scale(1.02);
+  transition: all 0.2s ease-in-out;
+}

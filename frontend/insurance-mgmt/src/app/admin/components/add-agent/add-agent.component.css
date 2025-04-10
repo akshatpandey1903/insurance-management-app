@@ -11,3 +11,16 @@
 .btn {
     margin-right: 10px;
 }
+
+.glass-form {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.2s ease-in-out;
+}
+
+.glass-form:hover {
+    transform: scale(1.01);
+}

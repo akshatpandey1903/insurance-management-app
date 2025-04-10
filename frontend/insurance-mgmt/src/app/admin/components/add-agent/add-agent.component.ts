@@ -24,6 +24,11 @@ export class AddAgentComponent {
     });
   }
 
+  isTouched(field: string): boolean {
+    const control = this.agentForm.get(field);
+    return control?.touched && control?.invalid || false;
+  }
+
   onSubmit() {
     if (this.agentForm.valid) {
       this.authService.register({ ...this.agentForm.value, role: 'AGENT' }).subscribe({

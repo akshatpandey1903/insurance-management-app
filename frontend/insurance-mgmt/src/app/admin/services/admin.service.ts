@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CityResponseDto, InsurancePlanResponseDTO, InsuranceTypeResponseDTO, StateResponseDto } from '../model';
+import { AgentCommissionReportDto, CityResponseDto, InsurancePlanResponseDTO, InsuranceTypeResponseDTO, PageResponse, PlanPurchaseReportDto, StateResponseDto, TransactionResponse } from '../model';
 import { access } from 'fs';
 import { AuthService } from '../../services/auth.service';
 import { log } from 'console';
+import { CustomerReportComponent } from '../components/reports/customer-report/customer-report.component';
 
 @Injectable({
   providedIn: 'root'
@@ -120,13 +121,35 @@ export class AdminService {
   // }
 
   createUser(userData: any): Observable<any> {
-    // const currentRole = this.authService.getRoleName(); // Use getRoleName here
-    // console.log('Current role:', currentRole); // Debug log
-    // if (currentRole !== 'ADMIN') {
-    //   throw new Error('Only admins can create users');
-    // }
     const headers = this.getAuthHeaders();
     return this.httpClient.post<any>(`${this.apiUrl}/register/customer`, userData, { headers });
   }
+
+  getCustomerReports(page: number = 0, size: number = 10): Observable<PageResponse<CustomerReportComponent>> {
+    return this.httpClient.get<PageResponse<CustomerReportComponent>>(
+      `http://localhost:8080/app/reports/customers?page=${page}&size=${size}`
+    );
+  }
+
+  getAllAgents(pageNumber: number, pageSize: number): Observable<any> {
+    return this.httpClient.get(`${this.apiUrl}/admin/reports/agents?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  }
+  
+  getAgentCommissionReport(page: number, size: number): Observable<PageResponse<AgentCommissionReportDto>> {
+    return this.httpClient.get<PageResponse<AgentCommissionReportDto>>(
+      `${this.apiUrl}/admin/reports/agent-commissions?page=${page}&size=${size}`
+    );
+  }
+
+  getPolicyPayments(page: number, size: number): Observable<PageResponse<PlanPurchaseReportDto>> {
+
+    return this.httpClient.get<PageResponse<PlanPurchaseReportDto>>(`${this.apiUrl}/admin/reports`);
+  }
+
+  getTransactionReports(page: number, size: number): Observable<PageResponse<TransactionResponse>> 
+  { return this.httpClient.get<PageResponse<TransactionResponse>>( 
+    `${this.apiUrl}/transactions?page=${page}&size=${size}` 
+  ); 
+}
 
 }

@@ -1,2 +1,31 @@
 <app-navbar></app-navbar>
-<p>reports works!</p>
+
+<div class="container py-5">
+  <h2 class="text-center text-gradient fw-bold mb-5 display-6">📊 Reports Dashboard</h2>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <div *ngFor="let report of reports" class="col">
+      <div class="card shadow-lg border-0 h-100 hover-shadow rounded-4 transition-all">
+        <div class="card-body text-center">
+          <i class="bi {{report.icon}} fs-1 text-{{report.color}} mb-3"></i>
+          <h5 class="card-title fw-semibold mb-2">{{ report.title }}</h5>
+          <a [routerLink]="report.path" class="btn btn-{{report.color}} btn-sm rounded-pill mt-2">
+            <i class="bi bi-box-arrow-up-right me-1"></i> View Report
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .text-gradient {
+    background: linear-gradient(45deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hover-shadow:hover {
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+  }
+</style>
