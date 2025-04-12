@@ -12,7 +12,6 @@ public class AgentCommissionReportDto {
     private BigDecimal totalCommissionRate;
     private BigDecimal totalEarnings;
 
-    // Constructor must match the SELECT clause exactly
     public AgentCommissionReportDto(int userId, String firstName, String lastName, String email,
                                     Long totalPoliciesSold, BigDecimal totalCommissionRate, BigDecimal totalEarnings) {
         this.userId = userId;
@@ -24,7 +23,6 @@ public class AgentCommissionReportDto {
         this.totalEarnings = totalEarnings;
     }
 
-    // Getters (optional if you’re using @RestController and Jackson)
     public int getUserId() {
         return userId;
     }

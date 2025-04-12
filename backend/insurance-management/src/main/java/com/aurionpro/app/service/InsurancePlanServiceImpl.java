@@ -37,17 +37,20 @@ public class InsurancePlanServiceImpl implements InsurancePlanService{
 	            .collect(Collectors.toList());
 
 	    return new InsurancePlanResponseDTO(
-	            plan.getInsurancePlanId(),
-	            plan.getPlanName(),
-	            plan.getInsuranceType().getTypeName(),
-	            plan.getYearlyPremiumAmount(),
-	            plan.getCoverageAmount(),
-	            plan.getDurationYears(),
-	            plan.getDescription(),
-	            plan.getCommissionRate(),
-	            plan.isActive(),
-	            requiredDocs
-	    );
+	    	    plan.getInsurancePlanId(),
+	    	    plan.getPlanName(),
+	    	    plan.getInsuranceType().getTypeName(),
+	    	    plan.getMinCoverageAmount(),
+	    	    plan.getMaxCoverageAmount(),
+	    	    plan.getMinDurationYears(),
+	    	    plan.getMaxDurationYears(),
+	    	    plan.getPremiumRatePerThousandPerYear(),
+	    	    plan.getDescription(),
+	    	    plan.getCommissionRate(),
+	    	    plan.isActive(),
+	    	    requiredDocs
+	    	);
+
 	}
 
 	@Override
@@ -58,12 +61,15 @@ public class InsurancePlanServiceImpl implements InsurancePlanService{
 	    InsurancePlan plan = new InsurancePlan();
 	    plan.setPlanName(requestDto.getPlanName());
 	    plan.setInsuranceType(insuranceType);
-	    plan.setYearlyPremiumAmount(requestDto.getYearlyPremiumAmount());
-	    plan.setCoverageAmount(requestDto.getCoverageAmount());
 	    plan.setDescription(requestDto.getDescription());
-	    plan.setDurationYears(requestDto.getDurationYears());
 	    plan.setCommissionRate(requestDto.getCommissionRate());
 	    plan.setActive(requestDto.isActive());
+	    plan.setMinCoverageAmount(requestDto.getMinCoverageAmount());
+	    plan.setMaxCoverageAmount(requestDto.getMaxCoverageAmount());
+	    plan.setMinDurationYears(requestDto.getMinDurationYears());
+	    plan.setMaxDurationYears(requestDto.getMaxDurationYears());
+	    plan.setPremiumRatePerThousandPerYear(requestDto.getPremiumRatePerThousandPerYear());
+
 
 	    InsurancePlan savedPlan = insurancePlanRepository.save(plan);
 	    
@@ -102,12 +108,15 @@ public class InsurancePlanServiceImpl implements InsurancePlanService{
 
 	    plan.setPlanName(dto.getPlanName());
 	    plan.setInsuranceType(insuranceType);
-	    plan.setYearlyPremiumAmount(dto.getYearlyPremiumAmount());
-	    plan.setCoverageAmount(dto.getCoverageAmount());
-	    plan.setDurationYears(dto.getDurationYears());
 	    plan.setDescription(dto.getDescription());
 	    plan.setCommissionRate(dto.getCommissionRate());
 	    plan.setActive(dto.isActive());
+	    plan.setMinCoverageAmount(dto.getMinCoverageAmount());
+	    plan.setMaxCoverageAmount(dto.getMaxCoverageAmount());
+	    plan.setMinDurationYears(dto.getMinDurationYears());
+	    plan.setMaxDurationYears(dto.getMaxDurationYears());
+	    plan.setPremiumRatePerThousandPerYear(dto.getPremiumRatePerThousandPerYear());
+
 
 	    InsurancePlan updated = insurancePlanRepository.save(plan);
 	    

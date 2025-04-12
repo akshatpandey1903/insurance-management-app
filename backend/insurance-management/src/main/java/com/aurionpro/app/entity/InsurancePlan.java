@@ -32,19 +32,21 @@ public class InsurancePlan {
 	@JoinColumn(name = "insurance_type_id", nullable = false)
 	private InsuranceType insuranceType;
 	
-	@Column(nullable = false, precision = 10, scale = 2)
-	@NotNull(message = "Premium amount is required")
-	@Min(value = 100, message = "Premium must be at least 100")
-	private BigDecimal yearlyPremiumAmount;
-	
 	@Column(nullable = false)
-	@NotNull(message = "Coverage amount is required")
-    @Min(value = 1000, message = "Coverage amount must be at least 1000")
-	private int coverageAmount;
-	
+	private BigDecimal minCoverageAmount;
+
 	@Column(nullable = false)
-	@Min(value = 1, message = "Duration must be at least 1 year")
-	private int durationYears;
+	private BigDecimal maxCoverageAmount;
+
+	@Column(nullable = false)
+	private int minDurationYears;
+
+	@Column(nullable = false)
+	private int maxDurationYears;
+
+	@Column(nullable = false, precision = 5, scale = 2)
+	@Min(value = 1, message = "Premium rate must be at least 1")
+	private BigDecimal premiumRatePerThousandPerYear;
 	
 	@Column(nullable = false, length = 255)
 	private String description;

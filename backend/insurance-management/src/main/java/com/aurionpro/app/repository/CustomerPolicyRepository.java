@@ -40,9 +40,11 @@ public interface CustomerPolicyRepository extends JpaRepository<CustomerPolicy, 
 		
 		@Query("SELECT new com.aurionpro.app.dto.AgentCommissionReportDto(" +
 			      "a.userId, a.firstName, a.lastName, a.email, " +
-			      "COUNT(cp), CAST(SUM(cp.insurancePlan.commissionRate) AS java.math.BigDecimal), a.totalEarnings) " +
+			      "COUNT(cp), " +
+			      "CAST(SUM(cp.calculatedPremium * cp.insurancePlan.commissionRate / 100) AS java.math.BigDecimal), " +
+			      "a.totalEarnings) " +
 			      "FROM Agent a LEFT JOIN a.soldPolicies cp " +
 			      "GROUP BY a.userId, a.firstName, a.lastName, a.email, a.totalEarnings")
-		Page<AgentCommissionReportDto> getAgentCommissionReport(Pageable pageable);
+			Page<AgentCommissionReportDto> getAgentCommissionReport(Pageable pageable);
 
 }

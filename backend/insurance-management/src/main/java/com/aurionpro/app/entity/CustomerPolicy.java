@@ -44,6 +44,12 @@ public class CustomerPolicy {
 	@Column(nullable = false, precision = 10, scale = 2)
 	private BigDecimal calculatedPremium;
 	
+	@Column(nullable = false)
+	private BigDecimal selectedCoverageAmount;
+
+	@Column(nullable = false)
+	private int selectedDurationYears;
+	
 	// dates null before activation
 	@Column(nullable = true)
 	private LocalDate startDate;

@@ -16,9 +16,11 @@ public class InsurancePlanResponseDTO {
 	private int insurancePlanId;
     private String planName;
     private String insuranceTypeName;
-    private BigDecimal yearlyPremiumAmount;
-    private int coverageAmount;
-    private int durationYears;
+    private BigDecimal minCoverageAmount;
+    private BigDecimal maxCoverageAmount;
+    private Integer minDurationYears;
+    private Integer maxDurationYears;
+    private BigDecimal premiumRatePerThousandPerYear;
     private String description;
     private double commissionRate;
     private boolean isActive;

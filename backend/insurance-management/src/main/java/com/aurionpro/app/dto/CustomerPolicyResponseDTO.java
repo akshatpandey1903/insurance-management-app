@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.aurionpro.app.entity.PaymentFrequency;
-
 import lombok.Data;
 
 @Data
@@ -20,12 +19,16 @@ public class CustomerPolicyResponseDTO {
 
     private BigDecimal calculatedPremium;
 
+    private BigDecimal selectedCoverageAmount;
+
+    private Integer selectedDurationYears;
+
     private LocalDate startDate;
 
     private LocalDate endDate;
-    
+
     private LocalDate nextDueDate;
-    
+
     private boolean isActive;
 
     private String approvedBy;

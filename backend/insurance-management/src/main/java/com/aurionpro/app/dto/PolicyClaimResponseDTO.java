@@ -18,4 +18,7 @@ public class PolicyClaimResponseDTO {
     private String remarks;
     private String verifiedBy;
     private LocalDateTime requestedAt;
+    private boolean isEarlyClaim;
+    private java.math.BigDecimal penaltyAmount;
+    private java.math.BigDecimal claimAmount;
 }

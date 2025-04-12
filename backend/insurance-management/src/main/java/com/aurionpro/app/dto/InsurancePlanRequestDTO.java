@@ -22,16 +22,25 @@ public class InsurancePlanRequestDTO {
 	@NotNull(message = "Insurance Type Id can not be null")
 	private Integer insuranceTypeId;
 	
-	@NotNull(message = "Premium amount is required")
-	@DecimalMin(value = "100.00", message = "Premium must atleast be 100")
-	private BigDecimal yearlyPremiumAmount;
-	
-	@NotNull(message = "Coverage amount is required")
-    @Min(value = 1000, message = "Coverage amount must be at least 1000")
-	private Integer coverageAmount;
-	
-	@Min(value = 1, message = "Duration must be at least 1 year")
-	private int durationYears;
+	@NotNull(message = "Minimum coverage is required")
+	@Min(value = 1000, message = "Minimum coverage must be at least 1000")
+	private BigDecimal minCoverageAmount;
+
+	@NotNull(message = "Maximum coverage is required")
+	@Min(value = 1000, message = "Maximum coverage must be at least 1000")
+	private BigDecimal maxCoverageAmount;
+
+	@NotNull(message = "Minimum duration is required")
+	@Min(value = 1, message = "Minimum duration must be at least 1 year")
+	private Integer minDurationYears;
+
+	@NotNull(message = "Maximum duration is required")
+	@Min(value = 1, message = "Maximum duration must be at least 1 year")
+	private Integer maxDurationYears;
+
+	@NotNull(message = "Premium rate is required")
+	@DecimalMin(value = "0.01", message = "Premium rate must be at least 0.01")
+	private BigDecimal premiumRatePerThousandPerYear;
 	
 	@NotBlank(message = "Description is required")
     private String description;

@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,6 +48,8 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
         dto.setInsurancePlanName(policy.getInsurancePlan().getPlanName());
         dto.setPaymentFrequency(policy.getPaymentFrequency());
         dto.setCalculatedPremium(policy.getCalculatedPremium());
+        dto.setSelectedCoverageAmount(policy.getSelectedCoverageAmount());
+        dto.setSelectedDurationYears(policy.getSelectedDurationYears());
         dto.setStartDate(policy.getStartDate());
         dto.setEndDate(policy.getEndDate());
         dto.setActive(policy.isActive());
@@ -60,39 +63,57 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
     
     @Override
     @Transactional
-    public CustomerPolicyResponseDTO registerPolicy(CustomerPolicyRequestDTO requestDTO, int id) {
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Customer id:" + id));
+    public CustomerPolicyResponseDTO registerPolicy(CustomerPolicyRequestDTO requestDTO, int customerId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Customer id: " + customerId));
 
         InsurancePlan plan = insurancePlanRepository.findById(requestDTO.getInsurancePlanId())
-                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Insurance Plan id:" + requestDTO.getInsurancePlanId()));
-        
+                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Insurance Plan id: " + requestDTO.getInsurancePlanId()));
+
         validateRequiredDocuments(customer, plan);
-        
+
+        BigDecimal coverage = requestDTO.getSelectedCoverageAmount();
+        int duration = requestDTO.getSelectedDurationYears();
+
+        if (coverage.compareTo(plan.getMinCoverageAmount()) < 0 || coverage.compareTo(plan.getMaxCoverageAmount()) > 0) {
+            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST,
+                    "Coverage amount must be between " + plan.getMinCoverageAmount() + " and " + plan.getMaxCoverageAmount());
+        }
+
+        if (duration < plan.getMinDurationYears() || duration > plan.getMaxDurationYears()) {
+            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST,
+                    "Duration must be between " + plan.getMinDurationYears() + " and " + plan.getMaxDurationYears());
+        }
+
         Agent agent = null;
         if (requestDTO.getLicenseNumber() != null) {
             agent = agentRepository.findByLicenseNumberAndIsActiveTrue(requestDTO.getLicenseNumber())
-                    .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Agent licnense No:" + requestDTO.getLicenseNumber()));
+                    .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Agent license No: " + requestDTO.getLicenseNumber()));
         }
 
         PaymentFrequency frequency = requestDTO.getPaymentFrequency();
-        BigDecimal yearlyPremium = plan.getYearlyPremiumAmount();
 
-        BigDecimal frequencyMultiplier = switch (frequency) {
-            case MONTHLY -> BigDecimal.valueOf(1.0 / 12);
-            case QUARTERLY -> BigDecimal.valueOf(1.0 / 4);
-            case HALF_YEARLY -> BigDecimal.valueOf(1.0 / 2);
-            case YEARLY -> BigDecimal.ONE;
+        BigDecimal basePremium = coverage
+                .divide(BigDecimal.valueOf(1000), 4, RoundingMode.HALF_UP)
+                .multiply(plan.getPremiumRatePerThousandPerYear());
+        
+        BigDecimal frequencyFactor = switch (frequency) {
+            case MONTHLY -> BigDecimal.valueOf(1.0 / (12 * duration));
+            case QUARTERLY -> BigDecimal.valueOf(1.0 / (4 * duration));
+            case HALF_YEARLY -> BigDecimal.valueOf(1.0 / (2 * duration));
+            case YEARLY -> BigDecimal.valueOf(1.0 / duration);
         };
 
-        BigDecimal calculatedPremium = yearlyPremium.multiply(frequencyMultiplier)
-                .divide(BigDecimal.valueOf(plan.getDurationYears()), 2, RoundingMode.HALF_UP);
+        BigDecimal calculatedPremium = basePremium.multiply(frequencyFactor)
+                .setScale(2, RoundingMode.HALF_UP);
 
         CustomerPolicy policy = new CustomerPolicy();
         policy.setCustomer(customer);
         policy.setInsurancePlan(plan);
         policy.setPaymentFrequency(frequency);
         policy.setCalculatedPremium(calculatedPremium);
+        policy.setSelectedCoverageAmount(coverage);
+        policy.setSelectedDurationYears(duration);
         policy.setActive(false);
         policy.setAgent(agent);
 
@@ -122,8 +143,10 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
                 .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Employee not found with id: " + employeeId));
 
         LocalDate startDate = LocalDate.now().plusDays(5);
+        int durationYears = policy.getSelectedDurationYears();
+
         policy.setStartDate(startDate);
-        policy.setEndDate(startDate.plusYears(policy.getInsurancePlan().getDurationYears()));
+        policy.setEndDate(startDate.plusYears(durationYears));
         policy.setNextDueDate(getNextDueDate(startDate, policy.getPaymentFrequency()));
         policy.setActive(true);
         policy.setApprovedBy(employee);
@@ -132,9 +155,7 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
 
         Agent agent = policy.getAgent();
         if (agent != null) {
-        	
-            BigDecimal commission = policy.getInsurancePlan()
-                    .getYearlyPremiumAmount()
+            BigDecimal commission = policy.getCalculatedPremium()
                     .multiply(BigDecimal.valueOf(policy.getInsurancePlan().getCommissionRate()))
                     .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
 
@@ -142,7 +163,7 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
             agent.setTotalEarnings(currentEarnings.add(commission));
 
             if (agent.getSoldPolicies() == null) {
-                agent.setSoldPolicies(new java.util.ArrayList<>());
+                agent.setSoldPolicies(new ArrayList<>());
             }
             agent.getSoldPolicies().add(savedPolicy);
 

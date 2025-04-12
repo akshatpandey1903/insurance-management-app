@@ -44,6 +44,15 @@ public class PolicyClaim {
     private String reason;
 
     private String remarks; // Optional
+    
+    @Column(nullable = false)
+    private boolean isEarlyClaim;
+
+    @Column
+    private java.math.BigDecimal penaltyAmount;
+
+    @Column(nullable = false)
+    private java.math.BigDecimal claimAmount;
 
     @ManyToOne
     @JoinColumn(name = "verified_by")

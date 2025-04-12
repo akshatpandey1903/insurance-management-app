@@ -1,5 +1,9 @@
 package com.aurionpro.app.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +27,6 @@ import com.aurionpro.app.entity.PolicyClaim;
 import com.aurionpro.app.entity.WithdrawalStatus;
 import com.aurionpro.app.exceptions.ResourceNotFoundException;
 import com.aurionpro.app.repository.CustomerPolicyRepository;
-import com.aurionpro.app.repository.CustomerRepository;
 import com.aurionpro.app.repository.EmployeeRepository;
 import com.aurionpro.app.repository.PolicyClaimRepository;
 
@@ -37,6 +40,9 @@ import lombok.RequiredArgsConstructor;
 public class PolicyClaimServiceImpl implements PolicyClaimService {
 	
 	@Autowired
+	private TransactionService transactionService;
+	
+	@Autowired
 	private EmployeeRepository employeeRepository;
 	
 	@Autowired
@@ -44,37 +50,62 @@ public class PolicyClaimServiceImpl implements PolicyClaimService {
 	
 	@Autowired
     private CustomerPolicyRepository customerPolicyRepository;
-	
-	@Autowired
-    private CustomerRepository customerRepository;
 
-    @Override
-    @Transactional
-    public PolicyClaimResponseDTO raiseClaim(PolicyClaimRequestDTO request, int customerId) {
-        CustomerPolicy policy = customerPolicyRepository.findById(request.getPolicyId())
-                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Policy not found"));
+	@Override
+	@Transactional
+	public PolicyClaimResponseDTO raiseClaim(PolicyClaimRequestDTO request, int customerId) {
+	    CustomerPolicy policy = customerPolicyRepository.findById(request.getPolicyId())
+	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Policy not found"));
 
-        if (policy.getCustomer().getUserId() != customerId) {
-            throw new ResourceNotFoundException(HttpStatus.FORBIDDEN, "Not your policy");
-        }
+	    if (policy.getCustomer().getUserId() != customerId) {
+	        throw new ResourceNotFoundException(HttpStatus.FORBIDDEN, "Not your policy");
+	    }
 
-        if (!policy.isActive()) {
-            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Policy is not active");
-        }
+	    if (!policy.isActive()) {
+	        throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Policy is not active");
+	    }
 
-        boolean alreadyClaimed = policyClaimRepository.existsByCustomerPolicyAndIsDeletedFalse(policy);
-        if (alreadyClaimed) {
-            throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Claim already exists for this policy");
-        }
+	    boolean alreadyClaimed = policyClaimRepository.existsByCustomerPolicyAndIsDeletedFalse(policy);
+	    if (alreadyClaimed) {
+	        throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Claim already exists for this policy");
+	    }
 
-        PolicyClaim claim = new PolicyClaim();
-        claim.setCustomerPolicy(policy);
-        claim.setReason(request.getReason());
-        claim.setStatus(WithdrawalStatus.PENDING);
+	    LocalDate start = policy.getStartDate();
+	    LocalDate end = policy.getEndDate();
+	    LocalDate today = LocalDate.now();
 
-        PolicyClaim savedClaim = policyClaimRepository.save(claim);
-        return toDTO(savedClaim);
-    }
+	    long totalDays = ChronoUnit.DAYS.between(start, end);
+	    long daysPassed = ChronoUnit.DAYS.between(start, today);
+
+	    BigDecimal selectedCoverage = policy.getSelectedCoverageAmount();
+	    BigDecimal penalty = BigDecimal.ZERO;
+	    BigDecimal claimAmount;
+	    boolean isEarly = false;
+
+	    if (today.isBefore(end)) {
+	        isEarly = true;
+	        BigDecimal completionRatio = BigDecimal.valueOf(daysPassed)
+	                .divide(BigDecimal.valueOf(totalDays), 4, RoundingMode.HALF_UP);
+
+	        BigDecimal penaltyRatio = BigDecimal.ONE.subtract(completionRatio);
+	        penalty = selectedCoverage.multiply(penaltyRatio).setScale(2, RoundingMode.HALF_UP);
+	        claimAmount = selectedCoverage.subtract(penalty);
+	    } else {
+	        claimAmount = selectedCoverage;
+	    }
+
+	    PolicyClaim claim = new PolicyClaim();
+	    claim.setCustomerPolicy(policy);
+	    claim.setReason(request.getReason());
+	    claim.setStatus(WithdrawalStatus.PENDING);
+	    claim.setEarlyClaim(isEarly);
+	    claim.setPenaltyAmount(penalty);
+	    claim.setClaimAmount(claimAmount);
+
+	    PolicyClaim savedClaim = policyClaimRepository.save(claim);
+	    return toDTO(savedClaim);
+	}
+
 
     @Override
     public List<PolicyClaimResponseDTO> getClaimsForCustomer(int customerId) {
