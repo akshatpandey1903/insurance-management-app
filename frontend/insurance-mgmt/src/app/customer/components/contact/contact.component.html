@@ -1,2 +1,100 @@
 <app-navbar></app-navbar>
-<p>contact works!</p>
+
+<div class="container mt-4">
+  <div class="row g-4">
+
+    <!-- Contact Support Form -->
+    <div class="col-md-12">
+      <div class="card shadow rounded-4 p-4">
+        <h4 class="mb-3 text-center fw-bold">Contact Support</h4>
+
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="subject" class="form-label">Subject</label>
+            <input
+              id="subject"
+              formControlName="subject"
+              class="form-control"
+              type="text"
+              placeholder="Enter your subject"
+            />
+            <div
+              *ngIf="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched"
+              class="text-danger small"
+            >
+              Subject is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="message" class="form-label">Message</label>
+            <textarea
+              id="message"
+              formControlName="message"
+              rows="4"
+              class="form-control"
+              placeholder="Write your message here"
+            ></textarea>
+            <div
+              *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
+              class="text-danger small"
+            >
+              Message is required.
+            </div>
+          </div>
+
+          <button class="btn btn-primary w-100" [disabled]="contactForm.invalid">
+            Submit
+          </button>
+        </form>
+
+        <div *ngIf="successMsg" class="alert alert-success mt-3">
+          {{ successMsg }}
+        </div>
+        <div *ngIf="errorMsg" class="alert alert-danger mt-3">
+          {{ errorMsg }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Query History Table -->
+    <div class="row-md-6">
+      <div class="card shadow rounded-4 p-4">
+        <h4 class="mb-3 text-center fw-bold">Your Query History</h4>
+
+        <table class="table table-hover table-bordered table-sm align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Sr No</th>
+              <th>Subject</th>
+              <th>Message</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Admin Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let query of queryHistory; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ query.subject }}</td>
+              <td>{{ query.message }}</td>
+              <td>{{ query.createdAt | date: 'medium' }}</td>
+              <td>{{ query.status }}</td>
+              <td>{{ query.adminResponse }}</td>
+            </tr>
+            <tr *ngIf="queryHistory.length === 0">
+              <td colspan="4" class="text-center text-muted">No queries submitted yet.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="loading" class="text-center text-muted">
+          Loading queries...
+        </div>
+        <div *ngIf="fetchError" class="alert alert-danger mt-2">
+          Error fetching queries: {{ fetchError }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

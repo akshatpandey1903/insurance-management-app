@@ -7,6 +7,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,6 @@ import com.aurionpro.app.entity.User;
 import com.aurionpro.app.exceptions.UserApiException;
 import com.aurionpro.app.repository.RoleRepository;
 import com.aurionpro.app.repository.UserRepository;
-import com.aurionpro.app.security.CustomUserDetailsService;
 import com.aurionpro.app.security.JwtTokenProvider;
 
 @Service
@@ -59,8 +59,14 @@ public class AuthServiceImpl implements AuthService{
 	                .orElse("DEFAULT");		
 			JwtAuthResponse authResponse = new JwtAuthResponse();
 			
+			User user = userRepo.findByUsername(loginDto.getUsername())
+		            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+			
+			int userId = user.getUserId();
+			
 			authResponse.setAccessToken(token);
 			authResponse.setRole(role);
+			authResponse.setUserId(user.getUserId());
 			return authResponse;
 		}catch(BadCredentialsException e) {
 			throw new UserApiException(HttpStatus.NOT_FOUND, "Username or Password is incorrect");

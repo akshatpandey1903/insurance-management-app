@@ -70,3 +70,22 @@ export interface TransactionResponse
     userFullName: string;
     userRole: string;
 }
+
+export interface CustomerQueryResponse {
+    id: number;
+    subject: string;
+    message: string;
+    status: string;
+    adminResponse: string;
+    createdAt: Date;
+    updatedAt: Date;
+    customerName: string;
+}
+
+export interface PaginatedResponse<T> {
+    content: T[];
+    totalPages: number;
+    totalElements: number;
+    pageSize: number;
+    last: boolean;
+  }
