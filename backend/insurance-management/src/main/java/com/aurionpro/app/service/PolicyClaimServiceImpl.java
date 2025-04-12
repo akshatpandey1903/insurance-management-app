@@ -24,11 +24,14 @@ import com.aurionpro.app.entity.Customer;
 import com.aurionpro.app.entity.CustomerPolicy;
 import com.aurionpro.app.entity.Employee;
 import com.aurionpro.app.entity.PolicyClaim;
+import com.aurionpro.app.entity.Transaction;
+import com.aurionpro.app.entity.TransactionType;
 import com.aurionpro.app.entity.WithdrawalStatus;
 import com.aurionpro.app.exceptions.ResourceNotFoundException;
 import com.aurionpro.app.repository.CustomerPolicyRepository;
 import com.aurionpro.app.repository.EmployeeRepository;
 import com.aurionpro.app.repository.PolicyClaimRepository;
+import com.aurionpro.app.repository.TransactionRepository;
 
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
@@ -40,7 +43,7 @@ import lombok.RequiredArgsConstructor;
 public class PolicyClaimServiceImpl implements PolicyClaimService {
 	
 	@Autowired
-	private TransactionService transactionService;
+	private TransactionRepository transactionRepository;
 	
 	@Autowired
 	private EmployeeRepository employeeRepository;
@@ -77,6 +80,10 @@ public class PolicyClaimServiceImpl implements PolicyClaimService {
 	    long totalDays = ChronoUnit.DAYS.between(start, end);
 	    long daysPassed = ChronoUnit.DAYS.between(start, today);
 
+	    if (totalDays <= 0) {
+	        throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "Policy duration is invalid");
+	    }
+
 	    BigDecimal selectedCoverage = policy.getSelectedCoverageAmount();
 	    BigDecimal penalty = BigDecimal.ZERO;
 	    BigDecimal claimAmount;
@@ -89,18 +96,20 @@ public class PolicyClaimServiceImpl implements PolicyClaimService {
 
 	        BigDecimal penaltyRatio = BigDecimal.ONE.subtract(completionRatio);
 	        penalty = selectedCoverage.multiply(penaltyRatio).setScale(2, RoundingMode.HALF_UP);
-	        claimAmount = selectedCoverage.subtract(penalty);
+	        claimAmount = selectedCoverage.subtract(penalty).max(BigDecimal.ZERO); // avoid negative
 	    } else {
+	        penalty = BigDecimal.ZERO; // 👈 set explicitly
 	        claimAmount = selectedCoverage;
 	    }
-
+    
+	    System.out.println("Penalty: " + penalty + ", Claim: " + claimAmount);
 	    PolicyClaim claim = new PolicyClaim();
 	    claim.setCustomerPolicy(policy);
 	    claim.setReason(request.getReason());
 	    claim.setStatus(WithdrawalStatus.PENDING);
 	    claim.setEarlyClaim(isEarly);
 	    claim.setPenaltyAmount(penalty);
-	    claim.setClaimAmount(claimAmount);
+	    claim.setClaimAmount(claimAmount != null ? claimAmount : BigDecimal.ZERO);
 
 	    PolicyClaim savedClaim = policyClaimRepository.save(claim);
 	    return toDTO(savedClaim);
@@ -125,6 +134,8 @@ public class PolicyClaimServiceImpl implements PolicyClaimService {
                 ? claim.getVerifiedBy().getFirstName() + " " + claim.getVerifiedBy().getLastName()
                 : null);
         dto.setRequestedAt(claim.getRequestedAt());
+        dto.setClaimAmount(claim.getClaimAmount());
+        dto.setPenaltyAmount(claim.getPenaltyAmount());
         return dto;
     }
     
@@ -150,6 +161,20 @@ public class PolicyClaimServiceImpl implements PolicyClaimService {
         claim.setVerifiedBy(employee);
 
         policyClaimRepository.save(claim);
+        
+        CustomerPolicy policy = claim.getCustomerPolicy();
+        
+        if(requestDTO.getStatus() == WithdrawalStatus.APPROVED) {
+        	Transaction txn = new Transaction();
+            txn.setAmount(claim.getClaimAmount());
+            txn.setDescription("Policy Claim payment to Customer");
+            txn.setTransactionType(TransactionType.CLAIM);
+            txn.setUser(policy.getCustomer());
+            txn.setUserRole("CUSTOMER");
+            txn.setCustomerPolicy(policy);
+
+            transactionRepository.save(txn);
+        }
 
         return toDTO(claim);
     }

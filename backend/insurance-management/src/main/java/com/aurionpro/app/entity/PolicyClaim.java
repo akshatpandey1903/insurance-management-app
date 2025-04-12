@@ -1,5 +1,6 @@
 package com.aurionpro.app.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -48,11 +49,11 @@ public class PolicyClaim {
     @Column(nullable = false)
     private boolean isEarlyClaim;
 
-    @Column
-    private java.math.BigDecimal penaltyAmount;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal penaltyAmount;
 
-    @Column(nullable = false)
-    private java.math.BigDecimal claimAmount;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal claimAmount;
 
     @ManyToOne
     @JoinColumn(name = "verified_by")

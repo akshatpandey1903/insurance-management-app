@@ -1,5 +1,6 @@
 package com.aurionpro.app.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -19,6 +20,6 @@ public class PolicyClaimResponseDTO {
     private String verifiedBy;
     private LocalDateTime requestedAt;
     private boolean isEarlyClaim;
-    private java.math.BigDecimal penaltyAmount;
-    private java.math.BigDecimal claimAmount;
+    private BigDecimal penaltyAmount;
+    private BigDecimal claimAmount;
 }
