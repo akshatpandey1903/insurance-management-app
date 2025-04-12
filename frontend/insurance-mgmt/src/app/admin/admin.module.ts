@@ -14,6 +14,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddCustomerComponent } from './components/add-customer/add-customer.component';
 import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
 import { AddAgentComponent } from './components/add-agent/add-agent.component';
+import { CustomerReportComponent } from './components/reports/customer-report/customer-report.component';
+import { AgentReportComponent } from './components/reports/agent-report/agent-report.component';
+import { AgentCommisionReportComponent } from './components/reports/agent-commision-report/agent-commision-report.component';
+import { PolicyPaymentsComponent } from './components/reports/policy-payments/policy-payments.component';
+import { TransactionsReportComponent } from './components/reports/transactions-report/transactions-report.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +31,12 @@ import { AddAgentComponent } from './components/add-agent/add-agent.component';
     NavbarComponent,
     AddCustomerComponent,
     AddEmployeeComponent,
-    AddAgentComponent
+    AddAgentComponent,
+    CustomerReportComponent,
+    AgentReportComponent,
+    AgentCommisionReportComponent,
+    PolicyPaymentsComponent,
+    TransactionsReportComponent
   ],
   imports: [
     CommonModule,

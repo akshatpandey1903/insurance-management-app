@@ -9,4 +9,5 @@ public class CustomerProfileDTO {
     private String phone;
     private String address;
     private String currentPassword;
+    private String newPassword;
 }

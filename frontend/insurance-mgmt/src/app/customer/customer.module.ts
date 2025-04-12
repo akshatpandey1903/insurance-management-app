@@ -9,6 +9,7 @@ import { PaymentsComponent } from './components/payments/payments.component';
 import { WithdrawlsComponent } from './components/withdrawls/withdrawls.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
   ],
   imports: [
     CommonModule,
-    CustomerRoutingModule
+    CustomerRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class CustomerModule { }

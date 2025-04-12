@@ -1,0 +1,42 @@
+<app-navbar></app-navbar>
+<div class="container py-4">
+  <h2 class="mb-4 text-center text-success fw-bold">Agent Report</h2>
+
+  <div class="d-flex justify-content-end mb-2">
+    <button class="btn btn-outline-primary" (click)="downloadPdf()">
+      <i class="bi bi-download"></i> Download PDF
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Approved By</th>
+          <th>Policies</th>
+          <th>Commission</th>
+          <th>Registered</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let agent of agents; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ agent.name }}</td>
+          <td>{{ agent.email }}</td>
+          <td>{{ agent.approvedBy }}</td>
+          <td>{{ agent.totalPoliciesRegistered }}</td>
+          <td>{{ agent.totalCommissionEarnedYearly }}</td>
+          <td>{{ agent.registeredAt | date: 'mediumDate' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex justify-content-between mt-3">
+    <button class="btn btn-secondary" (click)="prevPage()" [disabled]="pageNumber === 0">Previous</button>
+    <button class="btn btn-secondary" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">Next</button>
+  </div>
+</div>

@@ -1,29 +1,51 @@
 <app-navbar></app-navbar>
-<div class="add-user-container container mt-5">
-    <h2>Add Agent</h2>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="glass-form card p-5 shadow-lg w-100" style="max-width: 600px;">
+    <h2 class="text-center text-primary mb-4 fw-bold">Add Agent</h2>
+
     <form [formGroup]="agentForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <input type="text" formControlName="username" placeholder="Username" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <input type="password" formControlName="password" placeholder="Password" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <input type="email" formControlName="email" placeholder="Email" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <input type="text" formControlName="firstName" placeholder="First Name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <input type="text" formControlName="lastName" placeholder="Last Name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <input type="text" formControlName="licenseNumber" placeholder="License Number" class="form-control"
-                required>
-        </div>
-        <button type="submit" class="btn btn-primary" [disabled]="!agentForm.valid">Add Agent</button>
-        <button type="button" class="btn btn-secondary ml-2"
-            (click)="router.navigate(['/admin/manage-users'])">Back</button>
+
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="username" formControlName="username" placeholder="Username" required>
+        <label for="username">Username</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="password" formControlName="password" placeholder="Password" required>
+        <label for="password">Password</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email" required>
+        <label for="email">Email</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="firstName" formControlName="firstName" placeholder="First Name" required>
+        <label for="firstName">First Name</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="lastName" formControlName="lastName" placeholder="Last Name" required>
+        <label for="lastName">Last Name</label>
+      </div>
+
+      <div class="form-floating mb-4">
+        <input type="text" class="form-control" id="licenseNumber" formControlName="licenseNumber" placeholder="License Number" required>
+        <label for="licenseNumber">License Number</label>
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary px-4" [disabled]="!agentForm.valid">
+          <i class="bi bi-person-plus-fill me-1"></i> Add Agent
+        </button>
+        <button type="button" class="btn btn-outline-secondary px-4" (click)="router.navigate(['/admin/manage-users'])">
+          <i class="bi bi-arrow-left-circle me-1"></i> Back
+        </button>
+      </div>
     </form>
-    <div *ngIf="message" class="alert alert-info mt-3">{{ message }}</div>
+
+    <div *ngIf="message" class="alert alert-info mt-4 text-center">{{ message }}</div>
+  </div>
 </div>

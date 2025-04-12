@@ -1,64 +1,77 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <app-navbar></app-navbar>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-<div class="customer-dashboard">
-    <h1 class="text-center mb-4">Customer Dashboard</h1>
-    <h2 style="text-align: center;">Welcome , Customer</h2>
-    <div class="row">
-      <!-- Profile Management Section -->
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body text-center">
-            <h5 class="card-title">Profile</h5>
-            <p class="card-text">Update your profile and change password.</p>
-            <a routerLink="/customer/profile" class="btn btn-primary">Manage Profile</a>
-          </div>
-        </div>
-      </div>
+<div class="customer-dashboard bg-light min-vh-100 py-5">
   
-      <!-- Policy Management Section -->
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm">
+
+  <div class="container">
+    <h1 class="text-center fw-bold mb-2 text-primary display-5">Customer Dashboard</h1>
+    <h4 class="text-center mb-5 text-secondary">Welcome {{customerName}}</h4>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+      
+      <!-- Profile Management -->
+      <div class="col">
+        <div class="card glass-card h-100 border-0 shadow-lg">
           <div class="card-body text-center">
-            <h5 class="card-title">Policies</h5>
-            <p class="card-text">View, create, claim, or cancel policies.</p>
-            <a routerLink="/customer/policies" class="btn btn-primary">Manage Policies</a>
+            <i class="bi bi-people-fill fs-2 text-primary mb-3"></i>
+            <h5 class="card-title fw-semibold">Profile Management</h5>
+            <p class="card-text text-muted">Update your profile and change password.</p>
+            <a routerLink="/customer/profile" class="btn btn-outline-primary">Manage Profile</a>
           </div>
         </div>
       </div>
-  
-      <!-- Payment Section -->
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm">
+
+      <!-- Policies -->
+      <div class="col">
+        <div class="card glass-card h-100 border-0 shadow-lg">
           <div class="card-body text-center">
-            <h5 class="card-title">Payments</h5>
-            <p class="card-text">View payment receipts and track next payment.</p>
-            <a routerLink="/customer/payments" class="btn btn-primary">View Payments</a>
+            <i class="bi bi-journal fs-2 text-success mb-3"></i>
+            <h5 class="card-title fw-semibold">Policies</h5>
+            <p class="card-text text-muted">View , create , claim or cancel policies.</p>
+            <a routerLink="/customer/policies" class="btn btn-outline-success">Manage Policies</a>
           </div>
         </div>
       </div>
-  
-      <!-- Withdrawal Section -->
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm">
+
+      <!-- Payments -->
+      <div class="col">
+        <div class="card glass-card h-100 border-0 shadow-lg">
           <div class="card-body text-center">
-            <h5 class="card-title">Withdrawals</h5>
-            <p class="card-text">Request policy withdrawal with bank details.</p>
-            <a routerLink="/customer/withdrawals" class="btn btn-primary">Request Withdrawal</a>
+            <i class="bi bi-credit-card-fill fs-2 text-info mb-3"></i>
+            <h5 class="card-title fw-semibold">Payments</h5>
+            <p class="card-text text-muted">View payment reciepts and track next module.</p>
+            <a routerLink="/customer/payments" class="btn btn-outline-info">View Payments</a>
           </div>
         </div>
       </div>
-  
-      <!-- Contact Section -->
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm">
+
+      <!-- Withdrawls -->
+      <div class="col">
+        <div class="card glass-card h-100 border-0 shadow-lg">
           <div class="card-body text-center">
-            <h5 class="card-title">Support</h5>
-            <p class="card-text">Send queries or view responses.</p>
-            <a routerLink="/customer/contact" class="btn btn-primary">Contact Us</a>
+            <i class="bi bi-bar-chart-line-fill fs-2 text-info mb-3"></i>
+            <h5 class="card-title fw-semibold">Withdrawals</h5>
+            <p class="card-text text-muted">Request policy withdrawl</p>
+            <a routerLink="/customer/withdrawals" class="btn btn-outline-info">View Reports</a>
           </div>
         </div>
       </div>
+
+      <!-- Contact Us -->
+      
+      <div class="col">
+        <div class="card glass-card h-100 border-0 shadow-lg">
+          <div class="card-body text-center">
+            <i class="bi bi-person-lines-fill fs-2 text-warning mb-3"></i>
+            <h5 class="card-title fw-semibold">Support</h5>
+            <p class="card-text text-muted">Send queries or view query responses from admin.</p>
+            <a routerLink="/customer/contact" class="btn btn-outline-warning">Contact Us</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+</div>
