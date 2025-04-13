@@ -1,0 +1,110 @@
+<app-navbar></app-navbar>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+
+<style>
+  .dashboard-bg {
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 56px);
+  }
+  .dashboard-card {
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    border-top: 4px solid !important;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+  }
+  .card-title {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+  }
+  .card-text {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+  }
+  .btn {
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+</style>
+
+<div class="dashboard-bg py-5">
+  <div class="container">
+    <h1 class="text-center mb-5 display-5 fw-bold text-primary">Agent Management</h1>
+
+    <div class="row justify-content-center g-4">
+      <!-- Register Agent Card -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 dashboard-card border-primary">
+          <div class="card-body text-center p-4">
+            <div class="icon-circle bg-primary">
+              <i class="bi bi-person-plus text-white fs-4"></i>
+            </div>
+            <h5 class="card-title">Register Agent</h5>
+            <p class="card-text">Add a new insurance agent to the system with complete details.</p>
+            <a routerLink="/employee/agent-management/register" class="btn btn-primary">
+              Register Agent
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Approve Agents Card -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 dashboard-card border-warning">
+          <div class="card-body text-center p-4">
+            <div class="icon-circle bg-warning">
+              <i class="bi bi-hourglass-split text-white fs-4"></i>
+            </div>
+            <h5 class="card-title">Approve Agents</h5>
+            <p class="card-text">Review and approve pending agent registration requests.</p>
+            <a routerLink="/employee/agent-management/pending-approvals" class="btn btn-warning text-white">
+              Approve Agents
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- All Agents Card -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 dashboard-card border-info">
+          <div class="card-body text-center p-4">
+            <div class="icon-circle bg-info">
+              <i class="bi bi-people-fill text-white fs-4"></i>
+            </div>
+            <h5 class="card-title">All Agents</h5>
+            <p class="card-text">View and manage all registered agents in the system.</p>
+            <a routerLink="/employee/agent-management/all" class="btn btn-info text-white">
+              View Agents
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+  crossorigin="anonymous"></script>

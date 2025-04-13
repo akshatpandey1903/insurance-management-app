@@ -1,0 +1,112 @@
+<app-navbar></app-navbar>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+
+<style>
+  .dashboard-bg {
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 56px);
+    padding: 2rem 0;
+  }
+  .claim-card {
+    border-radius: 10px;
+    border-left: 4px solid #0d6efd;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+  }
+  .claim-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  .card-title {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+  }
+  .claim-detail {
+    color: #495057;
+    margin-bottom: 0.8rem;
+  }
+  .claim-detail strong {
+    color: #2c3e50;
+    font-weight: 500;
+    width: 120px;
+    display: inline-block;
+  }
+  .btn-success {
+    background-color: #198754;
+    border-color: #198754;
+    padding: 0.5rem 1.5rem;
+  }
+  .btn-danger {
+    padding: 0.5rem 1.5rem;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+  }
+  .empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #adb5bd;
+  }
+</style>
+
+<div class="dashboard-bg">
+  <div class="container">
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-primary text-white py-3">
+        <h3 class="mb-0"><i class="bi bi-shield-check me-2"></i>Pending Claims</h3>
+      </div>
+      
+      <div class="card-body">
+        <div *ngIf="claims.content.length > 0; else noClaims">
+          <div class="card claim-card" *ngFor="let claim of claims.content">
+            <div class="card-body">
+              <h5 class="card-title">{{ claim.planName }}</h5>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="claim-detail"><strong>Reason:</strong> {{ claim.reason }}</p>
+                  <p class="claim-detail"><strong>Claim Amount:</strong> ₹{{ claim.claimAmount }}</p>
+                  <p class="claim-detail"><strong>Penalty:</strong> ₹{{ claim.penaltyAmount }}</p>
+                </div>
+                <div class="col-md-6">
+                  <p class="claim-detail"><strong>Requested At:</strong> {{ claim.requestedAt | date:'medium' }}</p>
+                  <p class="claim-detail"><strong>Early Claim:</strong> 
+                    <span class="badge" [ngClass]="claim.isEarlyClaim ? 'bg-warning text-dark' : 'bg-success'">
+                      {{ claim.isEarlyClaim ? 'No' : 'Yes' }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+              
+              <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-success me-2" (click)="approveOrReject(claim.id, 'APPROVED')">
+                  <i class="bi bi-check-circle me-1"></i> Approve
+                </button>
+                <button class="btn btn-outline-danger" (click)="approveOrReject(claim.id, 'REJECTED')">
+                  <i class="bi bi-x-circle me-1"></i> Reject
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noClaims>
+          <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h5>No Pending Claims</h5>
+            <p>There are currently no claims awaiting approval</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+  crossorigin="anonymous"></script>

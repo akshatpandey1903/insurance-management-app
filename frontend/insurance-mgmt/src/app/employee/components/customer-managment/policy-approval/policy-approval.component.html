@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+<div class="dashboard-bg py-4">
+  <div class="container">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white py-3">
+        <h2 class="text-center mb-0 fw-bold">Policy Approvals</h2>
+      </div>
+
+      <div class="card-body">
+        <div class="row g-4" *ngIf="policies.content?.length; else noPolicies">
+          <div class="col-md-4" *ngFor="let policy of policies.content">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">{{ policy.customerName }}</h5>
+                <p><strong>Plan:</strong> {{ policy.insurancePlanName }}</p>
+                <p><strong>Agent:</strong> {{ policy.agentName }}</p>
+                <p><strong>Coverage:</strong> ₹{{ policy.selectedCoverageAmount }}</p>
+                <p><strong>Duration:</strong> {{ policy.selectedDurationYears }} years</p>
+                <p><strong>Premium:</strong> ₹{{ policy.calculatedPremium }} ({{ policy.paymentFrequency }})</p>
+              </div>
+              <div class="card-footer d-flex gap-2 justify-content-center">
+                <button class="btn btn-success btn-sm w-50" (click)="approvePolicy(policy.id)">Approve</button>
+                <button class="btn btn-danger btn-sm w-50" (click)="rejectPolicy(policy.id)">Reject</button>
+              </div>              
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noPolicies>
+          <div class="text-center py-5">
+            <i class="bi bi-folder-x fs-1 text-muted"></i>
+            <p class="mt-3 text-muted">No unapproved policies found.</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="card-footer bg-transparent border-top">
+        <pagination
+          [totalItems]="policies.totalElements"
+          [itemsPerPage]="policies.size"
+          [(ngModel)]="currentPage"
+          (pageChanged)="onPageChange($event)"
+          class="justify-content-center mb-0">
+        </pagination>
+      </div>
+    </div>
+  </div>
+</div>

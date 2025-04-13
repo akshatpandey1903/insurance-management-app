@@ -1,0 +1,64 @@
+<app-navbar></app-navbar>
+<div class="dashboard-bg py-4">
+    <div class="container">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white py-3">
+          <h2 class="text-center mb-0 fw-bold">Pending Document Verification</h2>
+        </div>
+  
+        <div class="card-body">
+          <div class="row g-4" *ngIf="pendingDocuments.content?.length; else noDocs">
+            <div class="col-md-4" *ngFor="let doc of pendingDocuments.content">
+              <div class="card h-100 shadow-sm">
+                <img 
+                  [src]="doc.documentUrl" 
+                  class="card-img-top img-thumbnail cursor-pointer" 
+                  alt="Document"
+                  (click)="openPreview(doc)" />
+  
+                <div class="card-body">
+                  <h5 class="card-title">{{ doc.customerName }}</h5>
+                  <p class="mb-1"><strong>Type:</strong> {{ doc.documentType }}</p>
+                  <p class="text-muted small">Uploaded: {{ doc.uploadedAt | date:'medium' }}</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <button class="btn btn-sm btn-success w-50 me-2" (click)="confirmAction(doc.documentId, 'APPROVED')">Approve</button>
+                  <button class="btn btn-sm btn-outline-danger w-50" (click)="confirmAction(doc.documentId, 'REJECTED')">Reject</button>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <ng-template #noDocs>
+            <div class="text-center py-5">
+              <i class="bi bi-folder-x fs-1 text-muted"></i>
+              <p class="mt-3 text-muted">No pending documents to verify.</p>
+            </div>
+          </ng-template>
+        </div>
+  
+        <div class="card-footer bg-transparent border-top">
+            <pagination
+  [totalItems]="pendingDocuments.totalElements"
+  [itemsPerPage]="pendingDocuments.size"
+  [(ngModel)]="currentPage"
+  (pageChanged)="onPageChange($event)"
+  class="justify-content-center mb-0">
+</pagination>       
+        </div>
+      </div>
+    </div>
+  
+    <!-- Modal for Document Preview -->
+    <ng-template #previewModal let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title">Document Preview</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img [src]="selectedDoc?.documentUrl" class="img-fluid rounded border mb-3" alt="Document Full" />
+        <a [href]="selectedDoc?.documentUrl" target="_blank" download class="btn btn-outline-secondary">Download</a>
+      </div>
+    </ng-template>
+  </div>
+  

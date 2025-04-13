@@ -1,0 +1,75 @@
+<app-navbar></app-navbar>
+
+<div class="container py-4" style="background-color: #f8f9fa; min-height: calc(100vh - 56px);">
+  <div class="card shadow-sm" style="border-radius: 10px; overflow: hidden;">
+    <div class="card-header bg-primary text-white py-3">
+      <h4 class="mb-0"><i class="bi bi-person-badge me-2"></i>Agent Report</h4>
+    </div>
+    
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead style="background-color: #2c3e50; color: white;">
+            <tr>
+              <th style="padding-left: 1.5rem; font-weight: 500;">#</th>
+              <th style="font-weight: 500;">Name</th>
+              <th style="font-weight: 500;">Email</th>
+              <th style="font-weight: 500;">Approved By</th>
+              <th style="font-weight: 500;">Policies</th>
+              <th style="font-weight: 500; text-align: right;">Commission</th>
+              <th style="font-weight: 500; padding-right: 1.5rem;">Registered</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let agent of agents.content; index as i" style="transition: all 0.2s ease;">
+              <td style="padding-left: 1.5rem;">{{ i + 1 + currentPage * pageSize }}</td>
+              <td style="font-weight: 500;">{{ agent.name }}</td>
+              <td>{{ agent.email }}</td>
+              <td>{{ agent.approvedBy || 'System' }}</td>
+              <td>
+                <span style="background-color: #0d6efd; color: white; border-radius: 10rem; padding: 0.2em 0.6em; font-size: 0.8em;">
+                  {{ agent.totalPoliciesRegistered }}
+                </span>
+              </td>
+              <td style="text-align: right; color: #198754; font-weight: 600;">₹{{ agent.totalCommissionEarnedYearly | number }}</td>
+              <td style="padding-right: 1.5rem;">{{ agent.registeredAt | date:'mediumDate' }}</td>
+            </tr>
+            <tr *ngIf="agents.content.length === 0">
+              <td colspan="7" style="text-align: center; padding: 2rem; color: #6c757d;">
+                <div>
+                  <i class="bi bi-person-x" style="font-size: 2rem; color: #adb5bd;"></i>
+                  <h5 style="margin-top: 1rem;">No Agents Found</h5>
+                  <p>There are currently no agents to display</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-footer bg-white" style="border-top: 1px solid rgba(0,0,0,.125);">
+      <nav *ngIf="agents.totalPages > 1">
+        <ul class="pagination justify-content-end mb-0">
+          <li class="page-item" [class.disabled]="currentPage === 0">
+            <a class="page-link" (click)="goToPage(currentPage - 1)" style="border-radius: 4px; margin: 0 3px;">
+              <i class="bi bi-chevron-left"></i> Previous
+            </a>
+          </li>
+          <li
+            class="page-item"
+            *ngFor="let page of [].constructor(agents.totalPages); let i = index"
+            [class.active]="i === currentPage"
+          >
+            <a class="page-link" (click)="goToPage(i)" style="border-radius: 4px; margin: 0 3px;">{{ i + 1 }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="agents.isLast">
+            <a class="page-link" (click)="goToPage(currentPage + 1)" style="border-radius: 4px; margin: 0 3px;">
+              Next <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<app-navbar></app-navbar>
+<div class="container mt-4" *ngIf="!loading">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="bi bi-person-circle me-2"></i>My Profile</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="profileForm" (ngSubmit)="onUpdate()">
+          
+          <!-- Username Field -->
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="username" 
+              [placeholder]="user.username"
+            />
+          </div>
+          
+          <!-- Password Field (Blank by default) -->
+          <div class="mb-3">
+            <label class="form-label">Password (leave blank to keep unchanged)</label>
+            <input 
+              type="password" 
+              class="form-control" 
+              formControlName="password" 
+              placeholder="New password" 
+            />
+          </div>
+  
+          <!-- First Name Field -->
+          <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="firstName" 
+              [placeholder]="user.firstName"
+            />
+          </div>
+  
+          <!-- Last Name Field -->
+          <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="lastName" 
+              [placeholder]="user.lastName"
+            />
+          </div>
+  
+          <!-- Email Field (read-only) -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input 
+              type="email" 
+              class="form-control" 
+              [value]="user.email" 
+              readonly 
+            />
+          </div>
+  
+          <!-- Role Field (read-only) -->
+          <div class="mb-3">
+            <label class="form-label">Role</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [value]="user.roleName" 
+              readonly 
+            />
+          </div>
+  
+          <button 
+            type="submit" 
+            class="btn btn-success" 
+            [disabled]="profileForm.invalid"
+          >
+            <i class="bi bi-save me-1"></i>Update Profile
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  

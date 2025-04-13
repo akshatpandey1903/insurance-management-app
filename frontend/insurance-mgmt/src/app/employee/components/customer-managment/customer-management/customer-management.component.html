@@ -1,0 +1,118 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-bg py-5">
+  <div class="container">
+    <h1 class="text-center mb-5 display-5 fw-bold text-primary">Customer Management</h1>
+
+    <div class="row justify-content-center g-4">
+      <!-- View All Customers -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 dashboard-card border-primary">
+          <div class="card-body text-center p-4">
+            <div class="icon-circle bg-primary mb-3 mx-auto">
+              <i class="bi bi-people-fill text-white fs-4"></i>
+            </div>
+            <h5 class="card-title fw-bold">View All Customers</h5>
+            <p class="card-text text-muted">Browse the list of registered customers with details.</p>
+            <a routerLink="/employee/customer-management/view" class="btn btn-primary px-4">View Customers</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verify Documents -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 dashboard-card border-success">
+          <div class="card-body text-center p-4">
+            <div class="icon-circle bg-success mb-3 mx-auto">
+              <i class="bi bi-file-earmark-check text-white fs-4"></i>
+            </div>
+            <h5 class="card-title fw-bold">Verify Documents</h5>
+            <p class="card-text text-muted">Approve or reject uploaded documents.</p>
+            <a routerLink="/employee/customer-management/document-verification" class="btn btn-success px-4">Verify Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Approve Policy Purchases -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 dashboard-card border-warning">
+          <div class="card-body text-center p-4">
+            <div class="icon-circle bg-warning mb-3 mx-auto">
+              <i class="bi bi-journal-check text-white fs-4"></i>
+            </div>
+            <h5 class="card-title fw-bold">Approve Policies</h5>
+            <p class="card-text text-muted">Activate purchased policies.</p>
+            <a routerLink="/employee/customer-management/policy-approvals" class="btn btn-warning px-4">Review Policies</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Respond to Queries -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 dashboard-card border-info">
+          <div class="card-body text-center p-4">
+            <div class="icon-circle bg-info mb-3 mx-auto">
+              <i class="bi bi-question-circle text-white fs-4"></i>
+            </div>
+            <h5 class="card-title fw-bold">Customer Queries</h5>
+            <p class="card-text text-muted">Reply to customer queries and issues.</p>
+            <a routerLink="/employee/customer-management/queries" class="btn btn-info px-4">View Queries</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Approve Claims -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 dashboard-card border-danger">
+          <div class="card-body text-center p-4">
+            <div class="icon-circle bg-danger mb-3 mx-auto">
+              <i class="bi bi-shield-check text-white fs-4"></i>
+            </div>
+            <h5 class="card-title fw-bold">Policy Claims</h5>
+            <p class="card-text text-muted">View and take action on claim requests.</p>
+            <a routerLink="/employee/customer-management/claims" class="btn btn-danger px-4">Process Claims</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .dashboard-bg {
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 56px);
+  }
+  .dashboard-card {
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    border-top: 4px solid !important;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-title {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+  .card-text {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+  }
+  .btn {
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+</style>

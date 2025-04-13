@@ -11,6 +11,10 @@ import { HttpClientModule , HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ForgotPasswordComponent } from './components/login/forgot-password/forgot-password.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { NgxCaptchaModule } from 'ngx-captcha';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrModule } from 'ngx-toastr';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { EmployeeModule } from './employee/employee.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,11 @@ import { NgxCaptchaModule } from 'ngx-captcha';
     FormsModule,
     HttpClientModule,
     NgxCaptchaModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule,
+    ToastrModule.forRoot(),
+    PaginationModule.forRoot(),
+    EmployeeModule
   ],
   providers: [
     {

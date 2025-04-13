@@ -1,0 +1,147 @@
+<app-navbar></app-navbar>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+
+<style>
+  .dashboard-bg {
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 56px);
+    padding: 2rem 0;
+  }
+  .query-card {
+    border-radius: 10px;
+    border-left: 4px solid #0d6efd;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+  }
+  .query-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  .query-header {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+  }
+  .query-detail {
+    color: #495057;
+    margin-bottom: 0.8rem;
+  }
+  .query-detail strong {
+    color: #2c3e50;
+    font-weight: 500;
+    width: 120px;
+    display: inline-block;
+  }
+  .query-response {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  .btn-primary {
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+  }
+  .empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #adb5bd;
+  }
+</style>
+
+<div class="dashboard-bg">
+  <div class="container">
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-primary text-white py-3">
+        <h3 class="mb-0"><i class="bi bi-question-circle me-2"></i>Customer Queries</h3>
+      </div>
+      
+      <div class="card-body">
+        <div *ngIf="queries.content.length > 0; else noQueries">
+          <div class="card query-card" *ngFor="let query of queries.content">
+            <div class="card-body">
+              <h5 class="query-header">
+                <i class="bi bi-person-circle me-2"></i>{{ query.customerName }}
+                <span class="badge bg-light text-dark float-end">
+                  {{ query.createdAt | date:'mediumDate' }}
+                </span>
+              </h5>
+              
+              <p class="query-detail"><strong>Subject:</strong> {{ query.subject }}</p>
+              <p class="query-detail"><strong>Message:</strong></p>
+              <div class="alert alert-light">
+                {{ query.message }}
+              </div>
+              
+              <ng-container *ngIf="query.adminResponse; else respondBtn">
+                <div class="query-response">
+                  <p class="query-detail"><strong><i class="bi bi-check-circle-fill text-success me-1"></i>Response:</strong></p>
+                  <p>{{ query.adminResponse }}</p>
+                  <p class="text-muted small mt-2">
+                    <i class="bi bi-clock-history me-1"></i>Responded on {{ query.updatedAt | date:'medium' }}
+                  </p>
+                </div>
+              </ng-container>
+              
+              <ng-template #respondBtn>
+                <div class="d-flex justify-content-end mt-3">
+                  <button class="btn btn-primary" (click)="respond(query)">
+                    <i class="bi bi-reply me-1"></i> Respond to Query
+                  </button>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Filter and pagination -->
+<div class="d-flex justify-content-between align-items-center mt-4">
+    <div>
+      <label for="statusSelect" class="form-label me-2 fw-semibold">Filter by Status:</label>
+      <select id="statusSelect" class="form-select d-inline-block w-auto" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+        <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+      </select>
+    </div>
+  
+    <nav *ngIf="queries.totalPages > 1">
+      <ul class="pagination mb-0">
+        <li class="page-item" [class.disabled]="currentPage === 0">
+          <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
+        </li>
+        <li 
+          class="page-item" 
+          *ngFor="let page of [].constructor(queries.totalPages); let i = index"
+          [class.active]="i === currentPage">
+          <button class="page-link" (click)="changePage(i)">{{ i + 1 }}</button>
+        </li>
+        <li class="page-item" [class.disabled]="queries.isLast">
+          <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  
+        <ng-template #noQueries>
+          <div class="empty-state">
+            <i class="bi bi-chat-square-text"></i>
+            <h5>No Pending Queries</h5>
+            <p>There are currently no customer queries to display</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+  crossorigin="anonymous"></script>
