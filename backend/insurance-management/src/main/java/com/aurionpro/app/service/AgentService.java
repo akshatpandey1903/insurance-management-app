@@ -13,4 +13,5 @@ public interface AgentService {
     void softDeleteAgent(int id);
     List<AgentAssignedPolicyDTO> getAssignedPolicies(int agentId);
     AgentProfileDTO getProfile(int agentId);
+    AgentResponseDTO rejectAgent(int agentId, int approverId);
 }

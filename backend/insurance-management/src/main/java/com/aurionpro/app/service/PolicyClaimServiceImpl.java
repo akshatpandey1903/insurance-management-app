@@ -96,9 +96,9 @@ public class PolicyClaimServiceImpl implements PolicyClaimService {
 
 	        BigDecimal penaltyRatio = BigDecimal.ONE.subtract(completionRatio);
 	        penalty = selectedCoverage.multiply(penaltyRatio).setScale(2, RoundingMode.HALF_UP);
-	        claimAmount = selectedCoverage.subtract(penalty).max(BigDecimal.ZERO); // avoid negative
+	        claimAmount = selectedCoverage.subtract(penalty).max(BigDecimal.ZERO);
 	    } else {
-	        penalty = BigDecimal.ZERO; // 👈 set explicitly
+	        penalty = BigDecimal.ZERO;
 	        claimAmount = selectedCoverage;
 	    }
     

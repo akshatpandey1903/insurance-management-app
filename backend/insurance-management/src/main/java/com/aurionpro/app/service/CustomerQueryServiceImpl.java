@@ -40,7 +40,7 @@ public class CustomerQueryServiceImpl implements CustomerQueryService {
         query.setCustomer(customer);
         query.setSubject(dto.getSubject());
         query.setMessage(dto.getMessage());
-        query.setStatus(QueryStatus.PENDING);  // enum
+        query.setStatus(QueryStatus.PENDING);
         query.setCreatedAt(LocalDateTime.now());
         query.setUpdatedAt(LocalDateTime.now());
 
@@ -70,11 +70,12 @@ public class CustomerQueryServiceImpl implements CustomerQueryService {
     
     @Override
     public PageResponse<CustomerQueryResponseDTO> getAllQueriesPaginated(int page, int size, QueryStatus status) {
+    	System.out.println("Fetching paginated queries...");
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         Page<CustomerQuery> queryPage;
         if (status != null) {
-            queryPage = queryRepository.findByStatus(status, pageable);
+            queryPage = queryRepository.findByStatusAndIsDeletedFalse(status, pageable);
         } else {
             queryPage = queryRepository.findAll(pageable);
         }
@@ -82,7 +83,8 @@ public class CustomerQueryServiceImpl implements CustomerQueryService {
         List<CustomerQueryResponseDTO> dtos = queryPage.getContent().stream()
                 .map(this::toDTO)
                 .toList();
-
+        
+        System.out.println(dtos);
         return new PageResponse<>(
                 dtos,
                 queryPage.getTotalPages(),

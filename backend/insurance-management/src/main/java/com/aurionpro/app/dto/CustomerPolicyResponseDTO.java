@@ -4,9 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.aurionpro.app.entity.PaymentFrequency;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class CustomerPolicyResponseDTO {
 
     private int id;

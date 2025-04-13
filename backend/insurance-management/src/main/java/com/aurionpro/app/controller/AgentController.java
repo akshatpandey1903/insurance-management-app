@@ -26,7 +26,7 @@ public class AgentController {
 	@Autowired
 	private AgentService agentService;
 	
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@GetMapping("/pending")
 	public ResponseEntity<PageResponse<AgentResponseDTO>> getPendingAgents(
 	    @RequestParam(defaultValue = "0") int page,
@@ -37,6 +37,12 @@ public class AgentController {
 	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@PutMapping("/approve/{agentId}")
 	public ResponseEntity<AgentResponseDTO> approveAgent(@PathVariable int agentId, @RequestParam int approverId){
+		return ResponseEntity.ok(agentService.approveAgent(agentId, approverId));
+	}
+	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+	@PutMapping("/reject/{agentId}")
+	public ResponseEntity<AgentResponseDTO> rejectAgent(@PathVariable int agentId, @RequestParam int approverId){
 		return ResponseEntity.ok(agentService.approveAgent(agentId, approverId));
 	}
 	

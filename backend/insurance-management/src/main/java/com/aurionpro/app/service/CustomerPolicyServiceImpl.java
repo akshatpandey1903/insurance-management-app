@@ -2,6 +2,7 @@ package com.aurionpro.app.service;
 
 import com.aurionpro.app.dto.CustomerPolicyRequestDTO;
 import com.aurionpro.app.dto.CustomerPolicyResponseDTO;
+import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.entity.*;
 import com.aurionpro.app.exceptions.ResourceNotFoundException;
 import com.aurionpro.app.repository.*;
@@ -17,6 +18,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -233,4 +236,59 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
         }
     }
     
+    @Override
+    public PageResponse<CustomerPolicyResponseDTO> getUnapprovedPolicies(int page, int size) {
+        Page<CustomerPolicy> policies = customerPolicyRepository.findByIsActiveFalseAndApprovedByNullAndIsRejectedFalse(PageRequest.of(page, size));
+
+        List<CustomerPolicyResponseDTO> dtoList = policies.getContent().stream()
+            .map(policy -> {
+                String customerName = policy.getCustomer().getFirstName() + " " + policy.getCustomer().getLastName();
+
+                String agentName = policy.getAgent() != null
+                    ? policy.getAgent().getFirstName() + " " + policy.getAgent().getLastName()
+                    : "N/A";
+
+                return new CustomerPolicyResponseDTO(
+                    policy.getId(),
+                    customerName,
+                    policy.getInsurancePlan().getPlanName(),
+                    policy.getPaymentFrequency(),
+                    policy.getCalculatedPremium(),
+                    policy.getSelectedCoverageAmount(),
+                    policy.getSelectedDurationYears(),
+                    null, // Start date (not yet approved)
+                    null, // End date (not yet approved)
+                    null, // Next due date (not yet approved)
+                    false, // Active status (not approved)
+                    null, // Approved by (not yet approved)
+                    agentName
+                );
+            })
+            .collect(Collectors.toList());
+
+        return new PageResponse<>(dtoList, policies.getTotalPages(), policies.getTotalElements(), size, policies.isLast());
+    }
+    
+    @Override
+    public void rejectCustomerPolicy(int policyId, int employeeId, String reason) {
+        CustomerPolicy policy = customerPolicyRepository.findById(policyId)
+            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND ,"Policy not found"));
+
+        if (policy.isActive()) {
+            throw new IllegalStateException("Policy is already approved");
+        }
+
+        Employee employee = employeeRepository.findById(employeeId)
+            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND ,"Employee not found"));
+
+        policy.setRejected(true);
+        policy.setActive(false);
+        policy.setApprovedBy(employee);
+        policy.setStartDate(null);
+        policy.setEndDate(null);
+        policy.setRejectionReason(reason);
+
+        customerPolicyRepository.save(policy);
+    }
+
 }

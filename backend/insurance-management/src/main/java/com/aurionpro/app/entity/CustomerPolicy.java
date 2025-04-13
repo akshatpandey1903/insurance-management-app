@@ -75,4 +75,10 @@ public class CustomerPolicy {
 	private boolean isCancelled = false;
 
 	private LocalDate cancellationDate;
+	
+	@Column(name = "is_rejected")
+	private boolean isRejected = false;
+
+	@Column(name = "rejection_reason")
+	private String rejectionReason;
 }

@@ -3,6 +3,7 @@ package com.aurionpro.app.repository;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -46,5 +47,7 @@ public interface CustomerPolicyRepository extends JpaRepository<CustomerPolicy, 
 			      "FROM Agent a LEFT JOIN a.soldPolicies cp " +
 			      "GROUP BY a.userId, a.firstName, a.lastName, a.email, a.totalEarnings")
 			Page<AgentCommissionReportDto> getAgentCommissionReport(Pageable pageable);
+
+		Page<CustomerPolicy> findByIsActiveFalseAndApprovedByNullAndIsRejectedFalse(PageRequest of);
 
 }

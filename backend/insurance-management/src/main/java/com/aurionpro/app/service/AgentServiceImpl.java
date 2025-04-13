@@ -95,6 +95,23 @@ public class AgentServiceImpl implements AgentService{
         		);
         return response;
 	}
+	
+	@Override
+	public AgentResponseDTO rejectAgent(int agentId, int approverId) {
+		Agent agent = agentRepository.findById(agentId)
+		        .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND ,"Agent not found"));
+		agent.setActive(false);;
+		Agent updated = agentRepository.save(agent);
+		AgentResponseDTO response = new AgentResponseDTO(
+				updated.getUserId(),
+				updated.getFirstName() + " "  + agent.getLastName(),
+				updated.getEmail(),
+	        	updated.getLicenseNumber(),
+	       		updated.isApproved()
+		);
+		
+		return response;
+	}
 
 	@Override
 	public void softDeleteAgent(int id) {

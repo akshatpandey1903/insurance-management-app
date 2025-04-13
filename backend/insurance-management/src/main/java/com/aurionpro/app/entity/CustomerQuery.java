@@ -31,8 +31,8 @@ public class CustomerQuery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "customer_id")
+    @ManyToOne()
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @Column(nullable = false)

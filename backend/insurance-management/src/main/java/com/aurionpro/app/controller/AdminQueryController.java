@@ -18,23 +18,24 @@ import com.aurionpro.app.service.CustomerQueryService;
 
 @RestController
 @RequestMapping("/app/admin/queries")
-@PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
 public class AdminQueryController {
 
     @Autowired
     private CustomerQueryService customerQueryService;
 
     @GetMapping
-    public ResponseEntity<PageResponse<CustomerQueryResponseDTO>> getAllQueries(
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public ResponseEntity<PageResponse<CustomerQueryResponseDTO>> getAllQueriesPaginated(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(value = "status", required = false) QueryStatus status) {
-
+    	System.out.println("Query endpoint hit");
         PageResponse<CustomerQueryResponseDTO> response = customerQueryService.getAllQueriesPaginated(page, size, status);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{queryId}/response")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public ResponseEntity<CustomerQueryResponseDTO> respondToQuery(
             @PathVariable int queryId,
             @RequestBody String response) {

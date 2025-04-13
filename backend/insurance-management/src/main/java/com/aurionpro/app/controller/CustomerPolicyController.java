@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.app.dto.CustomerPolicyRequestDTO;
 import com.aurionpro.app.dto.CustomerPolicyResponseDTO;
+import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.service.CustomerPolicyService;
 
 import jakarta.validation.Valid;
@@ -53,6 +55,26 @@ public class CustomerPolicyController {
 	) {
 	    CustomerPolicyResponseDTO responseDTO = customerPolicyService.cancelPolicy(customerId, policyId);
 	    return ResponseEntity.ok(responseDTO);
+	}
+	
+	@GetMapping("/unapproved")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+	public ResponseEntity<PageResponse<CustomerPolicyResponseDTO>> getUnapprovedPolicies(
+	        @RequestParam(defaultValue = "0") int page, 
+	        @RequestParam(defaultValue = "10") int size) {
+	    PageResponse<CustomerPolicyResponseDTO> response = customerPolicyService.getUnapprovedPolicies(page, size);
+	    return ResponseEntity.ok(response);
+	}
+	
+	@PutMapping("/reject/{policyId}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+	public ResponseEntity<String> rejectPolicy(
+	        @PathVariable int policyId,
+	        @RequestParam("employeeId") int employeeId,
+	        @RequestParam("reason") String reason) {
+
+	    customerPolicyService.rejectCustomerPolicy(policyId, employeeId, reason);
+	    return ResponseEntity.ok("Policy rejected successfully.");
 	}
 
 }

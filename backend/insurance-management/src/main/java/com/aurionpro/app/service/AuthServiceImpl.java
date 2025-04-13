@@ -58,7 +58,9 @@ public class AuthServiceImpl implements AuthService{
 	                .map(auth -> auth.replace("ROLE_", "")) 
 	                .orElse("DEFAULT");		
 			JwtAuthResponse authResponse = new JwtAuthResponse();
-			
+			User user = userRepo.findByUsername(loginDto.getUsername())
+					.orElseThrow(() -> new RuntimeException("Error"));
+			authResponse.setUserId(user.getUserId());
 			authResponse.setAccessToken(token);
 			authResponse.setRole(role);
 			return authResponse;

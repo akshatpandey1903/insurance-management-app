@@ -13,4 +13,8 @@ public interface CustomerQueryRepository extends JpaRepository<CustomerQuery, In
 	List<CustomerQuery> findAllByCustomer_UserIdAndIsDeletedFalse(int customerId);
 
 	Page<CustomerQuery> findByStatus(QueryStatus status, Pageable pageable);
+	Page<CustomerQuery> findAll(Pageable pageable);
+	Page<CustomerQuery> findByStatusAndIsDeletedFalse(QueryStatus status, Pageable pageable);
+    
+    Page<CustomerQuery> findAllByIsDeletedFalse(Pageable pageable);
 }
