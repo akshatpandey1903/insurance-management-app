@@ -31,31 +31,59 @@ export class LoginComponent {
 
   
 
+  // onLogin() {
+  //   if (!this.loginForm.valid || !this.captchaResolved) {
+  //     console.log('Please complete the form and CAPTCHA');
+  //     return;
+  //   }
+
+  //   const loginData = this.loginForm.value;
+  //   this.authService.login(loginData).subscribe(
+  //     {
+  //       next: response => {
+  //         console.log('Login successful', response);
+  //         localStorage.setItem('accessToken', response.accessToken);
+  //         localStorage.setItem('user', JSON.stringify(response.user));
+  //         console.log('Login successful', response.accessToken);
+  //         const role = response.role || this.authService.getRoleName();
+  //         this.redirectBasedOnRole(role);
+  //       },
+  //       error: error => console.error('Login failed', error)
+  //     }
+  //   );
+  // }
+
   onLogin() {
     if (!this.loginForm.valid || !this.captchaResolved) {
       console.log('Please complete the form and CAPTCHA');
       return;
     }
-
+  
     const loginData = this.loginForm.value;
-    this.authService.login(loginData).subscribe(
-      {
-        next: response => {
-          console.log('Login successful', response);
-          localStorage.setItem('user', JSON.stringify(response.user));
-          localStorage.setItem('accessToken', response.accessToken);
-          console.log('Login successful', response.accessToken);
-          const role = response.role || this.authService.getRoleName();
-          this.redirectBasedOnRole(role);
-        },
-        error: error => console.error('Login failed', error)
-      }
-    );
+  
+    this.authService.loginAndRedirect(loginData, this.captchaResolved).subscribe({
+      next: () => console.log('Login & Redirect Successful'),
+      error: err => console.error('Login failed', err)
+    });
   }
 
   getLoggedInUser() {
     return JSON.parse(localStorage.getItem('user')!);
   }
+
+  getUserId(): number {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return 0;
+  
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.userId || 0;
+    } catch (e) {
+      console.error('Invalid token:', e);
+      return 0;
+    }
+  }
+
 
   private redirectBasedOnRole(roleName: string){
     switch (roleName.toUpperCase()) {

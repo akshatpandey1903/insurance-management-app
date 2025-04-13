@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+<div class="container mt-4">
+    <h2 class="mb-4">Resolve Customer Queries</h2>
+  
+    <div *ngIf="errorMsg" class="alert alert-danger">
+      {{ errorMsg }}
+    </div>
+  
+    <table class="table table-bordered table-hover" *ngIf="unresolvedQueries.length > 0">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>User ID</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Submitted At</th>
+          <th>Admin Response</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let query of unresolvedQueries; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ query.id }}</td>
+          <td>{{ query.subject }}</td>
+          <td>{{ query.message }}</td>
+          <td>{{ query.createdAt | date: 'medium' }}</td>
+          <td>
+            <textarea [(ngModel)]="query.adminResponse" rows="2" class="form-control" placeholder="Type your response here..."></textarea>
+          </td>
+          <td>
+            <button
+              class="btn btn-success btn-sm"
+              (click)="resolve(query.id, query.adminResponse)"
+              [disabled]="!query.adminResponse"
+            >
+              Submit
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="unresolvedQueries.length === 0" class="alert alert-info">
+      No pending queries to resolve.
+    </div>
+  </div>
+  

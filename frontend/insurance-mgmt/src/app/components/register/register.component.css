@@ -47,9 +47,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #ff6f61 0%, #e65b50 100%);
+  background: linear-gradient(135deg, #274c8e 0%, #274c8e 100%);
   position: relative;
-  padding: 60px 20px;
+  padding: 20px 20px;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -84,7 +84,7 @@
 .card-title {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #ff6f61;
+  color: #274c8e;
   margin-bottom: 25px;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
 }
@@ -116,7 +116,7 @@
 }
 
 .btn-register {
-  background: linear-gradient(90deg, #ff6f61, #e65b50);
+  background: linear-gradient(90deg, #274c8e, #274c8e);
   color: white;
   padding: 12px 25px;
   border: none;
@@ -139,7 +139,7 @@ p {
 }
 
 a {
-  color: #ff6f61;
+  color: #274c8e;
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s ease;

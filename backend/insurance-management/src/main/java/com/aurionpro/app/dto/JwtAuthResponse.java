@@ -1,6 +1,8 @@
 package com.aurionpro.app.dto;
 
 
+import com.aurionpro.app.entity.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

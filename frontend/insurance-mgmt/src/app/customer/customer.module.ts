@@ -10,6 +10,7 @@ import { WithdrawlsComponent } from './components/withdrawls/withdrawls.componen
 import { ContactComponent } from './components/contact/contact.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -19,13 +20,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     PoliciesComponent,
     PaymentsComponent,
     WithdrawlsComponent,
-    ContactComponent,
-    NavbarComponent
+    NavbarComponent,
+    ContactComponent
   ],
   imports: [
     CommonModule,
     CustomerRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class CustomerModule { }

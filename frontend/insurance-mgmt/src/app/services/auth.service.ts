@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +10,11 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:8080/app';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient , private router: Router) {}
 
-  login(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, data)
-  }
+  // login(data: any): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/login`, data)
+  // }
 
   register(data: any): Observable<any> {
 
@@ -63,13 +65,50 @@ export class AuthService {
     return null;
   }
 
-  // getAdminName(): string | null {
-  //   const token = localStorage.getItem('accessToken');
-  //   if (token) {
-  //     const payload = JSON.parse(atob(token.split('.')[1]));
-  //     return payload.name || null;
-  //   }
-  //   return null;
-  // }
+  getUserId(): number {
+    const userId = localStorage.getItem('userId');
+    return userId ? Number(userId) : 0;
+  }
+  
 
+  loginAndRedirect(data: any, captchaResolved: boolean): Observable<any> {
+    if (!data.username || !data.password || !captchaResolved) {
+      console.log('Invalid login data or CAPTCHA not resolved');
+      throw new Error('Invalid login data or CAPTCHA not resolved');
+    }
+
+    return this.http.post(`${this.apiUrl}/login`, data).pipe(
+      tap((response: any) => {
+        console.log('Login API response:', response);
+        localStorage.setItem('userId', response.userId);
+        localStorage.setItem('accessToken', response.accessToken);
+
+        
+        const role = response.role || this.getRoleName();
+        this.redirectBasedOnRole(role);
+      })
+    );
+  }
+
+  private redirectBasedOnRole(roleName: string) {
+    switch (roleName?.toUpperCase()) {
+      case 'ADMIN':
+        this.router.navigate(['/admin/dashboard']);
+        break;
+      case 'CUSTOMER':
+        this.router.navigate(['/customer/dashboard']);
+        break;
+      case 'AGENT':
+        this.router.navigate(['/agent/dashboard']);
+        break;
+      case 'EMPLOYEE':
+        this.router.navigate(['/employee/dashboard']);
+        break;
+      default:
+        console.error('Unknown role:', roleName);
+        this.router.navigate(['/login']);
+    }
+  
+
+}
 }
