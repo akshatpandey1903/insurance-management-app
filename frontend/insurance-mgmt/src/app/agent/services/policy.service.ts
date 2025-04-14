@@ -10,13 +10,12 @@ export class PolicyService {
   constructor(private http: HttpClient) { }
 
   private getHeaders() {
-    const token = localStorage.getItem('token');  // Fetch token from localStorage
+    const token = localStorage.getItem('token'); 
     return new HttpHeaders({
-      'Authorization': `Bearer ${token}`  // Add token in the Authorization header
+      'Authorization': `Bearer ${token}` 
     });
   }
 
-  // Register policy
   registerPolicy(data: any, customerId: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/${customerId}`, data, { headers: this.getHeaders() });
   }

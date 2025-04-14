@@ -9,13 +9,17 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.app.dto.AgentAssignedPolicyDTO;
+import com.aurionpro.app.dto.AgentCommissionReportDto;
+import com.aurionpro.app.dto.AgentEarningsDTO;
 import com.aurionpro.app.dto.AgentProfileDTO;
 import com.aurionpro.app.dto.AgentResponseDTO;
+import com.aurionpro.app.dto.AgentUpdateRequestDTO;
 import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.service.AgentService;
 
@@ -63,4 +67,33 @@ public class AgentController {
 	public AgentProfileDTO viewProfile(@RequestParam int agentId) {
 	    return agentService.getProfile(agentId);
 	}
+	
+	@GetMapping("/earnings/summary/{agentId}")
+	@PreAuthorize("hasRole('AGENT')")
+	public ResponseEntity<AgentCommissionReportDto> getEarningsSummary(@PathVariable int agentId) {
+	    return ResponseEntity.ok(agentService.getCommissionReport(agentId));
+	}
+	
+	
+	@GetMapping("/earnings/details/{agentId}")
+	@PreAuthorize("hasRole('AGENT')")
+	public ResponseEntity<List<AgentEarningsDTO>> getEarningsDetails(@PathVariable int agentId) {
+	    return ResponseEntity.ok(agentService.getEarningsDetails(agentId));
+	}
+	
+	
+	@GetMapping("/profile/{agentId}")
+	@PreAuthorize("hasRole('AGENT')")
+	public ResponseEntity<AgentResponseDTO> getAgentProfile(@PathVariable int agentId) {
+	    return ResponseEntity.ok(agentService.getAgentProfile(agentId));
+	}
+
+	@PutMapping("/profile/{agentId}")
+	@PreAuthorize("hasRole('AGENT')")
+	public ResponseEntity<AgentResponseDTO> updateAgentProfile(
+	        @PathVariable int agentId,
+	        @RequestBody AgentUpdateRequestDTO updateDTO) {
+	    return ResponseEntity.ok(agentService.updateAgentProfile(agentId, updateDTO));
+	}
+
 }

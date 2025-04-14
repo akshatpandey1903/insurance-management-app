@@ -15,4 +15,5 @@ public class JwtAuthResponse {
 	private String tokenType="Bearer";
 	private String role; // line chng
 	private int userId;
+	private String licenseNumber;
 }

@@ -22,6 +22,7 @@ import com.aurionpro.app.entity.Customer;
 import com.aurionpro.app.entity.Employee;
 import com.aurionpro.app.entity.User;
 import com.aurionpro.app.exceptions.UserApiException;
+import com.aurionpro.app.repository.AgentRepository;
 import com.aurionpro.app.repository.RoleRepository;
 import com.aurionpro.app.repository.UserRepository;
 import com.aurionpro.app.security.JwtTokenProvider;
@@ -34,6 +35,9 @@ public class AuthServiceImpl implements AuthService{
 	
 	@Autowired
 	private RoleRepository roleRepo;
+	
+	@Autowired
+	private AgentRepository agentRepo;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -49,28 +53,39 @@ public class AuthServiceImpl implements AuthService{
 
 	@Override
 	public JwtAuthResponse login(LoginDTO loginDto) {
-		try {
-			Authentication authentication = authManager.authenticate(
-					new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-			String token = tokenProvider.generateToken(authentication);
-			String role = authentication.getAuthorities().stream()
-	                .findFirst()
-	                .map(authority -> authority.getAuthority()) 
-	                .map(auth -> auth.replace("ROLE_", "")) 
-	                .orElse("DEFAULT");		
-			JwtAuthResponse authResponse = new JwtAuthResponse();
-			User user = userRepo.findByUsername(loginDto.getUsername())
-					.orElseThrow(() -> new RuntimeException("Error"));
-			authResponse.setUserId(user.getUserId());
-			
-			authResponse.setAccessToken(token);
-			authResponse.setRole(role);
-			authResponse.setUserId(user.getUserId());
-			return authResponse;
-		}catch(BadCredentialsException e) {
-			throw new UserApiException(HttpStatus.NOT_FOUND, "Username or Password is incorrect");
-		}
+	    try {
+	        Authentication authentication = authManager.authenticate(
+	            new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+	        
+	        SecurityContextHolder.getContext().setAuthentication(authentication);
+	        String token = tokenProvider.generateToken(authentication);
+	        
+	        String role = authentication.getAuthorities().stream()
+	            .findFirst()
+	            .map(authority -> authority.getAuthority())
+	            .map(auth -> auth.replace("ROLE_", ""))
+	            .orElse("DEFAULT");
+	        
+	        JwtAuthResponse authResponse = new JwtAuthResponse();
+	        User user = userRepo.findByUsername(loginDto.getUsername())
+	            .orElseThrow(() -> new RuntimeException("Error"));
+	        
+	        authResponse.setUserId(user.getUserId());
+	        authResponse.setAccessToken(token);
+	        authResponse.setRole(role);
+	        
+	        // Set licenseNumber only if user is an Agent
+	        if ("AGENT".equals(role)) {
+	            // We need to fetch the Agent entity since User doesn't have licenseNumber
+	            Agent agent = agentRepo.findByUserId(user.getUserId())
+	                .orElseThrow(() -> new RuntimeException("Agent not found for this user"));
+	            authResponse.setLicenseNumber(agent.getLicenseNumber());
+	        }
+	        
+	        return authResponse;
+	    } catch(BadCredentialsException e) {
+	        throw new UserApiException(HttpStatus.NOT_FOUND, "Username or Password is incorrect");
+	    }
 	}
 
 	@Override
@@ -446,7 +461,7 @@ public class AuthServiceImpl implements AuthService{
 	        
 	        .cta-button {
 	          background-color: #1E5C97;
-	          color: white;
+	          color: #fff;
 	          padding: 12px 25px;
 	          text-decoration: none;
 	          border-radius: 4px;

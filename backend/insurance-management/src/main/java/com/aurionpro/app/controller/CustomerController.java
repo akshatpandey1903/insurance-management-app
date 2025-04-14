@@ -1,5 +1,7 @@
 package com.aurionpro.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.app.dto.CustomerAndPolicyDTO;
+import com.aurionpro.app.dto.CustomerBasicDTO;
 import com.aurionpro.app.dto.CustomerPolicyResponseDTO;
 import com.aurionpro.app.dto.CustomerProfileDTO;
 import com.aurionpro.app.dto.CustomerRegistrationDTO;
@@ -74,5 +77,13 @@ public class CustomerController {
         UserResponseDTO customer = customerService.registerCustomerByAgent(dto.getCustomerDTO(), agentId);
         return customerPolicyService.registerPolicy(dto.getPolicyDTO(), customer.getId());
     }
+    
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('AGENT')")
+    public ResponseEntity<List<CustomerBasicDTO>> getAllCustomers() {
+        List<CustomerBasicDTO> customers = customerService.getAllBasicCustomerInfo();
+        return ResponseEntity.ok(customers);
+    }
+
 }
 

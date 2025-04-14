@@ -28,7 +28,7 @@ public class CustomerPolicyController {
 	private CustomerPolicyService customerPolicyService;
 	
 	@PostMapping("/register/{customerId}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('CUSTOMER') or hasRole('AGENT')")
     public ResponseEntity<CustomerPolicyResponseDTO> registerPolicy(
             @RequestBody @Valid CustomerPolicyRequestDTO requestDTO,
             @PathVariable int customerId) {

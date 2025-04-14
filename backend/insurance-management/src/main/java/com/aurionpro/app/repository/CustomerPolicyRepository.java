@@ -49,5 +49,8 @@ public interface CustomerPolicyRepository extends JpaRepository<CustomerPolicy, 
 			Page<AgentCommissionReportDto> getAgentCommissionReport(Pageable pageable);
 
 		Page<CustomerPolicy> findByIsActiveFalseAndApprovedByNullAndIsRejectedFalse(PageRequest of);
+		
+		@Query("SELECT cp FROM CustomerPolicy cp WHERE cp.agent.licenseNumber = :license")
+		List<CustomerPolicy> findAllByAgentLicense(String license);
 
 }
