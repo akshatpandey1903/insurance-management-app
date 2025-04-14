@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './agent-dashboard.component.css'
 })
 export class AgentDashboardComponent {
-
+  agentName = 'Agent'
 }

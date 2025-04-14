@@ -1,12 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import { Observable } from 'rxjs';
 import { AgentCommissionReportDto, CityResponseDto, InsurancePlanResponseDTO, InsuranceTypeResponseDTO, PageResponse, PaginatedResponse, PlanPurchaseReportDto, StateResponseDto, TransactionResponse } from '../model';
-import { access } from 'fs';
 import { AuthService } from '../../services/auth.service';
-import { log } from 'console';
 import { CustomerReportComponent } from '../components/reports/customer-report/customer-report.component';
 import { CustomerQueryResponse } from '../../customer/model';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -14,37 +13,9 @@ import { CustomerQueryResponse } from '../../customer/model';
 export class AdminService {
 
   private apiUrl = "http://localhost:8080/app";
+  private isBrowser: boolean;
 
-  constructor(private httpClient: HttpClient, private authService: AuthService) { }
-
-  // Api call for states
-
-  createState(stateData: any): Observable<StateResponseDto> {
-
-    return this.httpClient.post<StateResponseDto>(`${this.apiUrl}/states`, stateData);
-  }
-
-  getAllStates(): Observable<StateResponseDto[]> {
-    return this.httpClient.get<StateResponseDto[]>(`${this.apiUrl}/states`);
-  }
-
-  deleteState(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.apiUrl}/states/${id}`);
-  }
-
-  // Api call for cities
-
-  createCity(cityData: any): Observable<CityResponseDto> {
-    return this.httpClient.post<CityResponseDto>(`${this.apiUrl}/cities`, cityData);
-  }
-
-  getCitiesByStateId(stateId: number): Observable<CityResponseDto[]> {
-    return this.httpClient.get<CityResponseDto[]>(`${this.apiUrl}/cities/${stateId}`);
-  }
-
-  deleteCity(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.apiUrl}/cities/${id}`);
-  }
+  constructor(private httpClient: HttpClient, private authService: AuthService ,  @Inject(PLATFORM_ID) private platformId: Object) { this.isBrowser = isPlatformBrowser(this.platformId);}
 
   // Api call for insurance type
 
@@ -75,10 +46,37 @@ export class AdminService {
 
   // Api calls for Insurance plan
 
+  // createInsurancePlan(planData: any): Observable<InsurancePlanResponseDTO> {
+  //   const headers = this.getAuthHeaders();
+  //   return this.httpClient.post<InsurancePlanResponseDTO>(`${this.apiUrl}/insuranceplans/`, planData, { headers });
+  // }
+
   createInsurancePlan(planData: any): Observable<InsurancePlanResponseDTO> {
     const headers = this.getAuthHeaders();
+    const role = this.getRoleName();
+    console.log("Role at time of plan creation:", role);
+    if (role !== 'ADMIN') {
+      throw new Error('Unauthorized: Only admins can create insurance plans.');
+    }
+  
     return this.httpClient.post<InsurancePlanResponseDTO>(`${this.apiUrl}/insuranceplans`, planData, { headers });
   }
+
+  getRoleName(): string | null {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const authorities = payload.authorities || payload.role || [];
+      if (Array.isArray(authorities) && authorities.length > 0) {
+        // Assuming first authority is what we want
+        const roleWithPrefix = authorities[0].authority;
+        return roleWithPrefix.replace('ROLE_', '');
+      }
+    }
+    return null;
+  }
+  
+  
 
   getAllInsurancePlans(): Observable<InsurancePlanResponseDTO[]> {
     const headers = this.getAuthHeaders();
@@ -101,12 +99,15 @@ export class AdminService {
   }
 
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('accessToken');
+    let token = '';
+    if (this.isBrowser) {
+      token = localStorage.getItem('accessToken') || '';
+    }
+
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
   }
-
   // create new customer
 
   // createUser(userData: any): Observable<any> {

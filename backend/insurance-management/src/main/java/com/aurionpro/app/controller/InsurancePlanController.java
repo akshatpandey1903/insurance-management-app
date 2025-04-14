@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/app/insuranceplans")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200" , allowedHeaders = "*")
 public class InsurancePlanController {
 	
 	@Autowired

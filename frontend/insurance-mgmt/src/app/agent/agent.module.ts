@@ -9,6 +9,7 @@ import { CommissionComponent } from './components/commission/commission.componen
 import { ReportsComponent } from './components/reports/reports.component';
 import { WithdrawlsComponent } from './components/withdrawls/withdrawls.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -23,7 +24,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
   ],
   imports: [
     CommonModule,
-    AgentRoutingModule
+    AgentRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class AgentModule { }

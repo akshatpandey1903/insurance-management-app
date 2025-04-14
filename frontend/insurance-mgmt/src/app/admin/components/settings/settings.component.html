@@ -1,94 +1,37 @@
 <app-navbar></app-navbar>
 
 <div class="container mt-5">
-  <h2 class="mb-4 text-center">⚙️ Admin Settings Panel</h2>
+  <h2 class="mb-4 text-center">Admin Settings Panel</h2>
 
   <div class="accordion" id="settingsAccordion">
-
-    <!-- State Management -->
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="headingStates">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStates" aria-expanded="true" aria-controls="collapseStates">
-          🌍 Manage States
-        </button>
-      </h2>
-      <div id="collapseStates" class="accordion-collapse collapse show" aria-labelledby="headingStates" data-bs-parent="#settingsAccordion">
-        <div class="accordion-body">
-          <form [formGroup]="stateForm" (ngSubmit)="onAddState()" class="row g-2 mb-3">
-            <div class="col-md-9">
-              <input type="text" formControlName="stateName" placeholder="Enter State Name" class="form-control" required>
-            </div>
-            <div class="col-md-3">
-              <button type="submit" class="btn btn-primary w-100" [disabled]="!stateForm.valid">Add State</button>
-            </div>
-          </form>
-          <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let state of states">
-              {{ state.stateName }}
-              <button class="btn btn-outline-danger btn-sm" (click)="onDeleteState(state.stateId)">Delete</button>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- City Management -->
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="headingCities">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCities" aria-expanded="false" aria-controls="collapseCities">
-          🏙️ Manage Cities
-        </button>
-      </h2>
-      <div id="collapseCities" class="accordion-collapse collapse" aria-labelledby="headingCities" data-bs-parent="#settingsAccordion">
-        <div class="accordion-body">
-          <form [formGroup]="cityForm" (ngSubmit)="onAddCity()" class="row g-2 mb-3">
-            <div class="col-md-5">
-              <select formControlName="stateId" class="form-select" required>
-                <option value="">Select State</option>
-                <option *ngFor="let state of states" [value]="state.stateId">{{ state.stateName }}</option>
-              </select>
-            </div>
-            <div class="col-md-5">
-              <input type="text" formControlName="cityName" placeholder="City Name" class="form-control" required>
-            </div>
-            <div class="col-md-2">
-              <button type="submit" class="btn btn-primary w-100" [disabled]="!cityForm.valid">Add City</button>
-            </div>
-          </form>
-          <div *ngFor="let state of states">
-            <h6 class="mt-3">{{ state.stateName }} Cities</h6>
-            <ul class="list-group mb-2">
-              <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let city of getCitiesByState(state.stateId)">
-                {{ city.cityName }}
-                <button class="btn btn-outline-danger btn-sm" (click)="onDeleteCity(city.cityId)">Delete</button>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Insurance Type Management -->
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingTypes">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTypes" aria-expanded="false" aria-controls="collapseTypes">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapseTypes" aria-expanded="false" aria-controls="collapseTypes">
           📄 Insurance Types
         </button>
       </h2>
-      <div id="collapseTypes" class="accordion-collapse collapse" aria-labelledby="headingTypes" data-bs-parent="#settingsAccordion">
+      <div id="collapseTypes" class="accordion-collapse collapse" aria-labelledby="headingTypes"
+        data-bs-parent="#settingsAccordion">
         <div class="accordion-body">
           <form [formGroup]="insuranceTypeForm" (ngSubmit)="onAddInsuranceType()" class="row g-2 mb-3">
             <div class="col-md-10">
-              <input type="text" formControlName="typeName" placeholder="Insurance Type Name" class="form-control" required>
+              <input type="text" formControlName="typeName" placeholder="Insurance Type Name" class="form-control"
+                required>
             </div>
             <div class="col-md-2">
-              <button type="submit" class="btn btn-primary w-100" [disabled]="!insuranceTypeForm.valid">Add Type</button>
+              <button type="submit" class="btn btn-primary w-100" [disabled]="!insuranceTypeForm.valid">Add
+                Type</button>
             </div>
           </form>
           <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let type of insuranceTypes">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let type of insuranceTypes">
               {{ type.name }}
-              <button class="btn btn-outline-danger btn-sm" (click)="onDeleteInsuranceType(type.insuranceTypeId)">Delete</button>
+              <button class="btn btn-outline-danger btn-sm"
+                (click)="onDeleteInsuranceType(type.insuranceTypeId)">Delete</button>
             </li>
           </ul>
         </div>
@@ -98,11 +41,43 @@
     <!-- Insurance Plan Management -->
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingPlans">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePlans" aria-expanded="false" aria-controls="collapsePlans">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapsePlans" aria-expanded="false" aria-controls="collapsePlans">
           🧾 Insurance Plans
         </button>
       </h2>
-      <div id="collapsePlans" class="accordion-collapse collapse" aria-labelledby="headingPlans" data-bs-parent="#settingsAccordion">
+
+      <!-- Modal for Plan Details -->
+      <div class="modal fade" id="planDetailsModal" tabindex="-1" aria-labelledby="planDetailsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="planDetailsModalLabel">Insurance Plan Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" *ngIf="selectedPlan">
+              <h6>Plan Name: {{ selectedPlan.planName }}</h6>
+              <p><strong>Insurance Type:</strong> {{ selectedPlan.insuranceTypeName }}</p>
+              <p><strong>Minimum Coverage:</strong> {{ selectedPlan.minCoverageAmount | currency: 'INR' }}</p>
+              <p><strong>Maximum Coverage:</strong> {{ selectedPlan.maxCoverageAmount | currency: 'INR' }}</p>
+              <p><strong>Minimum Duration:</strong> {{ selectedPlan.minDurationYears }} years</p>
+              <p><strong>Maximum Duration:</strong> {{ selectedPlan.maxDurationYears }} years</p>
+              <p><strong>Description:</strong> {{ selectedPlan.description }}</p>
+              <p><strong>Commission Rate:</strong> {{ selectedPlan.commissionRate }}%</p>
+              <p><strong>Premium Rate (Per Thousand/Year):</strong> {{ selectedPlan.premiumRatePerThousandPerYear }}</p>
+              <p><strong>Required Documents:</strong> {{ selectedPlan.requiredDocuments.join(', ') }}</p>
+            </div>
+            <div class="modal-footer">
+              <button style="cursor: pointer;" type="button" class="btn btn-secondary"
+                data-bs-dismiss="modal" (click)="closeModal()" >Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="collapsePlans" class="accordion-collapse collapse" aria-labelledby="headingPlans"
+        data-bs-parent="#settingsAccordion">
         <div class="accordion-body">
           <form [formGroup]="insurancePlanForm" (ngSubmit)="onAddInsurancePlan()" class="row g-2 mb-4">
             <div class="col-md-6">
@@ -115,31 +90,55 @@
               <input type="text" formControlName="planName" placeholder="Plan Name" class="form-control" required>
             </div>
             <div class="col-md-4">
-              <input type="number" formControlName="yearlyPremiumAmount" placeholder="Yearly Premium" class="form-control" required>
+              <input type="number" formControlName="minCoverageAmount" placeholder="Minimum Coverage Amount"
+                class="form-control" required>
             </div>
             <div class="col-md-4">
-              <input type="number" formControlName="coverageAmount" placeholder="Coverage Amount" class="form-control" required>
+              <input type="number" formControlName="maxCoverageAmount" placeholder="Maximum Coverage Amount"
+                class="form-control" required>
             </div>
             <div class="col-md-4">
-              <input type="number" formControlName="durationYears" placeholder="Duration (Years)" class="form-control" required>
+              <input type="number" formControlName="minDurationYears" placeholder="Min Duration (Years)"
+                class="form-control" required>
+            </div>
+            <div class="col-md-4">
+              <input type="number" formControlName="maxDurationYears" placeholder="Max Duration (Years)"
+                class="form-control" required>
             </div>
             <div class="col-md-6">
               <input type="text" formControlName="description" placeholder="Description" class="form-control" required>
             </div>
             <div class="col-md-6">
-              <input type="number" formControlName="commissionRate" placeholder="Commission Rate (%)" class="form-control" required>
+              <input type="number" formControlName="commissionRate" placeholder="Commission Rate (%)"
+                class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <input type="number" formControlName="premiumRatePerThousandPerYear"
+                placeholder="Premium Rate Per Thousand Per year" class="form-control" required>
+            </div>
+            <label>Required Documents:</label><br />
+            <div *ngFor="let doc of documentTypes">
+              <input type="checkbox" [value]="doc" (change)="onDocumentCheckboxChange($event)">
+              {{ doc }}
             </div>
             <div class="col-12">
-              <button type="submit" class="btn btn-success w-100" [disabled]="!insurancePlanForm.valid">Add Plan</button>
+              <button type="submit" class="btn btn-success w-100" [disabled]="!insurancePlanForm.valid">Add
+                Plan</button>
             </div>
           </form>
 
           <div *ngFor="let type of insuranceTypes">
             <h6 class="mt-3">{{ type.name }} Plans</h6>
             <ul class="list-group mb-2">
-              <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let plan of getPlansById(type.name)">
+              <li class="list-group-item d-flex justify-content-between align-items-center"
+                *ngFor="let plan of getPlansById(type.name)">
                 {{ plan.planName }}
-                <button class="btn btn-outline-danger btn-sm" (click)="onDeleteInsurancePlan(plan.insurancePlanId)">Delete</button>
+                <div>
+                  <button class="btn btn-outline-primary btn-sm me-2" (click)="openPlanDetailsModal(plan)">View
+                    Details</button>
+                  <button class="btn btn-outline-danger btn-sm"
+                    (click)="onDeleteInsurancePlan(plan.insurancePlanId)">Delete</button>
+                </div>
               </li>
             </ul>
           </div>
