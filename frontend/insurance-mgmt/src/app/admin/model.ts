@@ -17,16 +17,25 @@ export interface InsuranceTypeResponseDTO {
 
 export interface InsurancePlanResponseDTO {
     insurancePlanId: number;
-    insuranceTypeId: number;
     planName: string;
     insuranceTypeName: string;
-    yearlyPremiumAmount: number;
-    coverageAmount: number;
-    durationYears: number;
+    insuranceTypeId: number;
+    minCoverageAmount: number;
+    maxCoverageAmount: number;
+    minDurationYears: number;
+    maxDurationYears: number;
+    premiumRatePerThousandPerYear: number;
     description: string;
     commissionRate: number;
     isActive: boolean;
+    requiredDocuments: string[];
 }
+
+// export enum DocumentType {
+//     AADHAR = 'AADHAR',
+//     PAN = 'PAN',
+//     PASSPORT = 'PASSPORT'
+// }
 
 export interface PageResponse<T> {
     content: T[];
@@ -60,8 +69,7 @@ export interface PlanPurchaseReportDto {
     status: string;
 }
 
-export interface TransactionResponse 
-{
+export interface TransactionResponse {
     transactionId: number;
     amount: number;
     description: string;
@@ -88,4 +96,4 @@ export interface PaginatedResponse<T> {
     totalElements: number;
     pageSize: number;
     last: boolean;
-  }
+}

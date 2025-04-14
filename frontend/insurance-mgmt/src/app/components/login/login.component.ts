@@ -1,7 +1,8 @@
-import { Component , ViewChild} from '@angular/core';
+import { Component , ViewChild , Inject, PLATFORM_ID } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 
 export class LoginComponent {
+  isBrowser: boolean; 
   loginForm: FormGroup;
   loginData = { username: '', password: '' };
   email: string = '';
@@ -18,40 +20,20 @@ export class LoginComponent {
   siteKey: string = "6Lc07w0rAAAAADkK9dwLh0JoZoUI7u5aJzz3ou6A";
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) {
+
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
       // recaptcha: ['', [Validators.required]]
     });
   }
-
-  
-
-  // onLogin() {
-  //   if (!this.loginForm.valid || !this.captchaResolved) {
-  //     console.log('Please complete the form and CAPTCHA');
-  //     return;
-  //   }
-
-  //   const loginData = this.loginForm.value;
-  //   this.authService.login(loginData).subscribe(
-  //     {
-  //       next: response => {
-  //         console.log('Login successful', response);
-  //         localStorage.setItem('accessToken', response.accessToken);
-  //         localStorage.setItem('user', JSON.stringify(response.user));
-  //         console.log('Login successful', response.accessToken);
-  //         const role = response.role || this.authService.getRoleName();
-  //         this.redirectBasedOnRole(role);
-  //       },
-  //       error: error => console.error('Login failed', error)
-  //     }
-  //   );
-  // }
 
   onLogin() {
     if (!this.loginForm.valid || !this.captchaResolved) {

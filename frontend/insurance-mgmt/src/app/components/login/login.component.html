@@ -18,7 +18,7 @@
         <input type="password" formControlName="password" placeholder="Password" required class="form-control">
       </div>
 
-      <ngx-recaptcha2 [siteKey]="siteKey" (success)="onCaptchaResolved($event)">
+      <ngx-recaptcha2 *ngIf="isBrowser" [siteKey]="siteKey" (success)="onCaptchaResolved($event)">
       </ngx-recaptcha2>
       <button type="submit" class="btn btn-login" [disabled]="!loginForm.valid || !captchaResolved">Login</button>
     </form>

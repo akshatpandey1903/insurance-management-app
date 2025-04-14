@@ -1,2 +1,59 @@
 <app-navbar></app-navbar>
-<p>profile works!</p>
+<div class="container mt-4" *ngIf="profile">
+    <div class="card shadow-lg p-4">
+      <h3 class="mb-3 text-primary">Agent Profile</h3>
+      
+      <div class="row mb-2">
+        <div class="col-sm-4 fw-bold">Full Name:</div>
+        <div class="col-sm-8">{{ profile.firstName }} {{ profile.lastName }}</div>
+      </div>
+  
+      <div class="row mb-2">
+        <div class="col-sm-4 fw-bold">Username:</div>
+        <div class="col-sm-8">{{ profile.username }}</div>
+      </div>
+  
+      <div class="row mb-2">
+        <div class="col-sm-4 fw-bold">Email:</div>
+        <div class="col-sm-8">{{ profile.email }}</div>
+      </div>
+  
+      <div class="row mb-2">
+        <div class="col-sm-4 fw-bold">License Number:</div>
+        <div class="col-sm-8">{{ profile.licenseNumber }}</div>
+      </div>
+  
+      <div class="row mb-2">
+        <div class="col-sm-4 fw-bold">Approved:</div>
+        <div class="col-sm-8">
+          <span [ngClass]="{ 'text-success': profile.approved, 'text-danger': !profile.approved }">
+            {{ profile.approved ? 'Yes' : 'No' }}
+          </span>
+        </div>
+      </div>
+  
+      <div class="row mb-2">
+        <div class="col-sm-4 fw-bold">Approved By:</div>
+        <div class="col-sm-8">{{ profile.approvedBy || 'N/A' }}</div>
+      </div>
+  
+      <div class="row mb-2">
+        <div class="col-sm-4 fw-bold">Approval Date:</div>
+        <div class="col-sm-8">{{ profile.createdAt | date: 'mediumDate' }}</div>
+      </div>
+  
+      <div class="row mb-2">
+        <div class="col-sm-4 fw-bold">Active:</div>
+        <div class="col-sm-8">
+          <span [ngClass]="{ 'text-success': profile.active, 'text-danger': !profile.active }">
+            {{ profile.active ? 'Active' : 'Inactive' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="!profile" class="text-center mt-5">
+    <p>Loading profile...</p>
+  </div>
+  

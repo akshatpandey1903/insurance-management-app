@@ -19,3 +19,12 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.modal-body p {
+    margin-bottom: 0.5rem;
+}
+
+.modal-body h6 {
+    margin-top: 1rem;
+    font-weight: bold;
+}

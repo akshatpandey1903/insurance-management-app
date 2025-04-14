@@ -19,10 +19,12 @@ import com.aurionpro.app.dto.UserResponseDTO;
 import com.aurionpro.app.entity.Agent;
 import com.aurionpro.app.entity.Customer;
 import com.aurionpro.app.entity.Role;
+import com.aurionpro.app.entity.User;
 import com.aurionpro.app.exceptions.ResourceNotFoundException;
 import com.aurionpro.app.repository.AgentRepository;
 import com.aurionpro.app.repository.CustomerRepository;
 import com.aurionpro.app.repository.RoleRepository;
+import com.aurionpro.app.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -31,6 +33,8 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Autowired
 	private RoleRepository roleRepo;
+	
+	private UserRepository userRepository;
 	
 	@Autowired
 	private AgentRepository agentRepository;

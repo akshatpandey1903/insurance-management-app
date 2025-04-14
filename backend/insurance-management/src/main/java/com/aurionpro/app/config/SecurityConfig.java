@@ -46,14 +46,12 @@ public class SecurityConfig {
 	    
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/register/**").permitAll());
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/login").permitAll());
-	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/states/**").permitAll());
-	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/cities/**").permitAll());
-	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/insurancetypes/**").permitAll());
-	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/insuranceplans/**").permitAll());
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/password/forgot-password").permitAll());
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/password/reset-password").permitAll());
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/documents/**").permitAll());
 	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/payments/**").permitAll());
+	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/insuranceplans/**").permitAll());
+	    http.authorizeHttpRequests(request -> request.requestMatchers("/app/insurancetypes/**").permitAll());
 	   
 
 	    http.authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.GET, "/app/"));
