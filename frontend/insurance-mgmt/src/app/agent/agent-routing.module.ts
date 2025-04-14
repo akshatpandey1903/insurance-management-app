@@ -1,19 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AgentDashboardComponent } from './components/agent-dashboard/agent-dashboard.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PolicyRegistrationComponent } from './components/policy-registration/policy-registration.component';
-import { CommissionComponent } from './components/commission/commission.component';
-import { ReportsComponent } from './components/reports/reports.component';
-import { WithdrawlsComponent } from './components/withdrawls/withdrawls.component';
+import { EarningsComponent } from './components/earnings/earnings.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
-  {path: 'dashboard' , component: AgentDashboardComponent},
-  { path: 'profile', component: ProfileComponent },         
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'policy-registration', component: PolicyRegistrationComponent },
-  { path: 'commission', component: CommissionComponent },      
-  { path: 'reports', component: ReportsComponent },         
-  { path: 'withdrawals', component: WithdrawlsComponent }
+  { path: 'earnings', component: EarningsComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 ];
 
 @NgModule({

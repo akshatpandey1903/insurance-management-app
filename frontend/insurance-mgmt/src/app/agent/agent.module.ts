@@ -2,31 +2,30 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AgentRoutingModule } from './agent-routing.module';
-import { AgentDashboardComponent } from './components/agent-dashboard/agent-dashboard.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AgentNavbarComponent } from './components/agent-navbar/agent-navbar.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PolicyRegistrationComponent } from './components/policy-registration/policy-registration.component';
-import { CommissionComponent } from './components/commission/commission.component';
-import { ReportsComponent } from './components/reports/reports.component';
-import { WithdrawlsComponent } from './components/withdrawls/withdrawls.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EarningsComponent } from './components/earnings/earnings.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @NgModule({
   declarations: [
-    AgentDashboardComponent,
-    ProfileComponent,
+    DashboardComponent,
+    AgentNavbarComponent,
     PolicyRegistrationComponent,
-    CommissionComponent,
-    ReportsComponent,
-    WithdrawlsComponent,
-    NavbarComponent
+    EarningsComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
     AgentRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule,
+    PaginationModule.forRoot()
   ]
 })
 export class AgentModule { }

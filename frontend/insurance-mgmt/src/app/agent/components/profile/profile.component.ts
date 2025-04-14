@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { AgentProfileDTO } from '../../model';
+import { AgentUpdateRequest } from '../../../models/agent.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { AgentService } from '../../services/agent.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -11,29 +12,48 @@ import { AgentService } from '../../services/agent.service';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-  profile!: AgentProfileDTO;
-  agentId!: number;
+  profileForm!: FormGroup;
+  agentId: number = Number(localStorage.getItem('userId'));
 
-  constructor(private agentService: AgentService) {}
+  constructor(
+    private fb: FormBuilder,
+    private agentService: AgentService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
-    this.agentId = this.getLoggedInAgentId();
-    this.loadProfile();
-  }
+    this.profileForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['']
+    });
 
-  getLoggedInAgentId(): number {
-    // ⚠️ Update this if needed based on your JWT/local storage logic
-    return Number(localStorage.getItem('userId'));
-  }
-
-  loadProfile(): void {
-    this.agentService.getProfile(this.agentId).subscribe({
+    this.agentService.getAgentProfile(this.agentId).subscribe({
       next: (data) => {
-        this.profile = data;
+        const [firstName, lastName] = data.fullName.split(' ');
+        this.profileForm.patchValue({
+          firstName,
+          lastName,
+          username: data.username,
+          email: data.email
+        });
       },
-      error: (err) => {
-        console.error('Error loading profile:', err);
+      error: () => {
+        this.toastr.error('Failed to load profile');
       }
+    });
+  }
+
+  onSubmit(): void {
+    if (this.profileForm.invalid) return;
+
+    const updateData: AgentUpdateRequest = this.profileForm.value;
+
+    this.agentService.updateAgentProfile(this.agentId, updateData).subscribe({
+      next: () => this.toastr.success('Profile updated successfully'),
+      error: () => this.toastr.error('Failed to update profile')
     });
   }
 }

@@ -1,2 +1,81 @@
-<app-navbar></app-navbar>
-<h2>Policy register works</h2>
+<app-agent-navbar></app-agent-navbar>
+
+<div style="background-color: #f8f9fa; min-height: calc(100vh - 56px); padding: 2rem 0;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="card shadow-sm border-0" style="border-radius: 12px;">
+          <div class="card-body p-5">
+            <h1 class="text-center mb-4 display-6 fw-bold" style="color: #2c3e50;">Register Policy</h1>
+
+            <form [formGroup]="policyForm" (ngSubmit)="onSubmit()">
+              
+              <!-- Customer Selection -->
+              <div class="mb-4">
+                <label for="customerId" class="form-label fw-semibold">Customer</label>
+                <select formControlName="customerId" class="form-select" id="customerId">
+                  <option value="" disabled>Select Customer</option>
+                  <option *ngFor="let customer of customers" [value]="customer.id">{{ customer.fullName }}</option>
+                </select>
+                <div *ngIf="policyForm.get('customerId')?.invalid && policyForm.get('customerId')?.touched" class="text-danger mt-1">
+                  Please select a customer
+                </div>
+              </div>
+          
+              <!-- Insurance Plan Selection -->
+              <div class="mb-4">
+                <label for="insurancePlanId" class="form-label fw-semibold">Insurance Plan</label>
+                <select formControlName="insurancePlanId" class="form-select" id="insurancePlanId">
+                  <option value="" disabled>Select Insurance Plan</option>
+                  <option *ngFor="let plan of plans" [value]="plan.insurancePlanId">{{ plan.planName }}</option>
+                </select>
+                <div *ngIf="policyForm.get('insurancePlanId')?.invalid && policyForm.get('insurancePlanId')?.touched" class="text-danger mt-1">
+                  Please select an insurance plan
+                </div>
+              </div>
+          
+              <!-- Duration Selection -->
+              <div class="mb-4">
+                <label for="selectedDurationYears" class="form-label fw-semibold">Duration (Years)</label>
+                <input formControlName="selectedDurationYears" type="number" class="form-control" id="selectedDurationYears" placeholder="Enter duration in years">
+                <div *ngIf="policyForm.get('selectedDurationYears')?.invalid && policyForm.get('selectedDurationYears')?.touched" class="text-danger mt-1">
+                  Please enter a valid duration
+                </div>
+              </div>
+          
+              <!-- Coverage Amount -->
+              <div class="mb-4">
+                <label for="selectedCoverageAmount" class="form-label fw-semibold">Coverage Amount</label>
+                <input formControlName="selectedCoverageAmount" type="number" class="form-control" id="selectedCoverageAmount" placeholder="Enter coverage amount">
+                <div *ngIf="policyForm.get('selectedCoverageAmount')?.invalid && policyForm.get('selectedCoverageAmount')?.touched" class="text-danger mt-1">
+                  Please enter a valid coverage amount
+                </div>
+              </div>
+          
+              <!-- Payment Frequency -->
+              <div class="mb-4">
+                <label for="paymentFrequency" class="form-label fw-semibold">Payment Frequency</label>
+                <select formControlName="paymentFrequency" class="form-select" id="paymentFrequency">
+                  <option value="MONTHLY">Monthly</option>
+                  <option value="QUARTERLY">Quarterly</option>
+                  <option value="ANNUALLY">Annually</option>
+                </select>
+                <div *ngIf="policyForm.get('paymentFrequency')?.invalid && policyForm.get('paymentFrequency')?.touched" class="text-danger mt-1">
+                  Please select a payment frequency
+                </div>
+              </div>
+          
+              <!-- Submit Button -->
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary px-4 py-2" style="border-radius: 8px; font-weight: 500;" [disabled]="policyForm.invalid">
+                  Register Policy
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

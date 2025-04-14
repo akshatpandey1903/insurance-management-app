@@ -35,3 +35,11 @@ export interface CustomerReportDto {
     totalPolicies: number;
   }
   
+  export interface CustomerPolicyRequestDTO {
+    insurancePlanId: number;
+    paymentFrequency: 'MONTHLY' | 'QUARTERLY' | 'HALF_YEARLY' | 'YEARLY'; // match your enum from backend
+    selectedDurationYears: number;
+    selectedCoverageAmount: number;
+    licenseNumber?: string; // optional
+  }
+  

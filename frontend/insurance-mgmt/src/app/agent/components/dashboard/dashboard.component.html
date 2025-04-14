@@ -1,0 +1,53 @@
+<app-agent-navbar></app-agent-navbar>
+
+<div style="background-color: #f8f9fa; min-height: calc(100vh - 56px); padding: 2rem 0;">
+  <div class="container">
+    <h1 class="text-center mb-5 display-5 fw-bold" style="color: #2c3e50;">Agent Dashboard</h1>
+    <div class="row justify-content-center g-4">
+      <!-- Policy Registration -->
+      <div class="col-lg-5 col-md-6">
+        <div class="card h-100" style="border-radius: 10px; border-top: 4px solid #0d6efd; transition: all 0.3s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+          <div class="card-body text-center p-4">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background-color: #0d6efd; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+              <i class="bi bi-file-earmark-plus text-white" style="font-size: 1.5rem;"></i>
+            </div>
+            <h5 class="card-title" style="color: #2c3e50; font-weight: 600; margin-bottom: 1rem;">Register Policies</h5>
+            <p class="card-text" style="color: #6c757d; margin-bottom: 1.5rem;">Assist customers in registering for new policies.</p>
+            <a routerLink="/agent/policy-registration" class="btn btn-primary" style="padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 500;">Register Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Earnings -->
+      <div class="col-lg-5 col-md-6">
+        <div class="card h-100" style="border-radius: 10px; border-top: 4px solid #0d6efd; transition: all 0.3s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+          <div class="card-body text-center p-4">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background-color: #0d6efd; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+              <i class="bi bi-cash-coin text-white" style="font-size: 1.5rem;"></i>
+            </div>
+            <h5 class="card-title" style="color: #2c3e50; font-weight: 600; margin-bottom: 1rem;">My Earnings</h5>
+            <p class="card-text" style="color: #6c757d; margin-bottom: 1.5rem;">Track your commissions and earnings.</p>
+            <a routerLink="/agent/earnings" class="btn btn-primary" style="padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 500;">View Earnings</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile -->
+      <div class="col-lg-5 col-md-6">
+        <div class="card h-100" style="border-radius: 10px; border-top: 4px solid #0d6efd; transition: all 0.3s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+          <div class="card-body text-center p-4">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background-color: #0d6efd; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+              <i class="bi bi-person-circle text-white" style="font-size: 1.5rem;"></i>
+            </div>
+            <h5 class="card-title" style="color: #2c3e50; font-weight: 600; margin-bottom: 1rem;">Profile</h5>
+            <p class="card-text" style="color: #6c757d; margin-bottom: 1.5rem;">Manage your personal information.</p>
+            <a routerLink="/agent/profile" class="btn btn-primary" style="padding: 0.5rem 1.5rem; border-radius: 8px; font-weight: 500;">Edit Profile</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add this in your head tag for Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
