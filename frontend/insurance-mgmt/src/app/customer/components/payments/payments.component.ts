@@ -56,9 +56,9 @@ export class PaymentsComponent {
         this.customerService.verifyPremiumPayment(
           {
             customerPolicyId: policyId,
-            razorpayOrderId: response.razorpayOrderId,
-            razorpayPaymentId: response.razorpayPaymentId,
-            razorpaySignature: response.razorpaySignature
+            razorpayOrderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature
           },
           this.customerId
         ).subscribe({
