@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './employee-dashboard.component.css'
 })
 export class EmployeeDashboardComponent {
-
+employeeName = 'Employee'
 }

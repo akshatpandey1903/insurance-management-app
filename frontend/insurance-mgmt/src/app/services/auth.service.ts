@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -11,10 +11,6 @@ export class AuthService {
   private apiUrl = 'http://localhost:8080/app';
 
   constructor(private http: HttpClient , private router: Router) {}
-
-  // login(data: any): Observable<any> {
-  //   return this.http.post(`${this.apiUrl}/login`, data)
-  // }
 
   register(data: any): Observable<any> {
 
@@ -71,24 +67,42 @@ export class AuthService {
   }
   
 
+  // loginAndRedirect(data: any, captchaResolved: boolean): Observable<any> {
+  //   if (!data.username || !data.password || !captchaResolved) {
+  //     console.log('Invalid login data or CAPTCHA not resolved');
+  //     throw new Error('Invalid login data or CAPTCHA not resolved');
+  //   }
+
+  //   return this.http.post(`${this.apiUrl}/login`, data).pipe(
+  //     tap((response: any) => {
+  //       console.log('Login API response:', response);
+  //       localStorage.setItem('userId', response.userId);
+  //       localStorage.setItem('accessToken', response.accessToken);
+
+        
+  //       const role = response.role || this.getRoleName();
+  //       this.redirectBasedOnRole(role);
+  //     })
+  //   );
+  // }
+
   loginAndRedirect(data: any, captchaResolved: boolean): Observable<any> {
     if (!data.username || !data.password || !captchaResolved) {
-      console.log('Invalid login data or CAPTCHA not resolved');
-      throw new Error('Invalid login data or CAPTCHA not resolved');
+      return throwError(() => new Error('Invalid login data or CAPTCHA not resolved'));
     }
-
+  
     return this.http.post(`${this.apiUrl}/login`, data).pipe(
       tap((response: any) => {
         console.log('Login API response:', response);
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('accessToken', response.accessToken);
-
-        
+  
         const role = response.role || this.getRoleName();
         this.redirectBasedOnRole(role);
       })
     );
   }
+  
 
   private redirectBasedOnRole(roleName: string) {
     switch (roleName?.toUpperCase()) {
@@ -115,4 +129,16 @@ export class AuthService {
 getToken(): string {
   return localStorage.getItem('accessToken') || '';
 }
+
+isLoggedIn(): boolean {
+  console.log(this.getToken());
+  return !!this.getToken();
+}
+
+
+hasRole(role: string): boolean {
+  console.log(this.getRoleName())
+  return this.getRoleName() === role;
+}
+
 }

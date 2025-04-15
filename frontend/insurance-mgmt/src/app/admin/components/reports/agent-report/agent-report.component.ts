@@ -71,4 +71,11 @@ export class AgentReportComponent {
 
     doc.save('agent-report.pdf');
   }
+
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.pageNumber = page;
+      this.loadAgents();
+    }
+  }
 }

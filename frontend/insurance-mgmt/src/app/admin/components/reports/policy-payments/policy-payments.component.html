@@ -1,11 +1,13 @@
 <app-navbar></app-navbar>
-<div class="container mt-3">
-    <h3>Policy Payment Report</h3>
-  
-    <button class="btn btn-sm btn-primary mb-2" (click)="downloadPDF()">Download PDF</button>
-  
-    <table class="table table-bordered table-striped table-sm">
-      <thead class="table-success text-center">
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Policy Payment Report</h4>
+    <button class="btn btn-outline-primary" (click)="downloadPDF()">Download PDF</button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="table-light text-center">
         <tr>
           <th>#</th>
           <th>Policy ID</th>
@@ -15,7 +17,7 @@
           <th>Plan</th>
           <th>Start</th>
           <th>End</th>
-          <th>Premium</th>
+          <th>Premium (₹)</th>
           <th>Freq.</th>
           <th>Agent</th>
           <th>Status</th>
@@ -38,15 +40,20 @@
         </tr>
       </tbody>
     </table>
-  
-    <div class="d-flex justify-content-between mt-2">
-      <button class="btn btn-outline-secondary btn-sm" (click)="prevPage()" [disabled]="currentPage === 0">
-        ⬅️ Previous
-      </button>
-      <span>Page {{ currentPage + 1 }} / {{ totalPages }}</span>
-      <button class="btn btn-outline-secondary btn-sm" (click)="nextPage()" [disabled]="currentPage + 1 >= totalPages">
-        Next ➡️
-      </button>
-    </div>
   </div>
-  
+
+  <nav class="mt-3">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 0">
+        <a class="page-link" (click)="prevPage()">Previous</a>
+      </li>
+      <li class="page-item" *ngFor="let i of [].constructor(totalPages); let idx = index"
+          [class.active]="currentPage === idx">
+        <a class="page-link" (click)="goToPage(idx)">{{ idx + 1 }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage + 1 >= totalPages">
+        <a class="page-link" (click)="nextPage()">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>

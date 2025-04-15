@@ -16,6 +16,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { EmployeeModule } from './employee/employee.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     LoginComponent,
     RegisterComponent,
     IntroComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    UnauthorizedComponent
   ],
   imports: [
     BrowserModule,

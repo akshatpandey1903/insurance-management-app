@@ -64,7 +64,7 @@ export interface PlanPurchaseReportDto {
     startDate: string;
     endDate: string;
     calculatedPremium: number;
-    paymentFrequency: string;
+    paymentFrequency: 'MONTHLY' | 'YEARLY' | 'QUATERLY' | 'HALF_YEARLY';
     agentName: string;
     status: string;
 }

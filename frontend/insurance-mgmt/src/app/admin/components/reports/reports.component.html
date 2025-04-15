@@ -1,17 +1,22 @@
 <app-navbar></app-navbar>
 
-<div class="container py-5">
-  <h2 class="text-center text-gradient fw-bold mb-5 display-6">📊 Reports Dashboard</h2>
+<div class="dashboard-bg py-5">
+  <div class="container">
+    <h1 class="text-center mb-5 display-5 fw-bold text-primary">Reports</h1>
 
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    <div *ngFor="let report of reports" class="col">
-      <div class="card shadow-lg border-0 h-100 hover-shadow rounded-4 transition-all">
-        <div class="card-body text-center">
-          <i class="bi {{report.icon}} fs-1 text-{{report.color}} mb-3"></i>
-          <h5 class="card-title fw-semibold mb-2">{{ report.title }}</h5>
-          <a [routerLink]="report.path" class="btn btn-{{report.color}} btn-sm rounded-pill mt-2">
-            <i class="bi bi-box-arrow-up-right me-1"></i> View Report
-          </a>
+    <div class="row justify-content-center g-4">
+      <div *ngFor="let report of reports" class="col-lg-4 col-md-6">
+        <div class="card h-100 dashboard-card border-{{report.color}}">
+          <div class="card-body text-center p-4">
+            <div class="icon-circle bg-{{report.color}} mb-3 mx-auto">
+              <i class="bi {{report.icon}} text-white fs-4"></i>
+            </div>
+            <h5 class="card-title fw-bold">{{ report.title }}</h5>
+            <p class="card-text text-muted">Click below to access the report details.</p>
+            <a [routerLink]="report.path" class="btn btn-{{report.color}} px-4">
+              <i class="bi bi-box-arrow-up-right me-1"></i> View Report
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -19,13 +24,41 @@
 </div>
 
 <style>
-  .text-gradient {
-    background: linear-gradient(45deg, #007bff, #6610f2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .dashboard-bg {
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 56px);
   }
-  .hover-shadow:hover {
-    transform: translateY(-5px);
+  .dashboard-card {
+    border-radius: 10px;
     transition: all 0.3s ease;
+    border-top: 4px solid !important;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-title {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+  .card-text {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+  }
+  .btn {
+    font-weight: 500;
+    transition: all 0.2s;
   }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">

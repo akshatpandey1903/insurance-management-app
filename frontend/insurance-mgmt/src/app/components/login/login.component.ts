@@ -18,6 +18,7 @@ export class LoginComponent {
   email: string = '';
   captchaResolved: boolean = false;
   siteKey: string = "6Lc07w0rAAAAADkK9dwLh0JoZoUI7u5aJzz3ou6A";
+  errorMessage: string = '';
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -35,17 +36,49 @@ export class LoginComponent {
     });
   }
 
-  onLogin() {
-    if (!this.loginForm.valid || !this.captchaResolved) {
-      console.log('Please complete the form and CAPTCHA');
-      return;
-    }
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]]
+    });
+  }
+
+  get username() {
+    return this.loginForm.get('username');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
+
+  // onLogin() {
+  //   if (!this.loginForm.valid || !this.captchaResolved) {
+  //     console.log('Please complete the form and CAPTCHA');
+  //     return;
+  //   }
+  
+  //   const loginData = this.loginForm.value;
+  
+  //   this.authService.loginAndRedirect(loginData, this.captchaResolved).subscribe({
+  //     next: () => console.log('Login & Redirect Successful'),
+  //     error: err => console.error('Login failed', err)
+  //   });
+  // }
+
+  onLogin(): void {
+    if (this.loginForm.invalid || !this.captchaResolved) return;
   
     const loginData = this.loginForm.value;
   
     this.authService.loginAndRedirect(loginData, this.captchaResolved).subscribe({
-      next: () => console.log('Login & Redirect Successful'),
-      error: err => console.error('Login failed', err)
+      error: (err) => {
+        console.error('Login error:', err);
+        if (err.status === 401 || err.status === 403 || err.status === 404) {
+          this.errorMessage = 'Invalid username or password.';
+        } else {
+          this.errorMessage = err.message || 'Something went wrong. Please try again.';
+        }
+      }
     });
   }
 

@@ -1,6 +1,8 @@
 <nav class="navbar">
-  <!-- <div class="logo">ClaimSure LIC</div> -->
-  <a routerLink="/" class="logo">ClaimSure LIC</a>
+  <a routerLink="/" class="logo">
+    <img src="https://sdmntprwestus.oaiusercontent.com/files/00000000-0584-6230-82f3-0dce70c14da6/raw?se=2025-04-15T12%3A30%3A34Z&sp=r&sv=2024-08-04&sr=b&scid=2f147487-c6bf-53b9-a83c-ecc290154522&skoid=a3336399-497e-45e5-8f28-4b88ecca3d1f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-14T20%3A15%3A34Z&ske=2025-04-15T20%3A15%3A34Z&sks=b&skv=2024-08-04&sig=2kgMqoUUpdmSDMeOQEYSDpsFDpWKoqTkH0lch05s4Ck%3D" alt="Logo" class="logo-img">
+    ClaimSure LIC
+  </a>
   <div class="nav-buttons">
     <a routerLink="/login" class="nav-btn">Login</a>
     <a routerLink="/register" class="nav-btn outline">Register</a>
@@ -10,18 +12,32 @@
 <div class="login-container">
   <div class="card animate__animated animate__fadeIn">
     <h2 class="card-title">Login</h2>
+    <div *ngIf="errorMessage" class="server-error">
+      {{ errorMessage }}
+    </div>
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div class="form-group">
-        <input type="text" formControlName="username" placeholder="Username" required class="form-control">
+        <input type="text" formControlName="username" placeholder="Username" class="form-control" />
+        <div *ngIf="username?.touched && username?.invalid" class="error">
+          <small *ngIf="username?.errors?.['required']">Username is required.</small>
+        </div>
       </div>
+
       <div class="form-group">
-        <input type="password" formControlName="password" placeholder="Password" required class="form-control">
+        <input type="password" formControlName="password" placeholder="Password" class="form-control" />
+        <div *ngIf="password?.touched && password?.invalid" class="error">
+          <small *ngIf="password?.errors?.['required']">Password is required.</small>
+        </div>
       </div>
 
       <ngx-recaptcha2 *ngIf="isBrowser" [siteKey]="siteKey" (success)="onCaptchaResolved($event)">
       </ngx-recaptcha2>
-      <button type="submit" class="btn btn-login" [disabled]="!loginForm.valid || !captchaResolved">Login</button>
+
+      <button type="submit" class="btn btn-login" [disabled]="!loginForm.valid || !captchaResolved">
+        Login
+      </button>
     </form>
+
     <p>Don't have an account? <a routerLink="/register">Register here</a></p>
     <p class="forgot-password"><a routerLink="/forgot-password">Forgot Password?</a></p>
   </div>

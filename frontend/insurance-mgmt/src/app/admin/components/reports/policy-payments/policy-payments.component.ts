@@ -11,19 +11,43 @@ import autoTable from 'jspdf-autotable';
   styleUrl: './policy-payments.component.css'
 })
 export class PolicyPaymentsComponent {
-  policies: PlanPurchaseReportDto[] = []; currentPage: number = 0; totalPages: number = 0; pageSize: number = 5;
+  policies: PlanPurchaseReportDto[] = [];
+  currentPage: number = 0;
+  totalPages: number = 0;
+  pageSize: number = 5;
 
-  constructor(private adminService: AdminService) { }
+  constructor(private adminService: AdminService) {}
 
-  ngOnInit(): void { this.fetchPolicyPayments(); }
+  ngOnInit(): void {
+    this.fetchPolicyPayments();
+  }
 
-  fetchPolicyPayments(): void { this.adminService.getPolicyPayments(this.currentPage, this.pageSize).subscribe({ next: (response) => { this.policies = response.content; this.totalPages = response.totalPages; }, error: (err) => { console.error('Error fetching policy payments', err); } }); }
+  fetchPolicyPayments(): void {
+    this.adminService.getPolicyPayments(this.currentPage, this.pageSize).subscribe({
+      next: (response) => {
+        this.policies = response.content;
+        this.totalPages = response.totalPages;
+      },
+      error: (err) => {
+        console.error('Error fetching policy payments', err);
+      }
+    });
+  }
 
-  goToPage(page: number): void { if (page >= 0 && page < this.totalPages) { this.currentPage = page; this.fetchPolicyPayments(); } }
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.currentPage = page;
+      this.fetchPolicyPayments();
+    }
+  }
 
-  nextPage(): void { this.goToPage(this.currentPage + 1); }
+  nextPage(): void {
+    this.goToPage(this.currentPage + 1);
+  }
 
-  prevPage(): void { this.goToPage(this.currentPage - 1); }
+  prevPage(): void {
+    this.goToPage(this.currentPage - 1);
+  }
 
   downloadPDF(): void {
     const doc = new jsPDF();

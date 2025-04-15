@@ -75,8 +75,7 @@ export class AdminService {
     }
     return null;
   }
-  
-  
+
 
   getAllInsurancePlans(): Observable<InsurancePlanResponseDTO[]> {
     const headers = this.getAuthHeaders();
@@ -141,7 +140,7 @@ export class AdminService {
 
   getPolicyPayments(page: number, size: number): Observable<PageResponse<PlanPurchaseReportDto>> {
 
-    return this.httpClient.get<PageResponse<PlanPurchaseReportDto>>(`${this.apiUrl}/admin/reports`);
+    return this.httpClient.get<PageResponse<PlanPurchaseReportDto>>(`${this.apiUrl}/admin/reports/plan-purchases?page=${page}&size=${size}`);
   }
 
   getTransactionReports(page: number, size: number): Observable<PageResponse<TransactionResponse>> {
