@@ -1,19 +1,25 @@
 package com.aurionpro.app.controller;
 
-import com.aurionpro.app.dto.PageResponse;
-import com.aurionpro.app.dto.TransactionRequestDTO;
-import com.aurionpro.app.dto.TransactionResponseDTO;
-import com.aurionpro.app.dto.VerifyPaymentRequestDTO;
-import com.aurionpro.app.entity.TransactionType;
-import com.aurionpro.app.service.TransactionService;
-
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.aurionpro.app.dto.PageResponse;
+import com.aurionpro.app.dto.TransactionRequestDTO;
+import com.aurionpro.app.dto.TransactionResponseDTO;
+import com.aurionpro.app.entity.TransactionType;
+import com.aurionpro.app.service.TransactionService;
 
 @RestController
 @RequestMapping("/app/transactions")
@@ -48,6 +54,13 @@ public class TransactionController {
         TransactionResponseDTO response = transactionService.createCustomerPremiumTransaction(requestDto, customerId);
         
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+    
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping("/premium/transactions/user/{userId}")
+    public ResponseEntity<List<TransactionResponseDTO>> getTransactionsByUserId(@PathVariable int userId, Pageable pageable) {
+        List<TransactionResponseDTO> transactions = transactionService.getTransactionsByUserId(userId, pageable);
+        return ResponseEntity.ok(transactions);
     }
 
 }

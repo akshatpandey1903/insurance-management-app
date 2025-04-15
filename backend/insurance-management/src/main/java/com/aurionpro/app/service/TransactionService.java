@@ -1,5 +1,9 @@
 package com.aurionpro.app.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+
 import com.aurionpro.app.dto.PageResponse;
 import com.aurionpro.app.dto.TransactionRequestDTO;
 import com.aurionpro.app.dto.TransactionResponseDTO;
@@ -17,4 +21,5 @@ public interface TransactionService {
 	public void recordPremiumTransaction(int customerPolicyId, String paymentId);
 	String createPremiumPaymentOrder(int customerPolicyId, int customerId);
 	void verifyAndRecordPremiumTransaction(VerifyPaymentRequestDTO dto, int customerId);
+	public List<TransactionResponseDTO> getTransactionsByUserId(int userId, Pageable pageable);
 }

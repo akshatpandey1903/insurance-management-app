@@ -1,0 +1,94 @@
+/* Global Enhancements */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card Enhancements */
+.card {
+    border-radius: 1rem;
+    border: none;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* Table Styling */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table thead th {
+    background-color: #e9f0f7;
+    color: #343a40;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f9ff;
+    cursor: pointer;
+}
+
+/* Headings */
+h3 {
+    font-weight: 700;
+}
+
+h5 {
+    font-weight: 600;
+}
+
+/* Forms */
+.form-label {
+    font-weight: 600;
+}
+
+.form-control,
+.form-select {
+    border-radius: 0.5rem;
+    padding: 0.6rem 1rem;
+    box-shadow: none !important;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.1rem rgba(13, 110, 253, 0.25);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+}
+
+.btn-outline-primary {
+    border-width: 2px;
+}
+
+/* Alerts */
+.alert {
+    border-radius: 0.5rem;
+    font-weight: 500;
+}
+
+/* Section Spacing */
+.container {
+    max-width: 1200px;
+}
+
+/* Utility Overrides */
+.text-primary {
+    color: #0d6efd !important;
+}
+
+.text-success {
+    color: #198754 !important;
+}

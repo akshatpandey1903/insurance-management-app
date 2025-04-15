@@ -15,6 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { EmployeeModule } from './employee/employee.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { EmployeeModule } from './employee/employee.module';
     NgbModule,
     ToastrModule.forRoot(),
     PaginationModule.forRoot(),
-    EmployeeModule
+    EmployeeModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {

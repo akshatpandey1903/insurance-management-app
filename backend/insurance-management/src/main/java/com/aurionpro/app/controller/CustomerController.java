@@ -70,6 +70,7 @@ public class CustomerController {
     }
     
     @PostMapping("/register-customer-policy")
+    @PreAuthorize("hasRole('AGENT')")
     public CustomerPolicyResponseDTO registerCustomerAndPolicy(
             @RequestBody CustomerAndPolicyDTO dto,
             @RequestParam int agentId) {

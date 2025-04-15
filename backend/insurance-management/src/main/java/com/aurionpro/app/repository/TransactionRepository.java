@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
 	Page<Transaction> findByTransactionTypeAndIsDeletedFalse(TransactionType type, Pageable pageable);
 	boolean existsByCustomerPolicyId(int policyId);
+	 Page<Transaction> findByUser_UserIdAndTransactionTypeAndIsDeletedFalse(int userId, TransactionType type, Pageable pageable);
 }

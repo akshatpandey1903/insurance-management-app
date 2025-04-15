@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProfileComponent } from './profile.component';
+import { PolicyCancelComponent } from './policy-cancel.component';
 
-describe('ProfileComponent', () => {
-  let component: ProfileComponent;
-  let fixture: ComponentFixture<ProfileComponent>;
+describe('PolicyCancelComponent', () => {
+  let component: PolicyCancelComponent;
+  let fixture: ComponentFixture<PolicyCancelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProfileComponent]
+      declarations: [PolicyCancelComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ProfileComponent);
+    fixture = TestBed.createComponent(PolicyCancelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

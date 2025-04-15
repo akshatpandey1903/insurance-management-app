@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.aurionpro.app.dto.AgentCommissionReportDto;
 import com.aurionpro.app.dto.PlanPurchaseReportDto;
@@ -52,5 +53,7 @@ public interface CustomerPolicyRepository extends JpaRepository<CustomerPolicy, 
 		
 		@Query("SELECT cp FROM CustomerPolicy cp WHERE cp.agent.licenseNumber = :license")
 		List<CustomerPolicy> findAllByAgentLicense(String license);
+		
+		List<CustomerPolicy> findByCustomerUserIdAndIsCancelledFalse(int customerId);
 
 }

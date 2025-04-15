@@ -1,2 +1,61 @@
 <app-navbar></app-navbar>
-<p>payments works</p>
+
+<div class="container mt-4">
+  <h3>My Policies</h3>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Policy ID</th>
+        <th>Plan</th>
+        <th>Premium</th>
+        <th>Next Due</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let policy of policies">
+        <td>{{ policy.policyId }}</td>
+        <td>{{ policy.planName }}</td>
+        <td>{{ policy.calculatedPremium | currency:'INR' }}</td>
+        <td>{{ policy.nextDueDate }}</td>
+        <td>{{ policy.active ? 'Active' : 'Inactive' }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="payPremium(policy.policyId)">
+            Pay Premium
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="transactions.length > 0" class="container mt-4">
+  <h3>Past Premium Payments</h3>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Transaction ID</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>Payment Time</th>
+        <th>Payment Reference</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaction of transactions">
+        <td>{{ transaction.transactionId }}</td>
+        <td>{{ transaction.amount | currency:'INR' }}</td>
+        <td>{{ transaction.description }}</td>
+        <td>{{ transaction.transactionTime | date: 'medium' }}</td>
+        <td>{{ transaction.paymentReference }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="transactions.length === 0" class="container mt-4">
+  <p>No past premium payments found.</p>
+</div>

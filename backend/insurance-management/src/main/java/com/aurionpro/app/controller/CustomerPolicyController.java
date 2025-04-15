@@ -1,5 +1,7 @@
 package com.aurionpro.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aurionpro.app.dto.CustomerPolicyRequestDTO;
 import com.aurionpro.app.dto.CustomerPolicyResponseDTO;
 import com.aurionpro.app.dto.PageResponse;
+import com.aurionpro.app.dto.PurchasedPolicyDto;
 import com.aurionpro.app.service.CustomerPolicyService;
 
 import jakarta.validation.Valid;
@@ -75,6 +78,13 @@ public class CustomerPolicyController {
 
 	    customerPolicyService.rejectCustomerPolicy(policyId, employeeId, reason);
 	    return ResponseEntity.ok("Policy rejected successfully.");
+	}
+	
+	@PreAuthorize("hasRole('CUSTOMER')")
+	@GetMapping("/customer/{customerId}/policies")
+	public ResponseEntity<List<PurchasedPolicyDto>> getCustomerPurchasedPolicies(@PathVariable int customerId) {
+	    List<PurchasedPolicyDto> policies = customerPolicyService.getPurchasedPolicies(customerId);
+	    return ResponseEntity.ok(policies);
 	}
 
 }

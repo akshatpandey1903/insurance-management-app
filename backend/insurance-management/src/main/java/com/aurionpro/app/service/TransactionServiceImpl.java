@@ -273,5 +273,26 @@ public class TransactionServiceImpl implements TransactionService{
 
         recordPremiumTransaction(dto.getCustomerPolicyId(), dto.getRazorpayPaymentId());
     }
+    
+    @Override
+    public List<TransactionResponseDTO> getTransactionsByUserId(int userId, Pageable pageable) {
+        // Fetch transactions by userId
+        Page<Transaction> transactions = transactionRepository.findByUser_UserIdAndTransactionTypeAndIsDeletedFalse(userId, TransactionType.PREMIUM_PAYMENT, pageable);
+
+        return transactions.stream()
+            .map(transaction -> {
+                TransactionResponseDTO dto = new TransactionResponseDTO();
+                dto.setTransactionId(transaction.getTransactionId());
+                dto.setAmount(transaction.getAmount());
+                dto.setDescription(transaction.getDescription());
+                dto.setTransactionType(transaction.getTransactionType());
+                dto.setTransactionTime(transaction.getTransactionTime());
+                dto.setUserFullName(transaction.getUser().getFirstName() + " " + transaction.getUser().getLastName());
+                dto.setUserRole(transaction.getUserRole());
+                dto.setPaymentReference(transaction.getPaymentReference());
+                return dto;
+            })
+            .collect(Collectors.toList());
+    }
 
 }

@@ -21,7 +21,7 @@ public class CustomerReportController {
     private CustomerReportService customerReportService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_AGENT')")
     public PageResponse<CustomerReportDto> getCustomerReport(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size

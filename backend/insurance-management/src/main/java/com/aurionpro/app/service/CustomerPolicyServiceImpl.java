@@ -1,14 +1,5 @@
 package com.aurionpro.app.service;
 
-import com.aurionpro.app.dto.CustomerPolicyRequestDTO;
-import com.aurionpro.app.dto.CustomerPolicyResponseDTO;
-import com.aurionpro.app.dto.PageResponse;
-import com.aurionpro.app.entity.*;
-import com.aurionpro.app.exceptions.ResourceNotFoundException;
-import com.aurionpro.app.repository.*;
-
-import jakarta.transaction.Transactional;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -17,11 +8,36 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import com.aurionpro.app.dto.CustomerPolicyRequestDTO;
+import com.aurionpro.app.dto.CustomerPolicyResponseDTO;
+import com.aurionpro.app.dto.PageResponse;
+import com.aurionpro.app.dto.PurchasedPolicyDto;
+import com.aurionpro.app.entity.Agent;
+import com.aurionpro.app.entity.Customer;
+import com.aurionpro.app.entity.CustomerDocument;
+import com.aurionpro.app.entity.CustomerPolicy;
+import com.aurionpro.app.entity.DocumentStatus;
+import com.aurionpro.app.entity.DocumentType;
+import com.aurionpro.app.entity.Employee;
+import com.aurionpro.app.entity.InsurancePlan;
+import com.aurionpro.app.entity.InsurancePlanDocument;
+import com.aurionpro.app.entity.PaymentFrequency;
+import com.aurionpro.app.exceptions.ResourceNotFoundException;
+import com.aurionpro.app.repository.AgentRepository;
+import com.aurionpro.app.repository.CustomerDocumentRepository;
+import com.aurionpro.app.repository.CustomerPolicyRepository;
+import com.aurionpro.app.repository.CustomerRepository;
+import com.aurionpro.app.repository.EmployeeRepository;
+import com.aurionpro.app.repository.InsurancePlanRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CustomerPolicyServiceImpl implements CustomerPolicyService {
@@ -43,6 +59,9 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
     
     @Autowired
     private EmployeeRepository employeeRepository;
+    
+    @Autowired
+    private ModelMapper modelMapper;
     
     public static CustomerPolicyResponseDTO toDTO(CustomerPolicy policy) {
         CustomerPolicyResponseDTO dto = new CustomerPolicyResponseDTO();
@@ -299,6 +318,30 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
         policy.setRejectionReason(reason);
 
         customerPolicyRepository.save(policy);
+    }
+    
+    @Override
+    public List<PurchasedPolicyDto> getPurchasedPolicies(int customerId) {
+        List<CustomerPolicy> policies = customerPolicyRepository.findByCustomerUserIdAndIsCancelledFalse(customerId);
+
+        return policies.stream()
+                .map(policy -> {
+                    PurchasedPolicyDto dto = new PurchasedPolicyDto();
+                    dto.setPolicyId(policy.getId());
+                    dto.setPlanName(policy.getInsurancePlan().getPlanName());
+                    dto.setPaymentFrequency(policy.getPaymentFrequency());
+                    dto.setCalculatedPremium(policy.getCalculatedPremium());
+                    dto.setSelectedCoverageAmount(policy.getSelectedCoverageAmount());
+                    dto.setSelectedDurationYears(policy.getSelectedDurationYears());
+                    dto.setActive(policy.isActive());
+                    dto.setStartDate(policy.getStartDate());
+                    dto.setEndDate(policy.getEndDate());
+                    dto.setNextDueDate(policy.getNextDueDate());
+                    dto.setApprovedBy(policy.getApprovedBy().getFirstName()+" "+policy.getApprovedBy().getLastName());
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
 }
