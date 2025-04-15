@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 public class AgentResponseDTO {
 	private int userId;
     private String fullName;
+    private String username;
     private String email;
     private String licenseNumber;
     private boolean isApproved;

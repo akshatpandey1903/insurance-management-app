@@ -1,59 +1,61 @@
-<app-navbar></app-navbar>
-<div class="container mt-4" *ngIf="profile">
-    <div class="card shadow-lg p-4">
-      <h3 class="mb-3 text-primary">Agent Profile</h3>
+<app-agent-navbar></app-agent-navbar>
+
+<div class="container py-5">
+  <div class="card shadow-sm mx-auto" style="max-width: 600px; border-radius: 12px;">
+    <div class="card-body p-5">
+      <h2 class="text-center mb-4 display-6 fw-bold" style="color: #2c3e50;">Agent Profile</h2>
       
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">Full Name:</div>
-        <div class="col-sm-8">{{ profile.firstName }} {{ profile.lastName }}</div>
-      </div>
-  
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">Username:</div>
-        <div class="col-sm-8">{{ profile.username }}</div>
-      </div>
-  
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">Email:</div>
-        <div class="col-sm-8">{{ profile.email }}</div>
-      </div>
-  
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">License Number:</div>
-        <div class="col-sm-8">{{ profile.licenseNumber }}</div>
-      </div>
-  
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">Approved:</div>
-        <div class="col-sm-8">
-          <span [ngClass]="{ 'text-success': profile.approved, 'text-danger': !profile.approved }">
-            {{ profile.approved ? 'Yes' : 'No' }}
-          </span>
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <!-- First Name -->
+        <div class="mb-4">
+          <label for="firstName" class="form-label fw-semibold">First Name</label>
+          <input type="text" class="form-control" formControlName="firstName" id="firstName" placeholder="Enter your first name">
+          <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" class="text-danger mt-1">
+            First name is required
+          </div>
         </div>
-      </div>
-  
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">Approved By:</div>
-        <div class="col-sm-8">{{ profile.approvedBy || 'N/A' }}</div>
-      </div>
-  
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">Approval Date:</div>
-        <div class="col-sm-8">{{ profile.createdAt | date: 'mediumDate' }}</div>
-      </div>
-  
-      <div class="row mb-2">
-        <div class="col-sm-4 fw-bold">Active:</div>
-        <div class="col-sm-8">
-          <span [ngClass]="{ 'text-success': profile.active, 'text-danger': !profile.active }">
-            {{ profile.active ? 'Active' : 'Inactive' }}
-          </span>
+
+        <!-- Last Name -->
+        <div class="mb-4">
+          <label for="lastName" class="form-label fw-semibold">Last Name</label>
+          <input type="text" class="form-control" formControlName="lastName" id="lastName" placeholder="Enter your last name">
+          <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" class="text-danger mt-1">
+            Last name is required
+          </div>
         </div>
-      </div>
+
+        <!-- Username -->
+        <div class="mb-4">
+          <label for="username" class="form-label fw-semibold">Username</label>
+          <input type="text" class="form-control" formControlName="username" id="username" placeholder="Choose a username">
+          <div *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched" class="text-danger mt-1">
+            Username is required
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label for="email" class="form-label fw-semibold">Email</label>
+          <input type="email" class="form-control" formControlName="email" id="email" placeholder="Enter your email">
+          <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="text-danger mt-1">
+            Please enter a valid email address
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-4">
+          <label for="password" class="form-label fw-semibold">Password (Leave blank to keep unchanged)</label>
+          <input type="password" class="form-control" formControlName="password" id="password" placeholder="Enter a new password">
+          <div *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched" class="text-danger mt-1">
+            Password should be at least 8 characters
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100" [disabled]="profileForm.invalid" style="border-radius: 8px;">
+          Update Profile
+        </button>
+      </form>
     </div>
   </div>
-  
-  <div *ngIf="!profile" class="text-center mt-5">
-    <p>Loading profile...</p>
-  </div>
-  
+</div>

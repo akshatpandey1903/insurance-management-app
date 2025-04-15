@@ -1,0 +1,124 @@
+<!-- <app-navbar></app-navbar>
+<div class="container mt-4">
+  <h3>Purchased Policies</h3>
+  
+  <table class="table table-bordered mt-3" *ngIf="purchasedPolicies.length > 0">
+    <thead>
+      <tr>
+        <th>Sr No</th>
+        <th>Policy Id</th>
+        <th>Plan Name</th>
+        <th>Claim Amount</th>
+        <th>Penalty Amount</th>
+        <th>Early Claim</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Verified On</th>
+        <th>Remarks</th>
+        <th>Verified By</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let policy of purchasedPolicies; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ policy.policyId }}</td>
+        <td>{{ policy.planName }}</td>
+        <td>₹{{ policy.claimAmount }}</td>
+        <td>₹{{ policy.penaltyAmount }}</td>
+        <td>{{ policy.isEarlyClaim ? 'Yes' : 'No' }}</td>
+        <td>{{ policy.reason }}</td>
+        <td><span class="badge bg-warning text-dark" *ngIf="policy.status === 'PENDING'">{{ policy.status }}</span>
+            <span class="badge bg-success" *ngIf="policy.status === 'APPROVED'">{{ policy.status }}</span>
+            <span class="badge bg-danger" *ngIf="policy.status === 'REJECTED'">{{ policy.status }}</span>
+        </td>
+        <td>{{ policy.requestedAt | date }}</td>
+        <td>{{ policy.remarks }}</td>
+        <td>{{ policy.verifiedBy }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="cancelPolicyForm.patchValue({ policyId: policy.policyId })">Cancel</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <div class="mt-4">
+    <h4>Cancel Policy</h4>
+    <form [formGroup]="cancelPolicyForm" (ngSubmit)="onCancelPolicy()">
+      <div class="mb-3">
+        <label for="policyId">Policy ID to cancel</label>
+        <input formControlName="policyId" type="number" class="form-control" required readonly />
+      </div>
+      <button type="submit" class="btn btn-danger" [disabled]="cancelPolicyForm.invalid">Confirm Cancellation</button>
+    </form>
+  </div>
+</div> -->
+
+<app-navbar></app-navbar>
+<div class="container mt-4">
+  <h3>Purchased Policies</h3>
+  <div class="table-responsive">
+  <table class="table table-bordered mt-3" *ngIf="purchasedPolicies.length > 0">
+    <thead>
+      <tr>
+        <th>Policy ID</th>
+        <th>Plan Name</th>
+        <th>Payment Frequency</th>
+        <th>Premium</th>
+        <th>Coverage Amount</th>
+        <th>Duration (Years)</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Next Due Date</th>
+        <th>Approved By</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let policy of purchasedPolicies">
+        <td>{{ policy.policyId }}</td>
+        <td>{{ policy.planName }}</td>
+        <td>{{ policy.paymentFrequency }}</td>
+        <td>{{ policy.calculatedPremium | currency : 'INR' }}</td>
+        <td>{{ policy.selectedCoverageAmount | currency : 'INR' }}</td>
+        <td>{{ policy.selectedDurationYears }}</td>
+        <td>{{ policy.startDate | date }}</td>
+        <td>{{ policy.endDate | date }}</td>
+        <td>{{ policy.nextDueDate | date }}</td>
+        <td>{{ policy.approvedBy || 'Pending' }}</td>
+        <td>
+          <span class="badge bg-success" *ngIf="policy.active">Active</span>
+          <span class="badge bg-secondary" *ngIf="!policy.active">Inactive</span>
+        </td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="cancelPolicyForm.patchValue({ policyId: policy.policyId })">
+            Cancel
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+  <div class="alert alert-info mt-3" *ngIf="purchasedPolicies.length === 0">
+    No policies purchased yet.
+  </div>
+
+  <hr />
+
+  <div class="mt-4">
+    <h4>Cancel Policy</h4>
+    <form [formGroup]="cancelPolicyForm" (ngSubmit)="onCancelPolicy()">
+      <div class="mb-3">
+        <label for="policyId">Policy ID to cancel</label>
+        <input id="policyId" formControlName="policyId" type="number" class="form-control" required readonly />
+      </div>
+      <button type="submit" class="btn btn-danger" [disabled]="cancelPolicyForm.invalid">
+        Confirm Cancellation
+      </button>
+    </form>
+  </div>
+</div>
+

@@ -6,6 +6,8 @@ import { PoliciesComponent } from './components/policies/policies.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { WithdrawlsComponent } from './components/withdrawls/withdrawls.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { PolicyClaimComponent } from './components/policy-claim/policy-claim.component';
+import { PolicyCancelComponent } from './components/policy-cancel/policy-cancel.component';
 
 const routes: Routes = [
   {path: 'dashboard' , component: CustomerDashboardComponent},
@@ -13,7 +15,9 @@ const routes: Routes = [
   { path: 'policies', component: PoliciesComponent },     
   { path: 'payments', component: PaymentsComponent },     
   { path: 'withdrawals', component: WithdrawlsComponent },  
-  { path: 'contact', component: ContactComponent }
+  { path: 'contact', component: ContactComponent },
+  {path: 'policy-claim' , component: PolicyClaimComponent},
+  {path: 'policy-cancel' , component: PolicyCancelComponent}
 ];
 
 @NgModule({

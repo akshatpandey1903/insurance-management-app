@@ -1,2 +1,202 @@
 <app-navbar></app-navbar>
-<p>policies works!</p>
+
+<!-- Available Plans Section -->
+<div *ngIf="availablePlans.length > 0" class="card shadow-lg mb-5">
+  <div class="card-body">
+    <h3 class="text-primary mb-3">Available Insurance Plans</h3>
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Plan ID</th>
+          <th>Plan Name</th>
+          <th>Insurance Type</th>
+          <th>Minimum Coverage</th>
+          <th>Maximum Coverage</th>
+          <th>Minimum Duration (Years)</th>
+          <th>Maximum Duration (Years)</th>
+          <th>Required Documents</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let plan of availablePlans">
+          <td>{{ plan.insurancePlanId }}</td>
+          <td>{{ plan.planName }}</td>
+          <td>{{ plan.insuranceTypeName }}</td>
+          <td>{{ plan.minCoverageAmount }}</td>
+          <td>{{ plan.maxCoverageAmount }}</td>
+          <td>{{ plan.minDurationYears }}</td>
+          <td>{{ plan.maxDurationYears }}</td>
+          <td>{{ plan.requiredDocuments }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Main Container -->
+<div class="container my-5">
+
+  <!-- Purchased Policies Section -->
+  <div *ngIf="purchasedPolicies.length > 0; else noPolicies">
+    <h3 class="mb-4 text-primary">Your Purchased Policies</h3>
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <table class="table table-hover table-bordered mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Policy Id</th>
+              <th>Plan Name</th>
+              <th>Payment Frequency</th>
+              <th>Premium</th>
+              <th>Next Due Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let policy of purchasedPolicies">
+              <td>{{ policy.policyId }}</td>
+              <td>{{ policy.planName }}</td>
+              <td>{{ policy.paymentFrequency }}</td>
+              <td>{{ policy.calculatedPremium | currency: 'INR' }}</td>
+              <td>{{ policy.nextDueDate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Policies Template -->
+  <ng-template #noPolicies>
+    <div class="alert alert-info text-center">
+      You haven’t purchased any policies yet.
+    </div>
+  </ng-template>
+
+  <!-- Register New Policy Section -->
+  <div class="card shadow-lg mt-5 p-4">
+    <h3 class="text-center text-success mb-4">Register New Policy</h3>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Select Insurance Plan</label>
+          <select class="form-select" formControlName="insurancePlanId">
+            <option [ngValue]="null" disabled selected>Select a plan</option>
+            <option *ngFor="let plan of availablePlans" [ngValue]="plan.insurancePlanId">
+              {{ plan.planName }} (ID: {{ plan.insurancePlanId }})
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Payment Frequency</label>
+          <select class="form-select" formControlName="paymentFrequency">
+            <option *ngFor="let freq of frequencies" [value]="freq">{{ freq }}</option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Coverage Amount</label>
+          <input type="number" class="form-control" formControlName="selectedCoverageAmount" placeholder="e.g. 500000" />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Duration (Years)</label>
+          <input type="number" class="form-control" formControlName="selectedDurationYears" placeholder="e.g. 5" />
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Agent License Number (optional)</label>
+          <input type="text" class="form-control" formControlName="licenseNumber" placeholder="e.g. AG12345" />
+        </div>
+      </div>
+
+      <!-- Upload Document Section -->
+      <div class="card mt-4 shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="mb-3 text-primary">Upload Required Document</h5>
+          <form [formGroup]="uploadForm" (ngSubmit)="uploadDocument()">
+            <div class="row g-3 align-items-end">
+              <div class="col-md-6">
+                <label class="form-label">Document Type</label>
+                <select class="form-select" formControlName="documentType">
+                  <option *ngFor="let type of filteredDocumentTypes" [value]="type">{{ type }}</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Choose File</label>
+                <input type="file" class="form-control" (change)="onFileSelected($event)" />
+              </div>
+
+              <div class="col-12 text-end">
+                <button type="submit" class="btn btn-outline-primary mt-3">Upload</button>
+              </div>
+            </div>
+          </form>
+
+          <div *ngIf="message" class="alert alert-info mt-3">{{ message }}</div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mt-4" *ngIf="documentList.length > 0">
+        <div class="card-body p-0">
+          <h5 class="card-header bg-primary text-white">Your Uploaded Documents</h5>
+      
+          <table class="table table-bordered table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Document Type</th>
+                <th>Status</th>
+                <th>Uploaded At</th>
+                <th>View</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let doc of documentList">
+                <td>{{ doc.documentType }}</td>
+                <td>
+                  <span
+                    [ngClass]="{
+                      'badge bg-success': doc.documentStatus === 'APPROVED',
+                      'badge bg-warning text-dark': doc.documentStatus === 'PENDING',
+                      'badge bg-danger': doc.documentStatus === 'REJECTED'
+                    }"
+                  >
+                    {{ doc.documentStatus }}
+                  </span>
+                </td>
+                <td>{{ doc.uploadedAt | date: 'medium' }}</td>
+                <td>
+                  <a
+                    [href]="doc.documentUrl"
+                    target="_blank"
+                    class="btn btn-sm btn-outline-primary"
+                  >
+                    View
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>      
+
+      <!-- Register Button -->
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-success btn-lg" [disabled]="registerForm.invalid">
+          <i class="bi bi-check-circle"></i> Register Policy
+        </button>
+      </div>
+    </form>
+
+    <!-- Alerts -->
+    <div *ngIf="response" class="alert alert-success mt-4">
+      Policy registered successfully with ID: <strong>{{ response.id }}</strong>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger mt-4">
+      {{ error }}
+    </div>
+  </div>
+</div>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WithdrawlsComponent } from './withdrawls.component';
+import { AgentNavbarComponent } from './agent-navbar.component';
 
-describe('WithdrawlsComponent', () => {
-  let component: WithdrawlsComponent;
-  let fixture: ComponentFixture<WithdrawlsComponent>;
+describe('AgentNavbarComponent', () => {
+  let component: AgentNavbarComponent;
+  let fixture: ComponentFixture<AgentNavbarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WithdrawlsComponent]
+      declarations: [AgentNavbarComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(WithdrawlsComponent);
+    fixture = TestBed.createComponent(AgentNavbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,6 +2,7 @@ package com.aurionpro.app.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.aurionpro.app.dto.CustomerBasicDTO;
 import com.aurionpro.app.dto.CustomerProfileDTO;
 import com.aurionpro.app.dto.CustomerRegistrationDTO;
 import com.aurionpro.app.dto.PageResponse;
@@ -140,5 +142,14 @@ public class CustomerServiceImpl implements CustomerService {
         		customers.isLast()
         );
     }
+    
+    @Override
+    public List<CustomerBasicDTO> getAllBasicCustomerInfo() {
+        List<Customer> customers = customerRepository.findByIsActiveTrue();
+        return customers.stream()
+            .map(c -> new CustomerBasicDTO(c.getUserId(), c.getFirstName() + " " + c.getLastName(), c.getEmail()))
+            .collect(Collectors.toList());
+    }
+
 }
 

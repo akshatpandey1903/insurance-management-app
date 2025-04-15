@@ -11,6 +11,8 @@ import { ContactComponent } from './components/contact/contact.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { PolicyClaimComponent } from './components/policy-claim/policy-claim.component';
+import { PolicyCancelComponent } from './components/policy-cancel/policy-cancel.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { FormsModule } from '@angular/forms';
     PaymentsComponent,
     WithdrawlsComponent,
     NavbarComponent,
-    ContactComponent
+    ContactComponent,
+    PolicyClaimComponent,
+    PolicyCancelComponent
   ],
   imports: [
     CommonModule,

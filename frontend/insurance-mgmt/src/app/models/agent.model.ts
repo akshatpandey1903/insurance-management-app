@@ -6,7 +6,6 @@ export interface AgentResponseDTO {
     isApproved: boolean;
   }
   
-  // src/app/models/agent.model.ts
 
 export interface AgentReportResponseDTO {
     agentId: number;
@@ -15,10 +14,9 @@ export interface AgentReportResponseDTO {
     approvedBy: string;
     totalPoliciesRegistered: number;
     totalCommissionEarnedYearly: number;
-    registeredAt: string; // or Date if you parse it
+    registeredAt: string; 
   }
   
-  // src/app/models/agent-commission-report.model.ts
 
 export interface AgentCommissionReportDto {
     userId: number;
@@ -30,3 +28,10 @@ export interface AgentCommissionReportDto {
     totalEarnings: number;
   }
   
+export interface AgentUpdateRequest {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password?: string;
+}

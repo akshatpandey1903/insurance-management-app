@@ -12,4 +12,6 @@ public interface AgentRepository extends JpaRepository<Agent, Integer>{
 	Page<Agent> findByIsApprovedFalseAndIsActiveTrue(Pageable pageable);
 	Page<Agent> findByIsActiveTrue(Pageable pageable);
 	Optional<Agent> findByLicenseNumberAndIsActiveTrue(String licenseNumber);
+	Optional<Agent> findByUserId(int userId);
+
 }
