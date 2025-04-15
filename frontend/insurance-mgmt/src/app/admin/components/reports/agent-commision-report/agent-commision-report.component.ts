@@ -15,15 +15,21 @@ export class AgentCommisionReportComponent {
   page = 0;
   size = 10;
   totalPages = 0;
+  keyword: string = '';
 
   constructor(private adminService: AdminService) {}
+
+  searchAgents(): void {
+    this.page = 0;
+    this.fetchAgentCommissions();
+  }
 
   ngOnInit(): void {
     this.fetchAgentCommissions();
   }
 
   fetchAgentCommissions(): void {
-    this.adminService.getAgentCommissionReport(this.page, this.size).subscribe({
+    this.adminService.getAgentCommissionReport(this.page, this.size, this.keyword).subscribe({
       next: (res) => {
         this.agents = res.content;
         this.totalPages = res.totalPages;

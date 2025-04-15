@@ -3,9 +3,19 @@
   <h2 class="mb-4 text-center text-success fw-bold">Agent Commission Report</h2>
 
   <div class="table-responsive">
+    <div class="mb-3 d-flex justify-content-between align-items-center">
     <button class="btn btn-outline-primary mb-3" (click)="downloadPdf()">
       <i class="bi bi-file-earmark-arrow-down"></i> Download PDF
     </button>
+    
+      <input 
+        type="text" 
+        class="form-control w-25 h-200" 
+        placeholder="Search in agent commissions..." 
+        [(ngModel)]="keyword" 
+        (input)="searchAgents()"
+      />
+    </div>   
     <table class="table table-bordered table-hover table-striped">
       <thead class="table-light">
         <tr>

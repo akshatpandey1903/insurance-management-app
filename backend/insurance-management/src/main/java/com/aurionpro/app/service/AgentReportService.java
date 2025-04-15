@@ -7,6 +7,6 @@ import com.aurionpro.app.dto.AgentReportResponseDTO;
 import com.aurionpro.app.dto.PageResponse;
 
 public interface AgentReportService {
-	PageResponse<AgentCommissionReportDto> getAgentCommissionReport(Pageable pageable);
-	PageResponse<AgentReportResponseDTO> getAgentReport(int pageNumber, int pageSize);
+	PageResponse<AgentCommissionReportDto> getAgentCommissionReport(Pageable pageable, String keyword);
+	PageResponse<AgentReportResponseDTO> getAgentReport(int pageNumber, int pageSize, String search);
 }

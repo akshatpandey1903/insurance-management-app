@@ -96,6 +96,7 @@ export class AuthService {
         console.log('Login API response:', response);
         localStorage.setItem('userId', response.userId);
         localStorage.setItem('accessToken', response.accessToken);
+        localStorage.setItem('userRole', response.role);
   
         const role = response.role || this.getRoleName();
         this.redirectBasedOnRole(role);

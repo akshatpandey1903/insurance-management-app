@@ -1,30 +1,40 @@
-import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateFn, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { CanActivate, CanLoad, ActivatedRouteSnapshot, Route, UrlSegment, Router, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
 
-export const AuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate, CanLoad {
 
-  const isLoggedIn = authService.isLoggedIn();
-  const userRole = authService.getRoleName();
-  const requiredRoles = route.data['roles'] as string[];
+  constructor(private router: Router) {}
 
-  console.log('AuthGuard - Route:', route.url, 'LoggedIn:', isLoggedIn, 'UserRole:', userRole, 'Required:', requiredRoles);
+  private checkAccess(expectedRole?: string): boolean {
+    const token = localStorage.getItem('accessToken');
+    const role = localStorage.getItem('userRole'); 
 
-  if (!isLoggedIn) {
-      console.log('AuthGuard - Not logged in, redirecting to /login');
-      router.navigate(['/login']);
+    if (!token) {
+      this.router.navigate(['/login']);
       return false;
+    }
+
+    if (expectedRole && role !== expectedRole) {
+      this.router.navigate(['/login']);
+      return false;
+    }
+
+    return true;
   }
 
-  if (requiredRoles && userRole && requiredRoles.includes(userRole)) {
-      console.log('AuthGuard - Access granted');
-      return true;
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const expectedRole = route.data['expectedRole'];
+    return this.checkAccess(expectedRole);
   }
 
-  console.log('AuthGuard - Role mismatch, redirecting to /login');
-  router.navigate(['/login']);
-  return false;
-};
+  canLoad(route: Route, segments: UrlSegment[]): boolean {
+    const expectedRole = route.data?.['expectedRole'];
+    return this.checkAccess(expectedRole);
+  }
+}
+
+

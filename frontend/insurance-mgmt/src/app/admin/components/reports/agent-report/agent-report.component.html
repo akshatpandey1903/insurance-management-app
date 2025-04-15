@@ -3,9 +3,18 @@
   <h2 class="mb-4 text-center text-success fw-bold">Agent Report</h2>
 
   <div class="table-responsive">
-    <button class="btn btn-outline-primary mb-3" (click)="downloadPdf()">
-      <i class="bi bi-file-earmark-arrow-down"></i> Download PDF
-    </button>
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+      <button class="btn btn-outline-primary mb-3" (click)="downloadPdf()">
+        <i class="bi bi-file-earmark-arrow-down"></i> Download PDF
+      </button>
+      <input 
+        type="text" 
+        class="form-control w-25" 
+        placeholder="Search agents..." 
+        [(ngModel)]="keyword" 
+        (input)="searchAgents()"
+      />
+    </div>    
     
     <table class="table table-bordered table-hover table-striped">
       <thead class="table-light">

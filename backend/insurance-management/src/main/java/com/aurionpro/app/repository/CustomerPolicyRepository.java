@@ -47,7 +47,32 @@ public interface CustomerPolicyRepository extends JpaRepository<CustomerPolicy, 
 			      "a.totalEarnings) " +
 			      "FROM Agent a LEFT JOIN a.soldPolicies cp " +
 			      "GROUP BY a.userId, a.firstName, a.lastName, a.email, a.totalEarnings")
-			Page<AgentCommissionReportDto> getAgentCommissionReport(Pageable pageable);
+		Page<AgentCommissionReportDto> getAgentCommissionReport(Pageable pageable);
+		
+		@Query("SELECT new com.aurionpro.app.dto.AgentCommissionReportDto(" +
+			       "a.userId, a.firstName, a.lastName, a.email, " +
+			       "COUNT(cp), " +
+			       "CAST(SUM(CASE WHEN cp IS NOT NULL THEN cp.calculatedPremium * cp.insurancePlan.commissionRate / 100 ELSE 0 END) AS java.math.BigDecimal), " +
+			       "a.totalEarnings) " +
+			       "FROM Agent a LEFT JOIN a.soldPolicies cp " +
+			       "WHERE LOWER(a.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+			       "LOWER(a.lastName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+			       "LOWER(a.email) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+			       "CAST(a.userId AS string) LIKE CONCAT('%', :keyword, '%') " +
+			       "GROUP BY a.userId, a.firstName, a.lastName, a.email, a.totalEarnings " +
+			       "UNION " +
+			       "SELECT new com.aurionpro.app.dto.AgentCommissionReportDto(" +
+			       "a.userId, a.firstName, a.lastName, a.email, " +
+			       "COUNT(cp), " +
+			       "CAST(SUM(CASE WHEN cp IS NOT NULL THEN cp.calculatedPremium * cp.insurancePlan.commissionRate / 100 ELSE 0 END) AS java.math.BigDecimal), " +
+			       "a.totalEarnings) " +
+			       "FROM Agent a LEFT JOIN a.soldPolicies cp " +
+			       "GROUP BY a.userId, a.firstName, a.lastName, a.email, a.totalEarnings " +
+			       "HAVING CAST(COUNT(cp) AS string) LIKE CONCAT('%', :keyword, '%') OR " +
+			       "CAST(SUM(CASE WHEN cp IS NOT NULL THEN cp.calculatedPremium * cp.insurancePlan.commissionRate / 100 ELSE 0 END) AS string) LIKE CONCAT('%', :keyword, '%')")
+		Page<AgentCommissionReportDto> searchAgentCommissionReport(@Param("keyword") String keyword, Pageable pageable);
+
+
 
 		Page<CustomerPolicy> findByIsActiveFalseAndApprovedByNullAndIsRejectedFalse(PageRequest of);
 		

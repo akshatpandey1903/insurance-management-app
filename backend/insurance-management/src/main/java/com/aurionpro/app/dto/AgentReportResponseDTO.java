@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class AgentReportResponseDTO {
     private int agentId;
     private String name;
@@ -18,4 +16,16 @@ public class AgentReportResponseDTO {
     private int totalPoliciesRegistered;
     private BigDecimal totalCommissionEarnedYearly;
     private LocalDateTime registeredAt;
+    
+    public AgentReportResponseDTO(int agentId, String name, String email, String approvedBy, Long totalPoliciesRegistered, BigDecimal totalCommissionEarnedYearly, LocalDateTime registeredAt) 
+    { 
+    	this.agentId = agentId; 
+    	this.name = name; 
+    	this.email = email; 
+    	this.approvedBy = approvedBy; 
+    	this.totalPoliciesRegistered = totalPoliciesRegistered != null ? totalPoliciesRegistered.intValue() : 0; 
+    	this.totalCommissionEarnedYearly = totalCommissionEarnedYearly; 
+    	this.registeredAt = registeredAt;
+    } 
+
 }

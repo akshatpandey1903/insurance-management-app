@@ -27,18 +27,22 @@ public class AgentReportController {
     @GetMapping("/agents")
     public ResponseEntity<PageResponse<AgentReportResponseDTO>> getAgentReport(
             @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "10") int pageSize) {
-
-        return ResponseEntity.ok(reportService.getAgentReport(pageNumber, pageSize));
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(required = false) String keyword) {
+    	
+    	
+        return ResponseEntity.ok(reportService.getAgentReport(pageNumber, pageSize, keyword));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     @GetMapping("/agent-commissions")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public PageResponse<AgentCommissionReportDto> getAgentCommissionReport(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(required = false) String keyword) {
 
         Pageable pageable = PageRequest.of(page, size);
-        return reportService.getAgentCommissionReport(pageable);
+        return reportService.getAgentCommissionReport(pageable, keyword);
     }
+
 }

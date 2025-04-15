@@ -11,30 +11,36 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { 
-    path: 'admin', 
+
+  {
+    path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
-    // canActivate: [AuthGuard],
-    // data: { role: 'ROLE_ADMIN' }
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+    data: { expectedRole: 'ADMIN' }
   },
-  { 
-    path: 'customer', 
+  {
+    path: 'customer',
     loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule),
-    // canActivate: [AuthGuard],
-    // data: { role: 'ROLE_CUSTOMER' } 
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+    data: { expectedRole: 'CUSTOMER' }
   },
-  { 
-    path: 'employee', 
+  {
+    path: 'employee',
     loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
-    // canActivate: [AuthGuard],
-    // data: { role: 'ROLE_EMPLOYEE' }  
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+    data: { expectedRole: 'EMPLOYEE' }
   },
-  { 
-    path: 'agent', 
+  {
+    path: 'agent',
     loadChildren: () => import('./agent/agent.module').then(m => m.AgentModule),
-    // canActivate: [AuthGuard],
-    // data: { role: 'ROLE_AGENT' }  
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+    data: { expectedRole: 'AGENT' }
   },
+
   { path: '**', redirectTo: '' }
 ];
 
@@ -42,4 +48,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

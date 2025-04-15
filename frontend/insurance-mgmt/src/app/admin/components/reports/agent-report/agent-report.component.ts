@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AdminService } from '../../../services/admin.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { AgentReportResponseDTO } from '../../../../models/agent.model';
 
 @Component({
   selector: 'app-agent-report',
@@ -10,10 +11,11 @@ import autoTable from 'jspdf-autotable';
   styleUrl: './agent-report.component.css'
 })
 export class AgentReportComponent {
-  agents: any[] = [];
+  agents: AgentReportResponseDTO[] = [];
   pageNumber: number = 0;
   pageSize: number = 10;
   totalPages: number = 0;
+  keyword: string = '';
 
   constructor(private adminService: AdminService) {}
 
@@ -21,8 +23,13 @@ export class AgentReportComponent {
     this.loadAgents();
   }
 
+  searchAgents(): void {
+    this.pageNumber = 0;
+    this.loadAgents();
+  }
+  
   loadAgents(): void {
-    this.adminService.getAllAgents(this.pageNumber, this.pageSize).subscribe({
+    this.adminService.getAllAgents(this.pageNumber, this.pageSize, this.keyword).subscribe({
       next: (res) => {
         this.agents = res.content;
         this.totalPages = res.totalPages;

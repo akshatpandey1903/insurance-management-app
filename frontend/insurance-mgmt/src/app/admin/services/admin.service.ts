@@ -6,6 +6,8 @@ import { AuthService } from '../../services/auth.service';
 import { CustomerReportComponent } from '../components/reports/customer-report/customer-report.component';
 import { CustomerQueryResponse } from '../../customer/model';
 import { isPlatformBrowser } from '@angular/common';
+import { Page } from 'ngx-pagination';
+import { AgentReportResponseDTO } from '../../models/agent.model';
 
 @Injectable({
   providedIn: 'root'
@@ -128,13 +130,13 @@ export class AdminService {
     );
   }
 
-  getAllAgents(pageNumber: number, pageSize: number): Observable<any> {
-    return this.httpClient.get(`${this.apiUrl}/admin/reports/agents?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  getAllAgents(pageNumber: number, pageSize: number, keyword: string = ''): Observable<PageResponse<AgentReportResponseDTO>> {
+    return this.httpClient.get<PageResponse<AgentReportResponseDTO>>(`${this.apiUrl}/admin/reports/agents?pageNumber=${pageNumber}&pageSize=${pageSize}&keyword=${keyword}`);
   }
 
-  getAgentCommissionReport(page: number, size: number): Observable<PageResponse<AgentCommissionReportDto>> {
+  getAgentCommissionReport(page: number, size: number, keyword: string = ''): Observable<PageResponse<AgentCommissionReportDto>> {
     return this.httpClient.get<PageResponse<AgentCommissionReportDto>>(
-      `${this.apiUrl}/admin/reports/agent-commissions?page=${page}&size=${size}`
+      `${this.apiUrl}/admin/reports/agent-commissions?page=${page}&size=${size}&keyword=${keyword}`
     );
   }
 
