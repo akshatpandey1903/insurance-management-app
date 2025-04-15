@@ -158,7 +158,17 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
 
         Agent agent = policy.getAgent();
         if (agent != null) {
-            BigDecimal commission = policy.getCalculatedPremium()
+            BigDecimal yearlyPremium;
+
+            switch (policy.getPaymentFrequency()) {
+                case MONTHLY -> yearlyPremium = policy.getCalculatedPremium().multiply(BigDecimal.valueOf(12));
+                case QUARTERLY -> yearlyPremium = policy.getCalculatedPremium().multiply(BigDecimal.valueOf(4));
+                case HALF_YEARLY -> yearlyPremium = policy.getCalculatedPremium().multiply(BigDecimal.valueOf(2));
+                case YEARLY -> yearlyPremium = policy.getCalculatedPremium();
+                default -> yearlyPremium = BigDecimal.ZERO;
+            }
+
+            BigDecimal commission = yearlyPremium
                     .multiply(BigDecimal.valueOf(policy.getInsurancePlan().getCommissionRate()))
                     .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
 
