@@ -9,7 +9,7 @@
 }
 
 .glass-card {
-  background: rgba(73, 69, 69, 0.25);
+  background: rgba(249, 249, 249, 0.25);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 2px solid rgba(255, 255, 255, 0.18);

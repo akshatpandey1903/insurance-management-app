@@ -6,8 +6,9 @@ body {
 
 /* Card Enhancements */
 .card {
-    border-radius: 1rem;
+    border-radius: 0;
     border: none;
+
 }
 
 .card-body {
@@ -26,11 +27,25 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     font-size: 0.9rem;
+    border: 1px solid black;
 }
 
 .table-hover tbody tr:hover {
     background-color: #f1f9ff;
     cursor: pointer;
+}
+
+thead{
+    text-align: center;
+}
+
+tbody{
+    border: 1px solid black;
+}
+
+td{
+    border: 1px solid black;
+    text-align: center;
 }
 
 /* Headings */

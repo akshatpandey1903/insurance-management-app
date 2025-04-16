@@ -41,7 +41,7 @@ export class AgentService {
   }
 
   updateAgentProfile(agentId: number, updateData: AgentUpdateRequest): Observable<any> {
-    return this.http.put(`${this.baseUrl}/update/${agentId}`, updateData, {
+    return this.http.put(`${this.baseUrl}/profile/${agentId}`, updateData, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${this.accessToken}`
       })

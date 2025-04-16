@@ -10,7 +10,7 @@ export class PolicyService {
   constructor(private http: HttpClient) { }
 
   private getHeaders() {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('accessToken'); 
     return new HttpHeaders({
       'Authorization': `Bearer ${token}` 
     });
