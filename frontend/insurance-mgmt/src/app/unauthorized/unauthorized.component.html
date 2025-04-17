@@ -1,4 +1,66 @@
-<div class="text-center mt-5">
-    <h2>403 - Unauthorized</h2>
-    <p>You do not have permission to access this page.</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - Unauthorized</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #003366;
+        }
+        .error-container {
+            text-align: center;
+            padding: 40px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(0, 87, 184, 0.1);
+            max-width: 500px;
+            width: 90%;
+            border-top: 5px solid #0056b3;
+        }
+        h2 {
+            color: #0056b3;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: #4169e1;
+        }
+        .blue-divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #0056b3, transparent);
+            margin: 20px 0;
+        }
+        .home-link {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .home-link:hover {
+            background-color: #003d82;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h2>403 - Unauthorized</h2>
+        <div class="blue-divider"></div>
+        <p>You do not have permission to access this page.</p>
+        <a href="/" class="home-link">Return to Home</a>
+    </div>
+</body>
+</html>

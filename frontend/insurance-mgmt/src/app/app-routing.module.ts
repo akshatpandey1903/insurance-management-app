@@ -5,12 +5,14 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ForgotPasswordComponent } from './components/login/forgot-password/forgot-password.component';
 import { AuthGuard } from './auth/auth.guard';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 const routes: Routes = [
   { path: '', component: IntroComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
 
   {
     path: 'admin',

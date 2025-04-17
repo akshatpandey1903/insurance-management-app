@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     }
 
     if (expectedRole && role !== expectedRole) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/unauthorized']);
       return false;
     }
 
