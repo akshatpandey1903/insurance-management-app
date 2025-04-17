@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<!-- <app-navbar></app-navbar>
 
 <div class="container mt-5" *ngIf="!isLoading; else loading">
   <div class="card shadow-lg border-0 rounded-4">
@@ -48,6 +48,86 @@
             <i class="bi bi-save me-2"></i>Update Profile
           </button>
         </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="text-center mt-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-3 fs-5">Loading your profile...</p>
+  </div>
+</ng-template> -->
+
+<app-navbar></app-navbar>
+
+<div class="container mt-4" *ngIf="!isLoading; else loading">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-person-circle me-2"></i>My Profile
+      </h4>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Status Message -->
+      <div *ngIf="statusMessage" class="alert" [ngClass]="{
+        'alert-success': statusType === 'success',
+        'alert-danger': statusType === 'error'
+      }">
+      {{ statusMessage }}
+      </div>
+
+      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" novalidate>
+
+        <!-- First Name -->
+        <div class="mb-3">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-control" formControlName="firstName" />
+        </div>
+
+        <!-- Last Name -->
+        <div class="mb-3">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-control" formControlName="lastName" />
+        </div>
+
+        <!-- Phone Number -->
+        <div class="mb-3">
+          <label class="form-label">Phone Number</label>
+          <input type="text" class="form-control" formControlName="phone" />
+        </div>
+
+        <!-- Address -->
+        <div class="mb-3">
+          <label class="form-label">Address</label>
+          <input type="text" class="form-control" formControlName="address" />
+        </div>
+
+        <!-- Email (Read-only) -->
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" formControlName="email"  readonly />
+        </div>
+
+        <!-- Current Password -->
+        <div class="mb-3">
+          <label class="form-label">Current Password</label>
+          <input type="password" class="form-control" formControlName="currentPassword" placeholder="Enter current password" />
+        </div>
+
+        <!-- New Password -->
+        <div class="mb-3">
+          <label class="form-label">New Password (leave blank to keep unchanged)</label>
+          <input type="password" class="form-control" formControlName="newPassword" placeholder="New password" />
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-success" [disabled]="profileForm.invalid">
+          <i class="bi bi-save me-1"></i>Update Profile
+        </button>
       </form>
     </div>
   </div>

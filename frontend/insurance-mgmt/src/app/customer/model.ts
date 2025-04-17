@@ -73,3 +73,13 @@ export interface CustomerDocumentResponseDTO {
     documentStatus: 'PENDING' | 'APPROVED' | 'REJECTED';
     uploadedAt: string; // ISO date string
 }
+
+export interface CustomerProfileDTO {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    address: string;
+    currentPassword: string;
+    newPassword: string;
+    email: string;
+  }

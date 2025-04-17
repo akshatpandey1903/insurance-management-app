@@ -15,6 +15,7 @@ import { AgentCommisionReportComponent } from './components/reports/agent-commis
 import { PolicyPaymentsComponent } from './components/reports/policy-payments/policy-payments.component';
 import { TransactionsReportComponent } from './components/reports/transactions-report/transactions-report.component';
 import { ResolveQueriesComponent } from './components/resolve-queries/resolve-queries.component';
+import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
 
 const routes: Routes = [
   {path: 'dashboard',component: AdmindashboardComponent},
@@ -31,7 +32,8 @@ const routes: Routes = [
   { path: 'reports/commissions', component: AgentCommisionReportComponent},
   { path: 'reports/policy-payments', component: PolicyPaymentsComponent},
   { path: 'reports/transactions', component: TransactionsReportComponent},
-  {path: 'resolve-queries', component: ResolveQueriesComponent}
+  {path: 'resolve-queries', component: ResolveQueriesComponent},
+  {path: 'admin-profile' , component: AdminProfileComponent}
 ];
 
 @NgModule({

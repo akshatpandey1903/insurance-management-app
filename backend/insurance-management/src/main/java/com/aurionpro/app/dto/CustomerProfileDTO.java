@@ -10,4 +10,5 @@ public class CustomerProfileDTO {
     private String address;
     private String currentPassword;
     private String newPassword;
+    private String email;
 }

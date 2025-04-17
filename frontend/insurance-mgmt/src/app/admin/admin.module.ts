@@ -20,6 +20,7 @@ import { AgentCommisionReportComponent } from './components/reports/agent-commis
 import { PolicyPaymentsComponent } from './components/reports/policy-payments/policy-payments.component';
 import { TransactionsReportComponent } from './components/reports/transactions-report/transactions-report.component';
 import { ResolveQueriesComponent } from './components/resolve-queries/resolve-queries.component';
+import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ResolveQueriesComponent } from './components/resolve-queries/resolve-qu
     AgentCommisionReportComponent,
     PolicyPaymentsComponent,
     TransactionsReportComponent,
-    ResolveQueriesComponent
+    ResolveQueriesComponent,
+    AdminProfileComponent
   ],
   imports: [
     CommonModule,

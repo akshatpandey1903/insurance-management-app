@@ -1,0 +1,110 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4" *ngIf="!loading">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0"><i class="bi bi-person-badge me-2"></i>Admin Profile</h4>
+    </div>
+    <div class="card-body">
+
+      <!-- Status Message -->
+      <div *ngIf="statusMessage" class="alert" [ngClass]="{
+          'alert-success': statusType === 'success',
+          'alert-danger': statusType === 'error'
+        }">
+        {{ statusMessage }}
+      </div>
+
+      <!-- Profile Form -->
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Username Field -->
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            formControlName="username" 
+          />
+        </div>
+
+        <!-- First Name Field -->
+        <div class="mb-3">
+          <label class="form-label">First Name</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            formControlName="firstName" 
+          />
+        </div>
+
+        <!-- Last Name Field -->
+        <div class="mb-3">
+          <label class="form-label">Last Name</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            formControlName="lastName" 
+          />
+        </div>
+
+        <!-- Email Field (read-only) -->
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input 
+            type="email" 
+            class="form-control" 
+            formControlName="email" 
+            readonly 
+          />
+        </div>
+
+        <!-- Role Field (read-only) -->
+        <div class="mb-3">
+          <label class="form-label">Role</label>
+          <input 
+            type="text" 
+            class="form-control"  
+            formControlName="role"
+            readonly 
+          />
+        </div>
+
+        <!-- Current Password Field -->
+        <div class="mb-3">
+          <label class="form-label">Current Password</label>
+          <input 
+            type="password" 
+            class="form-control" 
+            formControlName="currentPassword" 
+            placeholder="Enter current password"
+          />
+        </div>
+
+        <!-- New Password Field -->
+        <div class="mb-3">
+          <label class="form-label">New Password (Optional)</label>
+          <input 
+            type="password" 
+            class="form-control" 
+            formControlName="newPassword" 
+            placeholder="Enter new password"
+          />
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn btn-success" 
+          [disabled]="profileForm.invalid"
+        >
+          <i class="bi bi-save me-1"></i>Update Profile
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Spinner -->
+<div *ngIf="loading" class="text-center mt-4">
+  <div class="spinner-border text-primary" role="status"></div>
+</div>

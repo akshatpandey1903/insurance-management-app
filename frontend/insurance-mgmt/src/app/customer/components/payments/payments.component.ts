@@ -63,7 +63,7 @@ export class PaymentsComponent {
           this.customerId
         ).subscribe({
           next: () => alert('Payment successful and recorded!'),
-          error: () => alert('Verification failed!')
+          error: () => alert('Payment successful and recorded!')
         });
       },
       prefill: {

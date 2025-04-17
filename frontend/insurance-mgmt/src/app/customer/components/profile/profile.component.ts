@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup} from '@angular/forms';
+import { CustomerProfileDTO } from '../../model';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +13,8 @@ export class ProfileComponent implements OnInit {
 
   profileForm!: FormGroup;
   isLoading: boolean = false;
+  statusMessage: string | null = null;
+  statusType: 'success' | 'error' | null = null;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
 
@@ -26,6 +29,7 @@ export class ProfileComponent implements OnInit {
       lastName: [''],
       phone: [''],
       address: [''],
+      email: [''],
       currentPassword: [''],
       newPassword: [''] // Optional new password field
     });
@@ -33,13 +37,14 @@ export class ProfileComponent implements OnInit {
 
   loadProfile(): void {
     this.isLoading = true;
-    this.http.get<any>('http://localhost:8080/app/customer/profile').subscribe({
+    this.http.get<CustomerProfileDTO>('http://localhost:8080/app/customer/profile').subscribe({
       next: (data) => {
         this.profileForm.patchValue({
           firstName: data.firstName || '',
           lastName: data.lastName || '',
           phone: data.phone || '',
-          address: data.address || ''
+          address: data.address || '',
+          email: data.email || ''
         });
         this.isLoading = false;
       },
@@ -70,16 +75,20 @@ export class ProfileComponent implements OnInit {
       'http://localhost:8080/app/customer/profile',
       this.profileForm.value,
       {
-        responseType: 'text' // 👈 Tells Angular not to parse as JSON
+        responseType: 'text'
       }
     ).subscribe({
       next: (response) => {
         console.log('Update success:', response);
-        alert(response);
+        // alert(response);
+        this.statusMessage = 'Profile updated successfully!';
+        this.statusType = 'success';
       },
       error: (err) => {
         console.error('Update error:', err);
-        alert(err.error);
+        // alert(err.error);
+        this.statusMessage = err.error?.message || 'Profile update failed.';
+        this.statusType = 'error';
       }
     });
   }

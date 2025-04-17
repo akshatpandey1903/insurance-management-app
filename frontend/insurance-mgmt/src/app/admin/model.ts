@@ -97,3 +97,13 @@ export interface PaginatedResponse<T> {
     pageSize: number;
     last: boolean;
 }
+
+export interface AdminProfileDto {
+    username: string;
+    currentPassword: string;
+    newPassword: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: string;
+  }

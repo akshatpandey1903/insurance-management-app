@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import { Observable } from 'rxjs';
-import { AgentCommissionReportDto, CityResponseDto, InsurancePlanResponseDTO, InsuranceTypeResponseDTO, PageResponse, PaginatedResponse, PlanPurchaseReportDto, StateResponseDto, TransactionResponse } from '../model';
+import { AdminProfileDto, AgentCommissionReportDto, CityResponseDto, InsurancePlanResponseDTO, InsuranceTypeResponseDTO, PageResponse, PaginatedResponse, PlanPurchaseReportDto, StateResponseDto, TransactionResponse } from '../model';
 import { AuthService } from '../../services/auth.service';
 import { CustomerReportComponent } from '../components/reports/customer-report/customer-report.component';
 import { CustomerQueryResponse } from '../../customer/model';
@@ -111,14 +111,6 @@ export class AdminService {
   }
   // create new customer
 
-  // createUser(userData: any): Observable<any> {
-  //   console.log("Access Token is")
-  //   console.log(localStorage.getItem('accessToken'))
-  //   const role = this.authService.getRoleName()
-  //   console.log(role)
-  //   return this.httpClient.post<any>(`${this.apiUrl}/register`, userData );
-  // }
-
   createUser(userData: any): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.httpClient.post<any>(`${this.apiUrl}/register/customer`, userData, { headers });
@@ -160,6 +152,18 @@ export class AdminService {
   getUnresolvedQueries(): Observable<PaginatedResponse<CustomerQueryResponse>> {
     return this.httpClient.get<PaginatedResponse<CustomerQueryResponse>>(`http://localhost:8080/app/admin/queries`);
 
+  }
+
+  // Profile
+
+  getAdminProfile(): Observable<AdminProfileDto>{
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getToken()}`);
+    return this.httpClient.get<AdminProfileDto>(`${this.apiUrl}/admin/profile` , {headers});
+  }
+
+  updateAdminProfile(payload: any): Observable<string> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.getToken()}`);
+    return this.httpClient.put(`${this.apiUrl}/admin/profile`, payload, { headers, responseType: 'text' });
   }
 
 }
