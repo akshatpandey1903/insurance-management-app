@@ -17,6 +17,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { EmployeeModule } from './employee/employee.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     RegisterComponent,
     IntroComponent,
     ForgotPasswordComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -46,6 +49,7 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     useClass: AuthInterceptor,
     multi: true
     },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     provideClientHydration(withEventReplay())
   ],
   bootstrap: [AppComponent],
