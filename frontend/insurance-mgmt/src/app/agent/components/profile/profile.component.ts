@@ -27,7 +27,8 @@ export class ProfileComponent {
       lastName: ['', Validators.required],
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['']
+      password: [''],
+      newPassword: ['']
     });
 
     this.agentService.getAgentProfile(this.agentId).subscribe({

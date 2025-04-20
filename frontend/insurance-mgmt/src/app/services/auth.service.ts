@@ -98,6 +98,7 @@ export class AuthService {
         localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('userRole', response.role);
         localStorage.setItem('licenseNumber', response.licenseNumber);
+        localStorage.setItem('name' , response.name );
   
         const role = response.role || this.getRoleName();
         this.redirectBasedOnRole(role);

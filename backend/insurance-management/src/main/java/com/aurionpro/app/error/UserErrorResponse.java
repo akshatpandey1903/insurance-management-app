@@ -12,5 +12,6 @@ public class UserErrorResponse
 		private String message;
 		private int status;
 		private long time;
+		private String field;
 }
 

@@ -15,6 +15,7 @@ export class PolicyPaymentsComponent {
   currentPage: number = 0;
   totalPages: number = 0;
   pageSize: number = 5;
+  isLoading: boolean = false;
 
   constructor(private adminService: AdminService) {}
 

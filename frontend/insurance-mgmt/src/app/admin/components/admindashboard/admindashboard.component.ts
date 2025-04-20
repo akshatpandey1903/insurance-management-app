@@ -10,7 +10,7 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class AdmindashboardComponent
 {
-  adminName: string = 'Admin';
+  adminName = localStorage.getItem('name');
 
   constructor(private authService: AuthService) {}
   

@@ -16,4 +16,5 @@ public class JwtAuthResponse {
 	private String role; // line chng
 	private int userId;
 	private String licenseNumber;
+	private String name;
 }

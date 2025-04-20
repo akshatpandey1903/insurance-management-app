@@ -1,59 +1,85 @@
 <app-agent-navbar></app-agent-navbar>
 
-<div class="container py-5">
-  <div class="card shadow-sm mx-auto" style="max-width: 600px; border-radius: 12px;">
-    <div class="card-body p-5">
-      <h2 class="text-center mb-4 display-6 fw-bold" style="color: #2c3e50;">Agent Profile</h2>
-      
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-person-circle me-2"></i>My Profile
+      </h4>
+    </div>
+
+    <div class="card-body">
       <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-        <!-- First Name -->
-        <div class="mb-4">
-          <label for="firstName" class="form-label fw-semibold">First Name</label>
-          <input type="text" class="form-control" formControlName="firstName" id="firstName" placeholder="Enter your first name">
-          <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" class="text-danger mt-1">
-            First name is required
-          </div>
+
+        <!-- Username Field -->
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            formControlName="username" 
+          />
         </div>
 
-        <!-- Last Name -->
-        <div class="mb-4">
-          <label for="lastName" class="form-label fw-semibold">Last Name</label>
-          <input type="text" class="form-control" formControlName="lastName" id="lastName" placeholder="Enter your last name">
-          <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" class="text-danger mt-1">
-            Last name is required
-          </div>
+        <!-- First Name Field -->
+        <div class="mb-3">
+          <label class="form-label">First Name</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            formControlName="firstName" 
+          />
         </div>
 
-        <!-- Username -->
-        <div class="mb-4">
-          <label for="username" class="form-label fw-semibold">Username</label>
-          <input type="text" class="form-control" formControlName="username" id="username" placeholder="Choose a username">
-          <div *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched" class="text-danger mt-1">
-            Username is required
-          </div>
+        <!-- Last Name Field -->
+        <div class="mb-3">
+          <label class="form-label">Last Name</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            formControlName="lastName" 
+          />
         </div>
 
-        <!-- Email -->
-        <div class="mb-4">
-          <label for="email" class="form-label fw-semibold">Email</label>
-          <input type="email" class="form-control" formControlName="email" id="email" placeholder="Enter your email">
-          <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="text-danger mt-1">
-            Please enter a valid email address
-          </div>
+        <!-- Email Field (read-only) -->
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input 
+            type="email" 
+            class="form-control" 
+            formControlName= "email"
+            readonly 
+          />
         </div>
 
-        <!-- Password -->
-        <div class="mb-4">
-          <label for="password" class="form-label fw-semibold">Password (Leave blank to keep unchanged)</label>
-          <input type="password" class="form-control" formControlName="password" id="password" placeholder="Enter a new password">
-          <div *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched" class="text-danger mt-1">
-            Password should be at least 8 characters
-          </div>
+        <!-- Password Field -->
+        <div class="mb-3">
+          <label class="form-label">Password </label>
+          <input 
+            type="password" 
+            class="form-control" 
+            formControlName="password" 
+            placeholder="Enter password"
+          />
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary w-100" [disabled]="profileForm.invalid" style="border-radius: 8px;">
-          Update Profile
+        <!-- New Password Field -->
+        <div class="mb-3">
+          <label class="form-label">New Password (leave blank to keep unchanged)</label>
+          <input 
+            type="password" 
+            class="form-control" 
+            formControlName="newPassword" 
+            placeholder="Enter new password"
+          />
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn btn-success" 
+          [disabled]="profileForm.invalid"
+        >
+          <i class="bi bi-save me-1"></i>Update Profile
         </button>
       </form>
     </div>

@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './customer-dashboard.component.css'
 })
 export class CustomerDashboardComponent {
-  customerName = 'Customer'
+  customerName = localStorage.getItem('name');
 }

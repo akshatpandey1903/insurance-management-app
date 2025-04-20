@@ -290,9 +290,13 @@ public class AgentServiceImpl implements AgentService{
 	    if (dto.getLastName() != null) user.setLastName(dto.getLastName());
 	    if (dto.getUsername() != null) user.setUsername(dto.getUsername());
 	    if (dto.getEmail() != null) user.setEmail(dto.getEmail());
-	    if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
-	        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+//	    if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+//	        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+//	    }
+	    if (dto.getNewPassword() != null && !dto.getNewPassword().isBlank()) {
+	        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
 	    }
+	    System.out.println(dto.getNewPassword());
 
 	    userRepository.save(user);
 

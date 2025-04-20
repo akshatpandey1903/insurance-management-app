@@ -21,7 +21,9 @@ import com.aurionpro.app.entity.Agent;
 import com.aurionpro.app.entity.Customer;
 import com.aurionpro.app.entity.Employee;
 import com.aurionpro.app.entity.User;
+import com.aurionpro.app.exceptions.EmailExistsException;
 import com.aurionpro.app.exceptions.UserApiException;
+import com.aurionpro.app.exceptions.UsernameExistsException;
 import com.aurionpro.app.repository.AgentRepository;
 import com.aurionpro.app.repository.RoleRepository;
 import com.aurionpro.app.repository.UserRepository;
@@ -73,6 +75,7 @@ public class AuthServiceImpl implements AuthService{
 	        authResponse.setUserId(user.getUserId());
 	        authResponse.setAccessToken(token);
 	        authResponse.setRole(role);
+	        authResponse.setName(user.getFirstName() + " " +  user.getLastName());
 	        
 	        // Set licenseNumber only if user is an Agent
 	        if ("AGENT".equals(role)) {
@@ -106,7 +109,15 @@ public class AuthServiceImpl implements AuthService{
 
 	@Override
 	public UserResponseDTO registerCustomer(CustomerRegistrationDTO request) {
-	    Customer customer = new Customer();
+	    
+		if (userRepo.existsByEmail(request.getEmail())) {
+	        throw new EmailExistsException("Email is already registered.");
+	    }
+	    if (userRepo.existsByUsername(request.getUsername())) {
+	        throw new UsernameExistsException("Username is already taken.");
+	    }
+		
+		Customer customer = new Customer();  
 	    customer.setUsername(request.getUsername());
 	    customer.setPassword(passwordEncoder.encode(request.getPassword()));
 	    customer.setEmail(request.getEmail());
@@ -127,6 +138,14 @@ public class AuthServiceImpl implements AuthService{
 
 	@Override
 	public UserResponseDTO registerAgent(AgentRegistrationDTO request) {
+		
+		if (userRepo.existsByEmail(request.getEmail())) {
+	        throw new EmailExistsException("Email is already registered.");
+	    }
+	    if (userRepo.existsByUsername(request.getUsername())) {
+	        throw new UsernameExistsException("Username is already taken.");
+	    }
+		
 	    Agent agent = new Agent();
 	    agent.setUsername(request.getUsername());
 	    agent.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -148,6 +167,14 @@ public class AuthServiceImpl implements AuthService{
 
 	@Override
 	public UserResponseDTO registerEmployee(EmployeeRegistrationDTO request) {
+		
+		if (userRepo.existsByEmail(request.getEmail())) {
+	        throw new EmailExistsException("Email is already registered.");
+	    }
+	    if (userRepo.existsByUsername(request.getUsername())) {
+	        throw new UsernameExistsException("Username is already taken.");
+	    }
+		
 	    Employee employee = new Employee();
 	    employee.setUsername(request.getUsername());
 	    employee.setPassword(passwordEncoder.encode(request.getPassword()));

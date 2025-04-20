@@ -55,4 +55,32 @@ public class GlobalExceptionHandler
 		return new ResponseEntity<UserErrorResponse>(response,HttpStatus.NOT_FOUND);
 	}
 	
+	@ExceptionHandler(EmailExistsException.class)
+	public ResponseEntity<UserErrorResponse> handleResourceNotFoundException(EmailExistsException e)
+	{
+		
+		UserErrorResponse response = new UserErrorResponse();
+		
+		response.setMessage("This Email is already registered with our application");
+		response.setStatus(HttpStatus.CONFLICT.value());
+		response.setTime(System.currentTimeMillis());
+		response.setField("email");
+		
+		return new ResponseEntity<UserErrorResponse>(response,HttpStatus.CONFLICT);
+	}
+	
+	@ExceptionHandler(UsernameExistsException.class)
+	public ResponseEntity<UserErrorResponse> handleUsernameExistsException(UsernameExistsException e) 
+	{
+	    
+		UserErrorResponse response = new UserErrorResponse();
+		
+	    response.setMessage("Username is already taken.");
+	    response.setStatus(HttpStatus.CONFLICT.value());
+	    response.setTime(System.currentTimeMillis());
+	    response.setField("username");
+	    
+	    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+	}
+	
 }

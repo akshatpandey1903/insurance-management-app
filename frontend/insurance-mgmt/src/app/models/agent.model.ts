@@ -33,5 +33,6 @@ export interface AgentUpdateRequest {
   lastName: string;
   username: string;
   email: string;
-  password?: string;
+  password: string;
+  newPassword?: string;
 }

@@ -1,3 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* font-family: 'Segoe UI', sans-serif; */
+  background-color: #f8f9fa;
+  color: #333;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -28,6 +40,7 @@
   background-color: #007bff;
   border-radius: 5px;
   transition: background-color 0.3s;
+  font-weight: bold;
 }
 
 .nav-btn.outline {
@@ -186,4 +199,67 @@ a {
 .logo-img {
   height: 32px; /* or adjust to fit nicely */
   width: auto;
+}
+
+.footer {
+  background-color: #222;
+  color: #ddd;
+  text-align: center;
+  padding: 20px;
+}
+
+.footer small {
+  display: block;
+  margin-top: 6px;
+  color: #aaa;
+}
+
+.footer {
+  background: #1e3c72;
+  color: white;
+  padding: 40px 20px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto 20px;
+}
+
+.footer-section {
+  margin: 20px;
+}
+
+.footer-section h4 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.footer-section p, .footer-section ul {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 10px;
+}
+
+.footer-section a {
+  color: #ff6f61;
+  text-decoration: none;
+  &:hover { color: #e65b50; }
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.85rem;
 }

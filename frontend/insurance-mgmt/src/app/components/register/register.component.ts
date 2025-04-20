@@ -12,58 +12,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 
 export class RegisterComponent {
-  // registerData = {
-  //   username: '',
-  //   firstName: '',
-  //   lastName:'',
-  //   email: '',
-  //   password: '',
-  //   role: '',
-  //   address: '',
-  //   phoneNumber: '',
-  //   department: '',
-  //   designation: '',
-  //   licenseNumber: ''
-  // };
-
-  // errors: { [key: string]: string } = {};
-  // generalError: string = '';
-
-  // constructor(private authService: AuthService, private router: Router) {}
-
-  // onRegister() {
-  //   this.errors = {}; // Reset errors before submission
-  //   this.generalError = '';
-
-  //   this.authService.register(this.registerData).subscribe(
-  //     {
-  //       next :response => {
-  //         console.log('Registration successful', response);
-  //         this.router.navigate(['/login']);
-  //       },
-  //       error: error => {
-  //         console.error('Registration failed', error);
-  //         if (error.error?.errors) {
-  //           // Handle field-specific validation errors
-  //           error.error.errors.forEach((err: { field: string; message: string }) => {
-  //             this.errors[err.field] = err.message;
-  //           });
-  //         } 
-          
-  //         else {
-  //           // Handle generic errors (e.g., "Email already exists")
-  //           this.generalError = error.error?.message || 'An unexpected error occurred. Please try again.';
-  //         }
-  //       }
-  //     }
-  //   );
-  // }
-
-  // // Helper to check if a field has an error
-  // hasError(field: string): boolean {
-  //   return !!this.errors[field];
-  // }
-
   registerForm: FormGroup;
   errors: { [key: string]: string } = {};
   generalError: string = '';
@@ -137,16 +85,45 @@ export class RegisterComponent {
     licenseNumber?.updateValueAndValidity();
   }
 
+  // onRegister() {
+  //   this.errors = {};
+  //   this.generalError = '';
+
+  //   if (this.registerForm.invalid) {
+  //     this.markFormGroupTouched(this.registerForm);
+  //     this.setFormErrors();
+  //     return;
+  //   }
+
+  //   this.authService.register(this.registerForm.value).subscribe({
+  //     next: (response) => {
+  //       console.log('Registration successful', response);
+  //       this.router.navigate(['/login']);
+  //     },
+  //     error: (error) => {
+  //       console.error('Registration failed', error);
+  //       if (error.error?.errors) {
+  //         error.error.errors.forEach((err: { field: string; message: string }) => {
+  //           this.errors[err.field] = err.message;
+  //         });
+  //       } else {
+  //         this.generalError =
+  //           error.error?.message || 'An unexpected error occurred. Please try again.';
+  //       }
+  //     },
+  //   });
+  // }
+
   onRegister() {
     this.errors = {};
     this.generalError = '';
-
+  
     if (this.registerForm.invalid) {
       this.markFormGroupTouched(this.registerForm);
       this.setFormErrors();
       return;
     }
-
+  
     this.authService.register(this.registerForm.value).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
@@ -154,13 +131,14 @@ export class RegisterComponent {
       },
       error: (error) => {
         console.error('Registration failed', error);
-        if (error.error?.errors) {
-          error.error.errors.forEach((err: { field: string; message: string }) => {
-            this.errors[err.field] = err.message;
-          });
+        if (error.error?.field && error.error?.message) {
+          // Handle field-specific errors (e.g., duplicate username or email)
+          this.errors[error.error.field] = error.error.message;
+        } else if (error.error?.message) {
+          // Handle general errors without a specific field
+          this.generalError = error.error.message;
         } else {
-          this.generalError =
-            error.error?.message || 'An unexpected error occurred. Please try again.';
+          this.generalError = 'An unexpected error occurred. Please try again.';
         }
       },
     });
