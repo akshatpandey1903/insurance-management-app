@@ -337,7 +337,9 @@ public class CustomerPolicyServiceImpl implements CustomerPolicyService {
                     dto.setStartDate(policy.getStartDate());
                     dto.setEndDate(policy.getEndDate());
                     dto.setNextDueDate(policy.getNextDueDate());
-                    dto.setApprovedBy(policy.getApprovedBy().getFirstName()+" "+policy.getApprovedBy().getLastName());
+                    if(policy.getApprovedBy() != null) {
+                    	dto.setApprovedBy(policy.getApprovedBy().getFirstName()+" "+policy.getApprovedBy().getLastName());
+                    }           
 
                     return dto;
                 })
