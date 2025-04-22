@@ -28,10 +28,11 @@ export class AgentReportService {
     });
   }
 
-  getAgentCommissionReport(page: number = 0, size: number = 10): Observable<PageResponse<AgentCommissionReportDto>> {
+  getAgentCommissionReport(page: number = 0, size: number = 10, keyword: string = ''): Observable<PageResponse<AgentCommissionReportDto>> {
     const params = new HttpParams()
       .set('page', page)
-      .set('size', size);
+      .set('size', size)
+      .set('keyword', keyword);
 
     return this.http.get<PageResponse<AgentCommissionReportDto>>(`${this.baseUrl}/agent-commissions`, { params });
   }
