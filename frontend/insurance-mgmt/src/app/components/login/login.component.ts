@@ -31,15 +31,14 @@ export class LoginComponent {
 
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      // recaptcha: ['', [Validators.required]]
+      password: ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
     });
   }
 
@@ -70,7 +69,7 @@ export class LoginComponent {
   
     const loginData = this.loginForm.value;
   
-    this.authService.loginAndRedirect(loginData, this.captchaResolved).subscribe({
+    this.authService.loginAndRedirect(loginData, this.captchaResolved , loginData).subscribe({
       error: (err) => {
         console.error('Login error:', err);
         if (err.status === 401 || err.status === 403 || err.status === 404) {

@@ -62,6 +62,19 @@
   </div>
 </section>
 
+<!-- Testimonials Carousel -->
+<section class="testimonials">
+  <h2>What Our Customers Say</h2>
+  <div #carousel class="testimonial-carousel">
+    <div class="testimonial-card" *ngFor="let testimonial of testimonials">
+      <img [src]="testimonial.avatar" alt="testimonial.name" class="testimonial-avatar">
+      <p>"{{ testimonial.text }}"</p>
+      <div class="stars">{{ testimonial.stars }}</div>
+      <h4>{{ testimonial.name }}</h4>
+    </div>
+  </div>
+</section>
+
 <!-- Footer -->
 <footer class="footer">
   <div class="footer-content">

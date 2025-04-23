@@ -86,7 +86,7 @@ export class AuthService {
   //   );
   // }
 
-  loginAndRedirect(data: any, captchaResolved: boolean): Observable<any> {
+  loginAndRedirect(data: any, captchaResolved: boolean , credentials: any = {}): Observable<any> {
     if (!data.username || !data.password || !captchaResolved) {
       return throwError(() => new Error('Invalid login data or CAPTCHA not resolved'));
     }
@@ -99,7 +99,7 @@ export class AuthService {
         localStorage.setItem('userRole', response.role);
         localStorage.setItem('licenseNumber', response.licenseNumber);
         localStorage.setItem('name' , response.name );
-  
+
         const role = response.role || this.getRoleName();
         this.redirectBasedOnRole(role);
       })
@@ -130,7 +130,7 @@ export class AuthService {
 }
 
 getToken(): string {
-  return localStorage.getItem('accessToken') || '';
+  return localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken') || '';
 }
 
 isLoggedIn(): boolean {

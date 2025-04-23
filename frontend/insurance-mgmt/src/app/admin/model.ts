@@ -43,6 +43,7 @@ export interface PageResponse<T> {
     totalElements: number;
     size: number;
     last: boolean;
+    isLast: boolean;
 }
 
 export interface AgentCommissionReportDto {

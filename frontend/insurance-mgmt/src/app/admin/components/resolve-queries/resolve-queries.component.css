@@ -1,0 +1,52 @@
+.dashboard-bg {
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 56px);
+    padding: 2rem 0;
+  }
+  .query-card {
+    border-radius: 10px;
+    border-left: 4px solid #0d6efd;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+  }
+  .query-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  .query-header {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+  }
+  .query-detail {
+    color: #495057;
+    margin-bottom: 0.8rem;
+  }
+  .query-detail strong {
+    color: #2c3e50;
+    font-weight: 500;
+    width: 120px;
+    display: inline-block;
+  }
+  .query-response {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  .btn-primary {
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+  }
+  .empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #adb5bd;
+  }

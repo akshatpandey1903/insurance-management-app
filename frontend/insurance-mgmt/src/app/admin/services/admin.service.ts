@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdminProfileDto, AgentCommissionReportDto, CityResponseDto, InsurancePlanResponseDTO, InsuranceTypeResponseDTO, PageResponse, PaginatedResponse, PlanPurchaseReportDto, StateResponseDto, TransactionResponse } from '../model';
@@ -8,6 +8,7 @@ import { CustomerQueryResponse } from '../../customer/model';
 import { isPlatformBrowser } from '@angular/common';
 import { Page } from 'ngx-pagination';
 import { AgentReportResponseDTO } from '../../models/agent.model';
+import { CustomerQueryResponseDTO } from '../../models/customer.model';
 
 @Injectable({
   providedIn: 'root'
@@ -152,6 +153,18 @@ export class AdminService {
   getUnresolvedQueries(): Observable<PaginatedResponse<CustomerQueryResponse>> {
     return this.httpClient.get<PaginatedResponse<CustomerQueryResponse>>(`http://localhost:8080/app/admin/queries`);
 
+  }
+
+  getQueries(page: number = 0, size: number = 10, status?: string): Observable<PageResponse<CustomerQueryResponseDTO>> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    
+    if (status) {
+      params = params.set('status', status);
+    }
+    
+    return this.httpClient.get<PageResponse<CustomerQueryResponseDTO>>(`http://localhost:8080/app/admin/queries`, { params });
   }
 
   // Profile

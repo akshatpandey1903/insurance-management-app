@@ -240,3 +240,47 @@ body {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.85rem;
 }
+
+.testimonials {
+  padding: 50px 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.testimonials h2 {
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.testimonial-carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  scroll-snap-type: x mandatory;
+  padding: 20px;
+}
+
+.testimonial-card {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  min-width: 280px;
+  max-width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+.testimonial-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.stars {
+  color: #f5a623;
+  margin: 10px 0;
+  font-size: 18px;
+}

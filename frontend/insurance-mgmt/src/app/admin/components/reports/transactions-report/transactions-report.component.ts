@@ -15,6 +15,8 @@ export class TransactionsReportComponent {
   currentPage: number = 0;
   totalPages: number = 0;
   pageSize: number = 5;
+  sortField: string = '';
+sortDirection: 'asc' | 'desc' = 'asc';
 
   constructor(private adminService: AdminService) { }
 
