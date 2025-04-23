@@ -13,15 +13,21 @@ export class CommissionReportComponent implements OnInit {
   page = 0;
   size = 10;
   totalPages = 0;
+  keyword: string = '';
 
   constructor(private reportService: AgentReportService) {}
+
+  searchAgents(): void {
+    this.page = 0;
+    this.fetchReport();
+  }
 
   ngOnInit(): void {
     this.fetchReport();
   }
 
   fetchReport(): void {
-    this.reportService.getAgentCommissionReport(this.page, this.size).subscribe(res => {
+    this.reportService.getAgentCommissionReport(this.page, this.size, this.keyword).subscribe(res => {
       this.agentCommissions = res.content;
       this.totalPages = res.totalPages;
     });

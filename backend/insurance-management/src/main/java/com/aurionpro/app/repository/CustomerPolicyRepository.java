@@ -43,7 +43,7 @@ public interface CustomerPolicyRepository extends JpaRepository<CustomerPolicy, 
 		@Query("SELECT new com.aurionpro.app.dto.AgentCommissionReportDto(" +
 			      "a.userId, a.firstName, a.lastName, a.email, " +
 			      "COUNT(cp), " +
-			      "CAST(SUM(cp.calculatedPremium * cp.insurancePlan.commissionRate / 100) AS java.math.BigDecimal), " +
+			      "CAST(AVG(cp.insurancePlan.commissionRate) AS java.math.BigDecimal), " +
 			      "a.totalEarnings) " +
 			      "FROM Agent a LEFT JOIN a.soldPolicies cp " +
 			      "GROUP BY a.userId, a.firstName, a.lastName, a.email, a.totalEarnings")
@@ -52,7 +52,7 @@ public interface CustomerPolicyRepository extends JpaRepository<CustomerPolicy, 
 		@Query("SELECT new com.aurionpro.app.dto.AgentCommissionReportDto(" +
 			       "a.userId, a.firstName, a.lastName, a.email, " +
 			       "COUNT(cp), " +
-			       "CAST(SUM(CASE WHEN cp IS NOT NULL THEN cp.calculatedPremium * cp.insurancePlan.commissionRate / 100 ELSE 0 END) AS java.math.BigDecimal), " +
+			       "CAST(AVG(CASE WHEN cp IS NOT NULL THEN cp.insurancePlan.commissionRate ELSE 0 END) AS java.math.BigDecimal), " +
 			       "a.totalEarnings) " +
 			       "FROM Agent a LEFT JOIN a.soldPolicies cp " +
 			       "WHERE LOWER(a.firstName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
@@ -64,12 +64,12 @@ public interface CustomerPolicyRepository extends JpaRepository<CustomerPolicy, 
 			       "SELECT new com.aurionpro.app.dto.AgentCommissionReportDto(" +
 			       "a.userId, a.firstName, a.lastName, a.email, " +
 			       "COUNT(cp), " +
-			       "CAST(SUM(CASE WHEN cp IS NOT NULL THEN cp.calculatedPremium * cp.insurancePlan.commissionRate / 100 ELSE 0 END) AS java.math.BigDecimal), " +
+			       "CAST(AVG(CASE WHEN cp IS NOT NULL THEN cp.insurancePlan.commissionRate ELSE 0 END) AS java.math.BigDecimal), " +
 			       "a.totalEarnings) " +
 			       "FROM Agent a LEFT JOIN a.soldPolicies cp " +
 			       "GROUP BY a.userId, a.firstName, a.lastName, a.email, a.totalEarnings " +
 			       "HAVING CAST(COUNT(cp) AS string) LIKE CONCAT('%', :keyword, '%') OR " +
-			       "CAST(SUM(CASE WHEN cp IS NOT NULL THEN cp.calculatedPremium * cp.insurancePlan.commissionRate / 100 ELSE 0 END) AS string) LIKE CONCAT('%', :keyword, '%')")
+			       "CAST(AVG(CASE WHEN cp IS NOT NULL THEN cp.insurancePlan.commissionRate ELSE 0 END) AS string) LIKE CONCAT('%', :keyword, '%')")
 		Page<AgentCommissionReportDto> searchAgentCommissionReport(@Param("keyword") String keyword, Pageable pageable);
 
 
