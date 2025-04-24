@@ -1,17 +1,24 @@
 <app-agent-navbar></app-agent-navbar>
-
 <div class="container mt-5">
+  <!-- Page Header with Download Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">My Earnings</h4>
+    <button class="btn btn-primary" (click)="downloadPdf()">
+      <i class="fa fa-download me-1"></i> Download PDF
+    </button>
+  </div>
+
   <!-- Commission Summary Card -->
   <div class="card shadow-sm mb-4" style="border-radius: 12px;">
     <div class="card-header" style="background-color: #0d6efd; color: white; border-top-left-radius: 12px; border-top-right-radius: 12px;">
-      <h5 class="mb-0">Commission Summary</h5>
+      <h5 class="mb-0">Profile Summary</h5>
     </div>
     <div class="card-body">
-      <p><strong>Name:</strong> {{ commissionReport.firstName }} {{ commissionReport.lastName }}</p>
-      <p><strong>Email:</strong> {{ commissionReport.email }}</p>
-      <p><strong>Total Policies Sold:</strong> {{ commissionReport.totalPoliciesSold }}</p>
-      <p><strong>Average Commission Rate:</strong> {{ commissionReport.totalCommissionRate }}%</p>
-      <p><strong>Total Earnings:</strong> ₹{{ commissionReport.totalEarnings }}</p>
+      <p><strong>Name:</strong> {{ commissionReport?.firstName }} {{ commissionReport?.lastName }}</p>
+      <p><strong>Email:</strong> {{ commissionReport?.email }}</p>
+      <p><strong>Total Policies Sold:</strong> {{ commissionReport?.totalPoliciesSold }}</p>
+      <p><strong>Average Commission Rate:</strong> {{ commissionReport?.totalCommissionRate }}%</p>
+      <p><strong>Total Earnings:</strong> ₹{{ commissionReport?.totalEarnings }}</p>
     </div>
   </div>
 
@@ -21,28 +28,30 @@
       <h5 class="mb-0">Earnings Details</h5>
     </div>
     <div class="card-body p-0">
-      <table class="table table-striped mb-0">
-        <thead class="table-light">
-          <tr>
-            <th>Customer</th>
-            <th>Policy</th>
-            <th>Premium</th>
-            <th>Commission %</th>
-            <th>Earnings</th>
-            <th>Start Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let e of earningsDetails">
-            <td>{{ e.customerName }}</td>
-            <td>{{ e.insurancePlanName }}</td>
-            <td>₹{{ e.premiumPaid }}</td>
-            <td>{{ e.commissionRate }}%</td>
-            <td>₹{{ e.commissionEarned }}</td>
-            <td>{{ e.startDate }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-striped mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Customer</th>
+              <th>Policy</th>
+              <th>Premium</th>
+              <th>Commission %</th>
+              <th>Earnings</th>
+              <th>Start Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of earningsDetails">
+              <td>{{ e.customerName }}</td>
+              <td>{{ e.insurancePlanName }}</td>
+              <td>₹{{ e.premiumPaid }}</td>
+              <td>{{ e.commissionRate }}%</td>
+              <td>₹{{ e.commissionEarned }}</td>
+              <td>{{ e.startDate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
